@@ -11,6 +11,8 @@
 				<Option object_output=".obj/Debug/" />
 				<Option type="3" />
 				<Option compiler="gcc" />
+				<Option host_application="./test.sh" />
+				<Option run_host_application_in_terminal="1" />
 				<Compiler>
 					<Add option="-g" />
 					<Add option="-DDEBUG=1" />
@@ -36,7 +38,7 @@
 			<Add option="-fPIC" />
 		</Compiler>
 		<Linker>
-			<Add option="`pkg-config --libs python`" />
+			<Add option="`pkg-config --libs python dbus-1`" />
 			<Add library="pw3270cpp" />
 		</Linker>
 		<Unit filename="src/actions.cc" />
