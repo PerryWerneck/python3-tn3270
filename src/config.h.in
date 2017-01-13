@@ -1,0 +1,51 @@
+/**
+ * @file config.h
+ *
+ * @brief Configuração para o aplicativo.
+ *
+ * Gerado automaticamente pelo processo ./configure esse arquivo descreve
+ * as configurações de ambiente detectadas automaticamente.
+ *
+ * @author perry.werneck@gmail.com
+ *
+ */
+
+#ifndef CONFIG_H_INCLUDED
+
+	#define CONFIG_H_INCLUDED 1
+
+	/**
+	 * @brief Nome do pacote.
+	 */
+	#undef PACKAGE_NAME
+
+	/**
+	 * @brief Versão atual.
+	 */
+	#undef PACKAGE_VERSION
+
+	/**
+	 * @brief Revisão svn quando o pacote foi configurado.
+	 *
+	 */
+	#undef PACKAGE_REVISION
+
+	/**
+ 	 * @brief Descrição do aplicativo.
+	 */
+	#undef PACKAGE_DESCRIPTION
+
+	/**
+	 * @brief Indica se o compilador atual possui suporte a "visibility"
+	 *
+	 * Quando disponível indica que o compilador atual permite tornar
+	 * visíveis numa biblioteca apenas as funções declaradas para isso
+	 * evitando que todos os símbolos fiquem visíveis.
+	 *
+	 * Isso permite um melhor controle sobre quais funções podem ser usados
+	 * pelo programa principal.
+	 *
+	 */
+	#undef HAVE_GNUC_VISIBILITY
+
+#endif // CONFIG_H_INCLUDED
