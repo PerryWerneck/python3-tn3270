@@ -1,2 +1,12 @@
 *~
+*.layout
+.bin
+.obj
+ChangeLog
+aclocal.m4
+autom4te.cache
+config.*
+configure
+*.depend
+stamp-h1
 
