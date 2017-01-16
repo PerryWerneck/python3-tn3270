@@ -62,6 +62,7 @@ AMTAR=@AMTAR@
 SHELL=@SHELL@
 STRIP=@STRIP@
 MKDIR=@MKDIR_P@
+RPMBUILD=@RPMBUILD@
 
 CXX=@CXX@
 CC=@CC@
@@ -97,6 +98,20 @@ $(OBJRLS)/%.o: \
 				-DBUILD_DATE=`date +"0x%Y%m%d"` \
 				-o $@ -c $<
 
+%.tar.bz2: \
+	%.tar
+
+	@echo $< ...
+	@bzip2 --compress -9 --stdout $< > $@
+	@chmod 0644 $@
+
+%.tar.gz: \
+	%.tar
+
+	@echo $< ...
+	@gzip -9 --stdout $< > $@
+	@chmod 0644 $@
+
 #---[ Release Targets ]------------------------------------------------------------------
 
 all: \
@@ -121,6 +136,86 @@ py3270-@PACKAGE_VERSION@.@host_cpu@.zip: \
 	@rm -f $@
 	@zip -9 -j $@ $(BINRLS)/py3270@DLLEXT@
 
+tgz: \
+	$(PACKAGE_TARNAME)-$(PACKAGE_VERSION).tar.gz
+
+bz2: \
+	$(PACKAGE_TARNAME)-$(PACKAGE_VERSION).tar.bz2
+
+tar: \
+	$(PACKAGE_TARNAME)-$(PACKAGE_VERSION).tar
+
+rpm: \
+	$(PACKAGE_TARNAME)-$(PACKAGE_VERSION).tar.bz2
+
+ifneq ($(RPMBUILD),no)
+	@$(MKDIR) $(BASEDIR)/rpm
+	@$(MKDIR) $(BASEDIR)/rpm/SPECS
+	@$(MKDIR) $(BASEDIR)/rpm/SOURCES
+	@$(MKDIR) $(BASEDIR)/rpm/SRPMS
+	@$(MKDIR) $(BASEDIR)/rpm/RPMS
+	@$(MKDIR) $(BASEDIR)/rpm/BUILD
+	@$(MKDIR) $(BASEDIR)/rpm/BUILDROOT
+	@umask 002 ; $(RPMBUILD) \
+		--define="_topdir $(BASEDIR)/rpm" \
+		--define="_packager $(USER)@$(HOSTNAME)" \
+		--clean \
+		-ta $(PACKAGE_TARNAME)-$(PACKAGE_VERSION).tar.bz2
+endif
+
+srpm: \
+	$(PACKAGE_TARNAME)-$(PACKAGE_VERSION).tar.bz2
+
+ifneq ($(RPMBUILD),no)
+	@$(MKDIR) $(BASEDIR)/rpm
+	@$(MKDIR) $(BASEDIR)/rpm/SPECS
+	@$(MKDIR) $(BASEDIR)/rpm/SOURCES
+	@$(MKDIR) $(BASEDIR)/rpm/SRPMS
+	@$(MKDIR) $(BASEDIR)/rpm/RPMS
+	@$(MKDIR) $(BASEDIR)/rpm/BUILD
+	@$(MKDIR) $(BASEDIR)/rpm/BUILDROOT
+	@umask 002 ; $(RPMBUILD) \
+		--define="_topdir $(PWD)/rpm" \
+		--define="_packager $(USER)@$(HOSTNAME)" \
+		--clean \
+		-ts $(PACKAGE_TARNAME)-$(PACKAGE_VERSION).tar.bz2
+	@find rpm -iname "*.rpm" -exec chmod 664 {} \;
+endif
+
+$(PACKAGE_TARNAME)-$(PACKAGE_VERSION).tar: \
+	$(SRCDIR)
+
+	@$(AMTAR) \
+		--verbose \
+		--format=ustar \
+		--create \
+		--exclude-vcs \
+		--directory $(BASEDIR)/.src \
+		--owner=root \
+		--group=root \
+		--file=$@ \
+		$(PACKAGE_TARNAME)-@PACKAGE_VERSION@
+
+
+$(SRCDIR): \
+	clean \
+
+	# Copia fontes
+	@$(MKDIR) $(SRCDIR)/src
+	@cp src/*.cc $(SRCDIR)/src
+	@cp src/*.in $(SRCDIR)/src
+	@cp src/private.h $(SRCDIR)/src
+
+	# Copia extras
+	@cp -r scripts $(SRCDIR)
+	@cp -r testprograms $(SRCDIR)
+
+	# Copia configuradores
+	@cp configure.ac $(SRCDIR)
+	@cp *.in $(SRCDIR)
+	@cp *.sh $(SRCDIR)
+	@cp *.cbp $(SRCDIR)
+	@cp *.spec $(SRCDIR)
 
 $(BINRLS)/$(LIBNAME): \
 	$(foreach SRC, $(basename $(SOURCES)), $(OBJRLS)/$(SRC).o)
@@ -151,5 +246,6 @@ clean:
 	
 	@rm -fr $(BINDIR)
 	@rm -fr $(OBJDIR)
+	@rm -fr $(SRCDIR)
 
 

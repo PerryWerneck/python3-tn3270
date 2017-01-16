@@ -2,6 +2,7 @@
 *.layout
 .bin
 .obj
+.src
 ChangeLog
 aclocal.m4
 autom4te.cache
@@ -11,4 +12,8 @@ configure
 stamp-h1
 Makefile
 *.zip
+*.tar
+*.gz
+*.bz2
+rpm
 
