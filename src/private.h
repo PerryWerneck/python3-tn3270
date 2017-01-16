@@ -34,7 +34,11 @@
 	// http://stackoverflow.com/questions/28683358/error-hypot-has-not-been-declared-in-cmath-while-trying-to-embed-python
 	#include <cmath>
 
+	// https://lists.gt.net/python/dev/340073
+	#pragma GCC diagnostic push
+	#pragma GCC system_header
 	#include <Python.h>
+	#pragma GCC diagnostic pop
 
 	#include <lib3270/config.h>
 	#include <pw3270/class.h>

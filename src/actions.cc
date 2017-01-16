@@ -34,7 +34,6 @@
 
  #include "private.h"
 
-
 /*---[ Implement ]----------------------------------------------------------------------------------*/
 
  PyObject * terminal_pfkey(PyObject *self, PyObject *args) {
