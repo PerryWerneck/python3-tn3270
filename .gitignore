@@ -9,4 +9,5 @@ config.*
 configure
 *.depend
 stamp-h1
+Makefile
 

@@ -1,0 +1,155 @@
+#
+# "Software pw3270, desenvolvido com base nos códigos fontes do WC3270  e X3270
+# (Paul Mattes Paul.Mattes@usa.net), de emulação de terminal 3270 para acesso a
+# aplicativos mainframe. Registro no INPI sob o nome G3270.
+#
+# Copyright (C) <2008> <Banco do Brasil S.A.>
+#
+# Este programa é software livre. Você pode redistribuí-lo e/ou modificá-lo sob
+# os termos da GPL v.2 - Licença Pública Geral  GNU,  conforme  publicado  pela
+# Free Software Foundation.
+#
+# Este programa é distribuído na expectativa de  ser  útil,  mas  SEM  QUALQUER
+# GARANTIA; sem mesmo a garantia implícita de COMERCIALIZAÇÃO ou  de  ADEQUAÇÃO
+# A QUALQUER PROPÓSITO EM PARTICULAR. Consulte a Licença Pública Geral GNU para
+# obter mais detalhes.
+#
+# Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este
+# programa;  se  não, escreva para a Free Software Foundation, Inc., 59 Temple
+# Place, Suite 330, Boston, MA, 02111-1307, USA
+#
+# Contatos:
+#
+# perry.werneck@gmail.com	(Alexandre Perry de Souza Werneck)
+# erico.mendonca@gmail.com	(Erico Mascarenhas de Mendonça)
+#
+
+SOURCES=actions.cc get.cc init.cc misc.cc py3270.cc set.cc
+LIBNAME=py3270@DLLEXT@
+
+#---[ Configuration values ]-------------------------------------------------------------
+
+PACKAGE_NAME=@PACKAGE_NAME@
+PACKAGE_VERSION=@PACKAGE_VERSION@
+PACKAGE_TARNAME=@PACKAGE_TARNAME@
+
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+bindir=@bindir@
+sbindir=@sbindir@
+libdir=@libdir@
+
+BASEDIR=@BASEDIR@
+SRCDIR=$(BASEDIR)/.src/$(PACKAGE_TARNAME)-$(PACKAGE_VERSION)
+PYTHONLIBPATH=`python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()"`
+
+OBJDIR=$(BASEDIR)/.obj
+OBJDBG=$(OBJDIR)/Debug
+OBJRLS=$(OBJDIR)/Release
+
+BINDIR=$(BASEDIR)/.bin
+BINDBG=$(BINDIR)/Debug
+BINRLS=$(BINDIR)/Release
+
+INSTALL=@INSTALL@
+INSTALL_DATA=@INSTALL_DATA@
+INSTALL_PROGRAM=@INSTALL_PROGRAM@
+
+LN_S=@LN_S@
+
+VALGRIND=@VALGRIND@
+AMTAR=@AMTAR@
+SHELL=@SHELL@
+STRIP=@STRIP@
+MKDIR=@MKDIR_P@
+
+CXX=@CXX@
+CC=@CC@
+LD=@CXX@
+
+LIBS=-lpw3270cpp @LIBS@ @LIBICONV@ 
+CFLAGS=@CFLAGS@ @PYTHON_CFLAGS@
+LDFLAGS=@LDFLAGS@ 
+
+#---[ Rules ]----------------------------------------------------------------------------
+
+DEPENDS=src/*.h Makefile
+
+$(OBJDBG)/%.o: \
+	src/%.cc \
+	$(DEPENDS)
+
+	@echo $< ...
+	@$(MKDIR) `dirname $@`
+	@$(CXX) $(CFLAGS) -fstack-check \
+				-DDEBUG=1 \
+				-DBUILD_DATE=`date +"0x%Y%m%d"`\
+				-g -o $@ -c $<
+
+$(OBJRLS)/%.o: \
+	src/%.cc \
+	$(DEPENDS)
+
+	@echo $< ...
+	@$(MKDIR) `dirname $@`
+	@$(CXX) $(CFLAGS) \
+				-DNDEBUG=1 \
+				-DBUILD_DATE=`date +"0x%Y%m%d"` \
+				-o $@ -c $<
+
+#---[ Release Targets ]------------------------------------------------------------------
+
+all: \
+	$(BINRLS)/$(LIBNAME)
+
+Release: \
+	$(BINRLS)/$(LIBNAME)
+
+install: \
+	$(BINRLS)/$(LIBNAME)
+
+	@$(MKDIR) $(DESTDIR)/$(PYTHONLIBPATH)
+	@$(INSTALL_PROGRAM) $(BINRLS)/py3270@DLLEXT@ $(DESTDIR)/$(PYTHONLIBPATH)/py3270@DLLEXT@
+
+zip: \
+	py3270-@PACKAGE_VERSION@.@PACKAGE_REVISION@.@host_cpu@.zip
+
+py3270-@PACKAGE_VERSION@.@PACKAGE_REVISION@.@host_cpu@.zip: \
+	Makefile \
+	$(BINRLS)/py3270@DLLEXT@
+
+	@rm -f $@
+	@zip -9 -j $@ $(BINRLS)/py3270@DLLEXT@
+
+
+$(BINRLS)/$(LIBNAME): \
+	$(foreach SRC, $(basename $(SOURCES)), $(OBJRLS)/$(SRC).o)
+
+	@echo $(basename $@) ...
+	@$(MKDIR) `dirname $@`
+	@$(LD) -shared -Wl,-soname,$(LIBNAME) $(LDFLAGS) -o $@ $^ $(LIBS)
+
+Debug: \
+	$(BINDBG)/$(LIBNAME)
+
+$(BINDBG)/$(LIBNAME): \
+	$(foreach SRC, $(basename $(SOURCES)), $(OBJDBG)/$(SRC).o)
+
+	@echo $(basename $@) ...
+	@$(MKDIR) `dirname $@`
+	@$(LD) -shared -Wl,-soname,$(LIBNAME) $(LDFLAGS) -o $@ $^ $(LIBS)
+
+run: \
+	$(BINDBG)/$(LIBNAME)
+
+	php -d extension=$(BINDBG)/$(LIBNAME) testprograms/version.php
+
+cleanDebug: \
+	clean
+
+clean:
+	
+	@rm -fr $(BINDIR)
+	@rm -fr $(OBJDIR)
+
+
