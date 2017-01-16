@@ -43,6 +43,30 @@
 	#include <lib3270/config.h>
 	#include <pw3270/class.h>
 
+	#if defined(_WIN32)
+
+			#include <windows.h>
+
+			#define DLL_PRIVATE	extern
+			#define DLL_PUBLIC	extern __declspec (dllexport)
+
+	#elif defined(__SUNPRO_C) && (__SUNPRO_C >= 0x550)
+
+			#define DLL_PRIVATE		__hidden extern
+			#define DLL_PUBLIC		extern
+
+	#elif defined (HAVE_GNUC_VISIBILITY)
+
+			#define DLL_PRIVATE		__attribute__((visibility("hidden"))) extern
+			#define DLL_PUBLIC		__attribute__((visibility("default"))) extern
+
+	#else
+
+			#error Unable to set visibility attribute
+
+	#endif
+
+
 	using namespace std;
 
 	typedef struct {
@@ -57,34 +81,34 @@
 
 	extern "C" {
 
-		PyObject	* terminal_new(PyTypeObject *type, PyObject *args, PyObject *kwds);
-		int			  terminal_init(pw3270_TerminalObject *self, PyObject *args, PyObject *kwds);
-		void		  terminal_dealloc(pw3270_TerminalObject * self);
+		DLL_PRIVATE PyObject	* terminal_new(PyTypeObject *type, PyObject *args, PyObject *kwds);
+		DLL_PRIVATE int			  terminal_init(pw3270_TerminalObject *self, PyObject *args, PyObject *kwds);
+		DLL_PRIVATE void		  terminal_dealloc(pw3270_TerminalObject * self);
 
-		PyObject	* terminal_get_version(PyObject *self, PyObject *args);
-		PyObject	* terminal_get_revision(PyObject *self, PyObject *args);
+		DLL_PRIVATE PyObject	* terminal_get_version(PyObject *self, PyObject *args);
+		DLL_PRIVATE PyObject	* terminal_get_revision(PyObject *self, PyObject *args);
 
-		PyObject	* terminal_is_connected(PyObject *self, PyObject *args);
-		PyObject	* terminal_is_ready(PyObject *self, PyObject *args);
+		DLL_PRIVATE PyObject	* terminal_is_connected(PyObject *self, PyObject *args);
+		DLL_PRIVATE PyObject	* terminal_is_ready(PyObject *self, PyObject *args);
 
-		PyObject	* terminal_connect(PyObject *self, PyObject *args);
-		PyObject	* terminal_disconnect(PyObject *self, PyObject *args);
+		DLL_PRIVATE PyObject	* terminal_connect(PyObject *self, PyObject *args);
+		DLL_PRIVATE PyObject	* terminal_disconnect(PyObject *self, PyObject *args);
 
-		PyObject 	* terminal_get_string_at(PyObject *self, PyObject *args);
-		PyObject 	* terminal_get_contents(PyObject *self);
-		PyObject 	* terminal_set_string_at(PyObject *self, PyObject *args);
-		PyObject	* terminal_cmp_string_at(PyObject *self, PyObject *args);
+		DLL_PRIVATE PyObject 	* terminal_get_string_at(PyObject *self, PyObject *args);
+		DLL_PRIVATE PyObject 	* terminal_get_contents(PyObject *self);
+		DLL_PRIVATE PyObject 	* terminal_set_string_at(PyObject *self, PyObject *args);
+		DLL_PRIVATE PyObject	* terminal_cmp_string_at(PyObject *self, PyObject *args);
 
-		PyObject 	* terminal_pfkey(PyObject *self, PyObject *args);
-		PyObject 	* terminal_pakey(PyObject *self, PyObject *args);
-		PyObject 	* terminal_enter(PyObject *self, PyObject *args);
-		PyObject 	* terminal_action(PyObject *self, PyObject *args);
+		DLL_PRIVATE PyObject 	* terminal_pfkey(PyObject *self, PyObject *args);
+		DLL_PRIVATE PyObject 	* terminal_pakey(PyObject *self, PyObject *args);
+		DLL_PRIVATE PyObject 	* terminal_enter(PyObject *self, PyObject *args);
+		DLL_PRIVATE PyObject 	* terminal_action(PyObject *self, PyObject *args);
 
-		PyObject 	* terminal_is_protected_at(PyObject *self, PyObject *args);
-		PyObject 	* terminal_set_cursor_at(PyObject *self, PyObject *args);
+		DLL_PRIVATE PyObject 	* terminal_is_protected_at(PyObject *self, PyObject *args);
+		DLL_PRIVATE PyObject 	* terminal_set_cursor_at(PyObject *self, PyObject *args);
 
-		PyObject	* terminal_wait_for_ready(PyObject *self, PyObject *args);
-		PyObject	* terminal_wait_for_string_at(PyObject *self, PyObject *args);
+		DLL_PRIVATE PyObject	* terminal_wait_for_ready(PyObject *self, PyObject *args);
+		DLL_PRIVATE PyObject	* terminal_wait_for_string_at(PyObject *self, PyObject *args);
 
 	}
 

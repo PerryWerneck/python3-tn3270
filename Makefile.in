@@ -67,8 +67,8 @@ CXX=@CXX@
 CC=@CC@
 LD=@CXX@
 
-LIBS=-lpw3270cpp @LIBS@ @LIBICONV@ 
-CFLAGS=@CFLAGS@ @PYTHON_CFLAGS@
+LIBS=-lpw3270cpp @LIBS@ @LIBICONV@ @DBUS_LIBS@
+CFLAGS=@CFLAGS@ @PYTHON_CFLAGS@ @DBUS_CFLAGS@
 LDFLAGS=@LDFLAGS@ 
 
 #---[ Rules ]----------------------------------------------------------------------------
@@ -142,7 +142,7 @@ $(BINDBG)/$(LIBNAME): \
 run: \
 	$(BINDBG)/$(LIBNAME)
 
-	php -d extension=$(BINDBG)/$(LIBNAME) testprograms/version.php
+	PYTHONPATH=$(BINDBG) python ./testprograms/sample.py 
 
 cleanDebug: \
 	clean

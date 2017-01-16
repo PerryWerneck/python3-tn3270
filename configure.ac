@@ -123,6 +123,14 @@ AC_SUBST(PYTHON_LIBS)
 AC_SUBST(PYTHON_CFLAGS)
 
 dnl ---------------------------------------------------------------------------
+dnl Check for D-Bus
+dnl ---------------------------------------------------------------------------
+
+PKG_CHECK_MODULES( [DBUS], [dbus-1], AC_DEFINE(HAVE_DBUS), AC_MSG_NOTICE([ No DBUS support.]) )
+AC_SUBST(DBUS_LIBS)
+AC_SUBST(DBUS_CFLAGS)
+
+dnl ---------------------------------------------------------------------------
 dnl Check for integer types & library functions
 dnl ---------------------------------------------------------------------------
 
@@ -222,19 +230,19 @@ fi
 dnl ---------------------------------------------------------------------------
 dnl Check for compiler visibility flag
 dnl ---------------------------------------------------------------------------
-AC_MSG_CHECKING(whether $CC accepts -fvisibility=hidden)
-AC_CACHE_VAL(app_cv_fvisibility_ok,
-[ac_save_cc="$CC"
-CC="$CC -fvisibility=hidden"
-AC_TRY_RUN([int main() { return 0; }],
-  app_cv_fvisibility_ok=yes,
-  app_cv_fvisibility_ok=no,
-  app_cv_fvisibility_ok=no)
-CC="$ac_save_cc"])
-AC_MSG_RESULT($app_cv_fvisibility_ok)
-if test $app_cv_fvisibility_ok = yes; then
-  CFLAGS="$CFLAGS -fvisibility=hidden"
-fi
+dnl AC_MSG_CHECKING(whether $CC accepts -fvisibility=hidden)
+dnl AC_CACHE_VAL(app_cv_fvisibility_ok,
+dnl [ac_save_cc="$CC"
+dnl CC="$CC -fvisibility=hidden"
+dnl AC_TRY_RUN([int main() { return 0; }],
+dnl   app_cv_fvisibility_ok=yes,
+dnl   app_cv_fvisibility_ok=no,
+dnl   app_cv_fvisibility_ok=no)
+dnl CC="$ac_save_cc"])
+dnl AC_MSG_RESULT($app_cv_fvisibility_ok)
+dnl if test $app_cv_fvisibility_ok = yes; then
+dnl   CFLAGS="$CFLAGS -fvisibility=hidden"
+dnl fi
 
 dnl ---------------------------------------------------------------------------
 dnl Check for pic
