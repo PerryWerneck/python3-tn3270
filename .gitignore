@@ -10,4 +10,5 @@ configure
 *.depend
 stamp-h1
 Makefile
+*.zip
 

@@ -112,9 +112,9 @@ install: \
 	@$(INSTALL_PROGRAM) $(BINRLS)/py3270@DLLEXT@ $(DESTDIR)/$(PYTHONLIBPATH)/py3270@DLLEXT@
 
 zip: \
-	py3270-@PACKAGE_VERSION@.@PACKAGE_REVISION@.@host_cpu@.zip
+	py3270-@PACKAGE_VERSION@.@host_cpu@.zip
 
-py3270-@PACKAGE_VERSION@.@PACKAGE_REVISION@.@host_cpu@.zip: \
+py3270-@PACKAGE_VERSION@.@host_cpu@.zip: \
 	Makefile \
 	$(BINRLS)/py3270@DLLEXT@
 
