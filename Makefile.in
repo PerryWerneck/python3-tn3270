@@ -215,7 +215,7 @@ $(SRCDIR): \
 	@cp *.in $(SRCDIR)
 	@cp *.sh $(SRCDIR)
 	@cp *.cbp $(SRCDIR)
-	@cp *.spec $(SRCDIR)
+	@cp rpm/*.spec $(SRCDIR)
 
 $(BINRLS)/$(LIBNAME): \
 	$(foreach SRC, $(basename $(SOURCES)), $(OBJRLS)/$(SRC).o)
