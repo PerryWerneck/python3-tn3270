@@ -143,8 +143,9 @@ PyMODINIT_FUNC initpy3270(void) {
 
     PyObject *m = Py_InitModule("py3270", MyMethods);
 
-    if (m == NULL)
-        return;
+    if (m == NULL) {
+		return;
+    }
 
 	// Adiciona objeto para tratamento de erros.
 	terminalError = PyErr_NewException((char *) "py3270.error", NULL, NULL);

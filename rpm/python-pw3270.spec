@@ -27,6 +27,7 @@ BuildRequires:  pkgconfig(python)
 
 Requires:		python
 Requires:       lib3270 >= 5.1
+Requires:       dbus-1
 
 %description
 
