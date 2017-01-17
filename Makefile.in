@@ -210,6 +210,12 @@ $(SRCDIR): \
 	@cp -r scripts $(SRCDIR)
 	@cp -r testprograms $(SRCDIR)
 
+	# Copia documentos
+	@cp AUTHORS $(SRCDIR)
+	@cp LICENCA $(SRCDIR)
+	@cp LICENSE $(SRCDIR)
+	@cp README.md $(SRCDIR)
+
 	# Copia configuradores
 	@cp configure.ac $(SRCDIR)
 	@cp *.in $(SRCDIR)
