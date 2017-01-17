@@ -19,7 +19,8 @@ BuildRequires:  coreutils
 BuildRequires:  gcc-c++
 BuildRequires:  m4
 BuildRequires:  pkgconfig
-BuildRequires:	pw3270-devel >= 5.1
+BuildRequires:	pkgconfig(pw3270) >= 5.1
+BuildRequires:	fdupes
 
 BuildRequires:	python
 BuildRequires:  pkgconfig(python)
