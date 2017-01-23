@@ -44,7 +44,11 @@
 
 static PyObject * get_revision(PyObject *self, PyObject *args) {
 
+#ifdef PACKAGE_REVISION
     return PyLong_FromLong(atoi(PACKAGE_REVISION));
+#else
+    return PyLong_FromLong(BUILD_DATE);
+#endif // PACKAGE_REVISION
 
 }
 

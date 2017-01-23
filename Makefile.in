@@ -84,7 +84,7 @@ $(OBJDBG)/%.o: \
 	@$(MKDIR) `dirname $@`
 	@$(CXX) $(CFLAGS) -fstack-check \
 				-DDEBUG=1 \
-				-DBUILD_DATE=`date +"0x%Y%m%d"`\
+				-DBUILD_DATE=`date +"%Y%m%d"`\
 				-g -o $@ -c $<
 
 $(OBJRLS)/%.o: \
@@ -95,7 +95,7 @@ $(OBJRLS)/%.o: \
 	@$(MKDIR) `dirname $@`
 	@$(CXX) $(CFLAGS) \
 				-DNDEBUG=1 \
-				-DBUILD_DATE=`date +"0x%Y%m%d"` \
+				-DBUILD_DATE=`date +"%Y%m%d"` \
 				-o $@ -c $<
 
 %.tar.bz2: \

@@ -41,7 +41,7 @@
 	#pragma GCC diagnostic pop
 
 	#include <lib3270/config.h>
-	#include <pw3270/class.h>
+	#include <pw3270cpp.h>
 
 	#if defined(_WIN32)
 
