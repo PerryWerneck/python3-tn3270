@@ -1,4 +1,3 @@
-Debtransform-Tar: python-pw3270-5.1.tar.bz2
 Format: 1.0
 Source: python-pw3270
 Version: 5.1-1
