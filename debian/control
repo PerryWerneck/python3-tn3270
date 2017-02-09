@@ -6,7 +6,7 @@ Build-Depends: debhelper (>= 7), autotools-dev, autoconf, gettext, pw3270-dev, p
 
 Package: python-pw3270
 Architecture: any
-Depends: ${misc:Depends}, lib3270 (= ${binary:Version})
+Depends: ${misc:Depends}, ${shlibs:Depends}, lib3270 
 Description: PHP Extension Module implementing tn3270 protocol.
  This is an extension for acessing 3270 hosts directly from PHP apps.
 
