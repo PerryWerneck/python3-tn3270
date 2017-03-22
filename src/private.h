@@ -40,8 +40,8 @@
 	#include <Python.h>
 	#pragma GCC diagnostic pop
 
-	#include <lib3270/config.h>
 	#include <pw3270cpp.h>
+	#include "config.h"
 
 	#if defined(_WIN32)
 
