@@ -1,10 +1,10 @@
-Source: python-pw3270
+Source: lib3270-python-bindings
 Section: unknown
 Priority: optional
 Maintainer: Perry Werneck <perry.werneck@gmail.com>
 Build-Depends: debhelper (>= 7), autotools-dev, autoconf, gettext, pw3270-dev, python-dev
 
-Package: python-pw3270
+Package: lib3270-python-bindings
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}, lib3270 
 Description: PHP Extension Module implementing tn3270 protocol.

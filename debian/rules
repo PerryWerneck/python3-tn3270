@@ -50,10 +50,10 @@ install: build
 	dh_installdirs
 
 	# Install ooRexx extension
-	make DESTDIR=$(PWD)/debian/python-pw3270 install
+	make DESTDIR=$(PWD)/debian/lib3270-python-bindings install
 
 	# Create updated file lists
-	find $(PWD)/debian/python-pw3270 -type f | sed -e "s@^$(PWD)/debian/python-pw3270/@/@g" > $(PWD)/debian/python-pw3270.install
+	find $(PWD)/debian/lib3270-python-bindings -type f | sed -e "s@^$(PWD)/debian/lib3270-python-bindings/@/@g" > $(PWD)/debian/lib3270-python-bindings.install
 
 	# --- end custom part for installing
 
@@ -66,7 +66,7 @@ binary-arch: build install
 	dh_testdir
 	dh_testroot
 #	dh_installdebconf
-	dh_installdocs AUTHORS LICENSE
+	dh_installdocs AUTHORS LICENSE README.md LICENCA
 	dh_installexamples
 	dh_installmenu
 #	dh_installlogrotate
