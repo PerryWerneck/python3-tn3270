@@ -21,4 +21,5 @@ rpm/RPMS
 rpm/SOURCES
 rpm/SPECS
 rpm/SRPMS
-
+scripts
+*.[0-9]
