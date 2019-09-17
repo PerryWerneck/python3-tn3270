@@ -18,150 +18,92 @@
  * programa; se não, escreva para a Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA  02110-1301  USA
  *
- * Este programa está nomeado como py3270.cc e possui - linhas de código.
+ * Este programa está nomeado como - e possui - linhas de código.
  *
  * Contatos:
  *
  * perry.werneck@gmail.com	(Alexandre Perry de Souza Werneck)
  * erico.mendonca@gmail.com	(Erico Mascarenhas Mendonça)
  *
- * Implementa métodos básicos para a extensão python.
- *
- * Referências:
- *
- * <https://docs.python.org/2/extending/newtypes.html>
- * <https://docs.python.org/2.7/extending/extending.html#a-simple-example>
+ * <https://docs.python.org/3/extending/extending.html>
  *
  */
 
- #include "private.h"
-
-/*---[ Globals ]------------------------------------------------------------------------------------*/
-
- PyObject * terminalError = NULL;
+ #include <py3270.h>
 
 /*---[ Implement ]----------------------------------------------------------------------------------*/
 
-static PyObject * get_revision(PyObject *self, PyObject *args) {
+PyMODINIT_FUNC PyInit_tn3270(void)
+{
+    static PyMethodDef methods[] = {
 
-#ifdef PACKAGE_REVISION
-    return PyLong_FromLong(atoi(PACKAGE_REVISION));
-#else
-    return PyLong_FromLong(BUILD_DATE);
-#endif // PACKAGE_REVISION
+        {
+            "version",
+            py3270_get_module_version,
+            METH_NOARGS,
+            "Get " PACKAGE_NAME " version"
+        },
 
-}
+        {
+            "revision",
+            py3270_get_module_revision,
+            METH_NOARGS,
+            "Get " PACKAGE_NAME " revision"
 
-static PyMethodDef terminal_methods[] = {
+        },
 
-    { "Version",  				terminal_get_version,			METH_NOARGS,	"Get the lib3270 version string."						},
-    { "Revision",  				terminal_get_revision,			METH_NOARGS,	"Get the lib3270 revision number."						},
+        {
+            NULL,
+            NULL,
+            0,
+            NULL
+        }
 
-    { "IsConnected",			terminal_is_connected,			METH_NOARGS,	"True if the terminal is connected to the host."		},
-    { "IsReady",  				terminal_is_ready,				METH_NOARGS,	"True if the terminal has finished network activity."	},
-    { "IsProtected",  			terminal_is_protected_at,		METH_VARARGS,	"True if the position is read-only."					},
+    };
 
-    { "SetCursorPosition",		terminal_set_cursor_at,			METH_VARARGS,	"Set cursor position."									},
+    static struct PyModuleDef definition = {
+        PyModuleDef_HEAD_INIT,
+        "tn3270",               // name of module
+        PACKAGE_DESCRIPTION,    // module documentation, may be NUL
+        -1,                     // size of per-interpreter state of the module or -1 if the module keeps state in global variables.
+        methods                 // Module methods
+    };
 
-    { "WaitForStringAt",		terminal_wait_for_string_at,	METH_VARARGS,	"Wait for string at position"							},
-    { "WaitForReady",			terminal_wait_for_ready,		METH_VARARGS,	"Wait for network communication to finish"				},
+    Py_Initialize();
 
-    { "Connect",				terminal_connect,				METH_VARARGS,	"Connect to the host."									},
-    { "Disconnect",  			terminal_disconnect,			METH_NOARGS,	"Disconnect from host."									},
+    PyObject *module = PyModule_Create(&definition);
 
-    { "CmpStringAt",			terminal_cmp_string_at,			METH_VARARGS,	"Compare string with terminal buffer at the position."	},
-    { "GetStringAt",  			terminal_get_string_at,			METH_VARARGS,	"Get string from terminal buffer."						},
-    { "SetStringAt",  			terminal_set_string_at,			METH_VARARGS,	"Set string in terminal buffer."						},
+    if(module) {
 
-    { "PFKey",  				terminal_pfkey,					METH_VARARGS,	"Send PF key."											},
-    { "PAKey",  				terminal_pakey,					METH_VARARGS,	"Send PA key."											},
-    { "Enter",  				terminal_enter,					METH_NOARGS,	"Send Enter Key."										},
-    { "Action",  				terminal_action,				METH_VARARGS,	"Send Action by name."									},
+        PyObject * except = PyErr_NewException("tn3270.error", NULL, NULL);
 
-    {NULL}	// Sentinel
+        Py_XINCREF(except);
+        if (PyModule_AddObject(module, "error", except) < 0) {
+            Py_XDECREF(except);
+            Py_CLEAR(except);
+            Py_DECREF(module);
+            return NULL;
+        }
 
-};
-
-/*
-static PyMemberDef terminal_members[] = {
-
-    { NULL }	// Sentinel
-
-};
-*/
-
-static PyTypeObject pw3270_TerminalType = {
-    PyObject_HEAD_INIT(NULL)
-    0,								/*ob_size*/
-    "py3270.terminal",				/*tp_name*/
-    sizeof(pw3270_TerminalObject),	/*tp_basicsize*/
-    0,								/*tp_itemsize*/
-    (destructor) terminal_dealloc,	/*tp_dealloc*/
-    0,								/*tp_print*/
-    0,								/*tp_getattr*/
-    0,								/*tp_setattr*/
-    0,								/*tp_compare*/
-    0,								/*tp_repr*/
-    0,								/*tp_as_number*/
-    0,								/*tp_as_sequence*/
-    0,								/*tp_as_mapping*/
-    0,								/*tp_hash */
-    0,								/*tp_call*/
-    terminal_get_contents,			/*tp_str*/
-    0,								/*tp_getattro*/
-    0,								/*tp_setattro*/
-    0,								/*tp_as_buffer*/
-    Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,	/*tp_flags*/
-    "3270 terminal object",			/* tp_doc */
-    0,								/* tp_traverse */
-    0,								/* tp_clear */
-    0,								/* tp_richcompare */
-    0,								/* tp_weaklistoffset */
-    0,								/* tp_iter */
-    0,								/* tp_iternext */
-    terminal_methods,				/* tp_methods */
-    0, // terminal_members,				/* tp_members */
-    0,								/* tp_getset */
-    0,								/* tp_base */
-    0,								/* tp_dict */
-    0,								/* tp_descr_get */
-    0,								/* tp_descr_set */
-    0,								/* tp_dictoffset */
-    (initproc) terminal_init,		/* tp_init */
-    0,								/* tp_alloc */
-    terminal_new,					/* tp_new */
-
-};
-
-static PyMethodDef MyMethods[] = {
-
-    { "Revision",  get_revision, METH_VARARGS,	"Get module revision."	},
-
-    {NULL, NULL, 0, NULL}        /* Sentinel */
-
-};
-
-PyMODINIT_FUNC initpy3270(void) {
-
-	// Cria o módulo
-
-    PyObject *m = Py_InitModule("py3270", MyMethods);
-
-    if (m == NULL) {
-		return;
     }
 
-	// Adiciona objeto para tratamento de erros.
-	terminalError = PyErr_NewException((char *) "py3270.error", NULL, NULL);
 
-	(void) Py_INCREF(terminalError);
-	PyModule_AddObject(m, "error", terminalError);
+    /*
 
-	// Adiciona terminal
-    if(PyType_Ready(&pw3270_TerminalType) < 0)
-        return
+    m = PyModule_Create(&spammodule);
+    if (m == NULL)
+        return NULL;
 
-	(void) Py_INCREF(&pw3270_TerminalType);
-    PyModule_AddObject(m, "Terminal", (PyObject *)&pw3270_TerminalType);
+    SpamError = PyErr_NewException("spam.error", NULL, NULL);
+    Py_XINCREF(SpamError);
+    if (PyModule_AddObject(m, "error", SpamError) < 0) {
+        Py_XDECREF(SpamError);
+        Py_CLEAR(SpamError);
+        Py_DECREF(m);
+        return NULL;
+    }
 
+    */
+
+    return module;
 }

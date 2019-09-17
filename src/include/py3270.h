@@ -18,7 +18,7 @@
  * programa; se não, escreva para a Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA  02110-1301  USA
  *
- * Este programa está nomeado como private.h e possui - linhas de código.
+ * Este programa está nomeado como - e possui - linhas de código.
  *
  * Contatos:
  *
@@ -27,21 +27,15 @@
  *
  */
 
-#ifndef PRIVATE_H_INCLUDED
+#ifndef PY3270_H_INCLUDED
 
-	#define PRIVATE_H_INCLUDED
+	#define PY3270_H_INCLUDED
 
-	// http://stackoverflow.com/questions/28683358/error-hypot-has-not-been-declared-in-cmath-while-trying-to-embed-python
-	#include <cmath>
-
-	// https://lists.gt.net/python/dev/340073
-	#pragma GCC diagnostic push
-	#pragma GCC system_header
+	#define PY_SSIZE_T_CLEAN
 	#include <Python.h>
-	#pragma GCC diagnostic pop
 
-	#include <pw3270/pw3270cpp.h>
-	#include "config.h"
+	#include <config.h>
+	#include <lib3270/ipc.h>
 
 	#if defined(_WIN32)
 
@@ -66,24 +60,18 @@
 
 	#endif
 
-
-	using namespace std;
-
-	typedef struct {
-
-		PyObject_HEAD
-
-		PW3270_NAMESPACE::session * session;
-
-	} pw3270_TerminalObject;
-
-	extern PyObject * terminalError;
+	#include <functional>
 
 	extern "C" {
 
-		DLL_PRIVATE PyObject	* terminal_new(PyTypeObject *type, PyObject *args, PyObject *kwds);
-		DLL_PRIVATE int			  terminal_init(pw3270_TerminalObject *self, PyObject *args, PyObject *kwds);
-		DLL_PRIVATE void		  terminal_dealloc(pw3270_TerminalObject * self);
+		DLL_PRIVATE PyObject * py3270_get_module_version(PyObject *self, PyObject *args);
+		DLL_PRIVATE PyObject * py3270_get_module_revision(PyObject *self, PyObject *args);
+
+		/*
+
+		DLL_PRIVATE PyObject	* py3270_alloc(PyTypeObject *type, PyObject *args, PyObject *kwds);
+		DLL_PRIVATE int			  py3270_init(py3270_TerminalObject *self, PyObject *args, PyObject *kwds);
+		DLL_PRIVATE void		  py3270_dealloc(py3270_TerminalObject * self);
 
 		DLL_PRIVATE PyObject	* terminal_get_version(PyObject *self, PyObject *args);
 		DLL_PRIVATE PyObject	* terminal_get_revision(PyObject *self, PyObject *args);
@@ -109,7 +97,8 @@
 
 		DLL_PRIVATE PyObject	* terminal_wait_for_ready(PyObject *self, PyObject *args);
 		DLL_PRIVATE PyObject	* terminal_wait_for_string_at(PyObject *self, PyObject *args);
+		*/
 
 	}
 
-#endif // PRIVATE_H_INCLUDED
+#endif // PY3270_H_INCLUDED

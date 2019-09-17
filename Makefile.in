@@ -24,26 +24,51 @@
 # erico.mendonca@gmail.com	(Erico Mascarenhas de Mendonça)
 #
 
-SOURCES=actions.cc get.cc init.cc misc.cc py3270.cc set.cc
-LIBNAME=py3270@DLLEXT@
+#---[ Library configuration ]------------------------------------------------------------
 
-#---[ Configuration values ]-------------------------------------------------------------
+LIBNAME=tn3270
 
-PACKAGE_NAME=@PACKAGE_NAME@
-PACKAGE_VERSION=@PACKAGE_VERSION@
-PACKAGE_TARNAME=@PACKAGE_TARNAME@
+SOURCES= \
+	$(wildcard src/module/*.cc) \
+	$(wildcard src/module/@OSNAME@/*.cc) \
+	$(wildcard src/terminal/*.cc)
+
+#---[ Tools ]----------------------------------------------------------------------------
+
+CXX=@CXX@
+LD=@CXX@
+LN_S=@LN_S@
+MKDIR=@MKDIR_P@
+INSTALL=@INSTALL@
+INSTALL_DATA=@INSTALL_DATA@
+INSTALL_PROGRAM=@INSTALL_PROGRAM@
+XGETTEXT=@XGETTEXT@
+MSGCAT=@MSGCAT@
+WINDRES=@WINDRES@
+AR=@AR@
+VALGRIND=@VALGRIND@
+GENMARSHAL=@GENMARSHAL@
+CONVERT=@CONVERT@
+OPTIPNG=@OPTIPNG@
+ZIP=@ZIP@
+DOXYGEN=@DOXYGEN@
+
+#---[ Paths ]----------------------------------------------------------------------------
 
 prefix=@prefix@
 exec_prefix=@exec_prefix@
 bindir=@bindir@
 sbindir=@sbindir@
 libdir=@libdir@
+includedir=@includedir@
+datarootdir=@datarootdir@
+localedir=@localedir@
+docdir=@docdir@
+sysconfdir=@sysconfdir@
 
 BASEDIR=@BASEDIR@
-SRCDIR=$(BASEDIR)/.src/$(PACKAGE_TARNAME)-$(PACKAGE_VERSION)
-PYTHONLIBPATH=`python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()"`
 
-OBJDIR=$(BASEDIR)/.obj
+OBJDIR=$(BASEDIR)/.obj/$(LIBNAME)
 OBJDBG=$(OBJDIR)/Debug
 OBJRLS=$(OBJDIR)/Release
 
@@ -51,218 +76,143 @@ BINDIR=$(BASEDIR)/.bin
 BINDBG=$(BINDIR)/Debug
 BINRLS=$(BINDIR)/Release
 
-INSTALL=@INSTALL@
-INSTALL_DATA=@INSTALL_DATA@
-INSTALL_PROGRAM=@INSTALL_PROGRAM@
-
-LN_S=@LN_S@
-
-VALGRIND=@VALGRIND@
-AMTAR=@AMTAR@
-SHELL=@SHELL@
-STRIP=@STRIP@
-MKDIR=@MKDIR_P@
-RPMBUILD=@RPMBUILD@
-
-CXX=@CXX@
-CC=@CC@
-LD=@CXX@
-
-LIBS=\
-	-lpw3270cpp \
-	@PYTHON_LIBS@ \
-	@DBUS_LIBS@ \
-	@LIBS@ \
-	@LIBICONV@ \
-
-CFLAGS=\
-	@CFLAGS@ \
-	@PYTHON_CFLAGS@ \
-	@DBUS_CFLAGS@
-
-LDFLAGS=\
-	@LDFLAGS@ 
-
 #---[ Rules ]----------------------------------------------------------------------------
 
-DEPENDS=src/*.h Makefile
+DEPENDS= \
+	Makefile \
+	src/include/*.h
+
+
+CFLAGS= \
+	@CFLAGS@ \
+	@PYTHON_CFLAGS@ \
+	-g \
+	-Isrc/include \
+	-DBUILD_DATE=`date +%Y%m%d` \
+	@IPC3270_CFLAGS@
+
+LDFLAGS= \
+	@LDFLAGS@
+
+LIBS= \
+	@LIBS@ \
+	@PYTHON_LIBS@ \
+	@IPC3270_LIBS@
+
+#---[ Debug Rules ]----------------------------------------------------------------------
 
 $(OBJDBG)/%.o: \
-	src/%.cc \
+	%.cc \
 	$(DEPENDS)
 
 	@echo $< ...
-	@$(MKDIR) `dirname $@`
-	@$(CXX) $(CFLAGS) -fstack-check \
-				-DDEBUG=1 \
-				-DBUILD_DATE=`date +"%Y%m%d"`\
-				-g -o $@ -c $<
+	@$(MKDIR) $(dir $@)
+
+	@$(CXX) \
+		$(CFLAGS) \
+		-Wall -Wextra -fstack-check \
+		-DDEBUG=1 \
+		-o $@ \
+		-c $<
+
+$(OBJDBG)/%.o: \
+	%.rc
+
+	@echo $< ...
+	@$(MKDIR) $(dir $@)
+	@$(WINDRES) $< -O coff -o $@
+
+#---[ Release Rules ]--------------------------------------------------------------------
 
 $(OBJRLS)/%.o: \
-	src/%.cc \
+	%.cc \
 	$(DEPENDS)
 
 	@echo $< ...
-	@$(MKDIR) `dirname $@`
-	@$(CXX) $(CFLAGS) \
-				-DNDEBUG=1 \
-				-DBUILD_DATE=`date +"%Y%m%d"` \
-				-o $@ -c $<
+	@$(MKDIR) $(dir $@)
+	@$(CXX) \
+		$(CFLAGS) \
+		-DNDEBUG=1 \
+		-o $@ \
+		-c $<
 
-%.tar.bz2: \
-	%.tar
-
-	@echo $< ...
-	@bzip2 --compress -9 --stdout $< > $@
-	@chmod 0644 $@
-
-%.tar.gz: \
-	%.tar
+$(OBJRLS)/%.o: \
+	%.rc
 
 	@echo $< ...
-	@gzip -9 --stdout $< > $@
-	@chmod 0644 $@
+	@$(MKDIR) $(dir $@)
+	@$(WINDRES) $< -O coff -o $@
 
 #---[ Release Targets ]------------------------------------------------------------------
 
 all: \
-	$(BINRLS)/$(LIBNAME)
+	$(BINRLS)/$(LIBNAME)@DLLEXT@
 
 Release: \
-	$(BINRLS)/$(LIBNAME)
+	$(BINRLS)/$(LIBNAME)@DLLEXT@
 
-install: \
-	$(BINRLS)/$(LIBNAME)
-
-	@$(MKDIR) $(DESTDIR)/$(PYTHONLIBPATH)
-	@$(INSTALL_PROGRAM) $(BINRLS)/py3270@DLLEXT@ $(DESTDIR)/$(PYTHONLIBPATH)/py3270@DLLEXT@
-
-zip: \
-	py3270-@PACKAGE_VERSION@.@host_cpu@.zip
-
-py3270-@PACKAGE_VERSION@.@host_cpu@.zip: \
-	Makefile \
-	$(BINRLS)/py3270@DLLEXT@
-
-	@rm -f $@
-	@zip -9 -j $@ $(BINRLS)/py3270@DLLEXT@
-
-tgz: \
-	$(PACKAGE_TARNAME)-$(PACKAGE_VERSION).tar.gz
-
-bz2: \
-	$(PACKAGE_TARNAME)-$(PACKAGE_VERSION).tar.bz2
-
-tar: \
-	$(PACKAGE_TARNAME)-$(PACKAGE_VERSION).tar
-
-rpm: \
-	$(PACKAGE_TARNAME)-$(PACKAGE_VERSION).tar.bz2
-
-ifneq ($(RPMBUILD),no)
-	@$(MKDIR) $(BASEDIR)/rpm
-	@$(MKDIR) $(BASEDIR)/rpm/SPECS
-	@$(MKDIR) $(BASEDIR)/rpm/SOURCES
-	@$(MKDIR) $(BASEDIR)/rpm/SRPMS
-	@$(MKDIR) $(BASEDIR)/rpm/RPMS
-	@$(MKDIR) $(BASEDIR)/rpm/BUILD
-	@$(MKDIR) $(BASEDIR)/rpm/BUILDROOT
-	@umask 002 ; $(RPMBUILD) \
-		--define="_topdir $(BASEDIR)/rpm" \
-		--define="_packager $(USER)@$(HOSTNAME)" \
-		--clean \
-		-ta $(PACKAGE_TARNAME)-$(PACKAGE_VERSION).tar.bz2
-endif
-
-srpm: \
-	$(PACKAGE_TARNAME)-$(PACKAGE_VERSION).tar.bz2
-
-ifneq ($(RPMBUILD),no)
-	@$(MKDIR) $(BASEDIR)/rpm
-	@$(MKDIR) $(BASEDIR)/rpm/SPECS
-	@$(MKDIR) $(BASEDIR)/rpm/SOURCES
-	@$(MKDIR) $(BASEDIR)/rpm/SRPMS
-	@$(MKDIR) $(BASEDIR)/rpm/RPMS
-	@$(MKDIR) $(BASEDIR)/rpm/BUILD
-	@$(MKDIR) $(BASEDIR)/rpm/BUILDROOT
-	@umask 002 ; $(RPMBUILD) \
-		--define="_topdir $(PWD)/rpm" \
-		--define="_packager $(USER)@$(HOSTNAME)" \
-		--clean \
-		-ts $(PACKAGE_TARNAME)-$(PACKAGE_VERSION).tar.bz2
-	@find rpm -iname "*.rpm" -exec chmod 664 {} \;
-endif
-
-$(PACKAGE_TARNAME)-$(PACKAGE_VERSION).tar: \
-	$(SRCDIR)
-
-	@$(AMTAR) \
-		--verbose \
-		--format=ustar \
-		--create \
-		--exclude-vcs \
-		--directory $(BASEDIR)/.src \
-		--owner=root \
-		--group=root \
-		--file=$@ \
-		$(PACKAGE_TARNAME)-@PACKAGE_VERSION@
-
-
-$(SRCDIR): \
-	clean \
-
-	# Copia fontes
-	@$(MKDIR) $(SRCDIR)/src
-	@cp src/*.cc $(SRCDIR)/src
-	@cp src/*.in $(SRCDIR)/src
-	@cp src/private.h $(SRCDIR)/src
-
-	# Copia extras
-	@cp -r scripts $(SRCDIR)
-	@cp -r testprograms $(SRCDIR)
-
-	# Copia documentos
-	@cp AUTHORS $(SRCDIR)
-	@cp LICENCA $(SRCDIR)
-	@cp LICENSE $(SRCDIR)
-	@cp README.md $(SRCDIR)
-
-	# Copia configuradores
-	@cp configure.ac $(SRCDIR)
-	@cp *.in $(SRCDIR)
-	@cp *.sh $(SRCDIR)
-	@cp *.cbp $(SRCDIR)
-	@cp rpm/*.spec $(SRCDIR)
-
-$(BINRLS)/$(LIBNAME): \
+$(BINRLS)/$(LIBNAME)@DLLEXT@: \
 	$(foreach SRC, $(basename $(SOURCES)), $(OBJRLS)/$(SRC).o)
 
-	@echo $(basename $@) ...
-	@$(MKDIR) `dirname $@`
-	@$(LD) -shared -Wl,-soname,$(LIBNAME) $(LDFLAGS) -o $@ $^ $(LIBS)
+	@$(MKDIR) $(dir $@)
+	@echo $< ...
+	@$(LD) \
+		-shared -Wl,-soname,$(@F) \
+		-o $@ \
+		$(LDFLAGS) \
+		$^ \
+		$(LIBS)
+
+#---[ Install Targets ]------------------------------------------------------------------
+
+install: \
+	$(BINRLS)/$(LIBNAME)@DLLEXT@
+
+
+#---[ Debug Targets ]--------------------------------------------------------------------
 
 Debug: \
-	$(BINDBG)/$(LIBNAME)
+	$(BINDBG)/$(LIBNAME)@DLLEXT@
 
-$(BINDBG)/$(LIBNAME): \
+ 
+run: \
+	$(BINDBG)/$(LIBNAME)@DLLEXT@
+
+	@PYTHONPATH=$(BINDBG) python3 \
+		./testprograms/sample.py
+
+$(BINDBG)/$(LIBNAME)@DLLEXT@: \
 	$(foreach SRC, $(basename $(SOURCES)), $(OBJDBG)/$(SRC).o)
 
-	@echo $(basename $@) ...
-	@$(MKDIR) `dirname $@`
-	@$(LD) -shared -Wl,-soname,$(LIBNAME) $(LDFLAGS) -o $@ $^ $(LIBS)
+	@$(MKDIR) $(dir $@)
+	@echo $< ...
+	@$(LD) \
+		-shared -Wl,-soname,$(@F) \
+		-o $@ \
+		-L$(BINDBG) \
+		$(LDFLAGS) \
+		$^ \
+		$(LIBS)
 
-run: \
-	$(BINDBG)/$(LIBNAME)
 
-	PYTHONPATH=$(BINDBG) python ./testprograms/sample.py 
+#---[ Clean Targets ]--------------------------------------------------------------------
 
-cleanDebug: \
-	clean
+clean: \
+	cleanDebug \
+	cleanRelease
 
-clean:
-	
-	@rm -fr $(BINDIR)
-	@rm -fr $(OBJDIR)
-	@rm -fr $(SRCDIR)
+cleanDebug:
+
+	@rm -fr $(OBJDBG)
+	@rm -fr $(BINDBG)
+
+cleanRelease:
+
+	@rm -fr $(OBJRLS)
+	@rm -fr $(BINRLS)
+
+clean: \
+	cleanDebug \
+	cleanRelease
 
 

@@ -1,26 +1,27 @@
 #!/usr/bin/python
 #-*- coding: utf-8
 
-import py3270
+import tn3270
 
-print "Teste extensão pw3270"
+print("Teste extensão pw3270")
 
-print py3270.Revision()
+print("Using TN3270 Version " + tn3270.version())
+print(tn3270.revision())
 
-term = py3270.Terminal("")
+#term = py3270.Terminal("")
 
-print "Using pw3270 version " + term.Version() + " revision " + term.Revision()
+#print "Using pw3270 version " + term.Version() + " revision " + term.Revision()
 
-term.Connect("tn3270://zos.efglobe.com:telnet",10);
+#term.Connect("tn3270://zos.efglobe.com:telnet",10);
 
-print term.IsConnected()
-print term.IsReady()
+#print term.IsConnected()
+#print term.IsReady()
 
-print term.GetStringAt(14,19,38)
+#print term.GetStringAt(14,19,38)
 
-print "-----------------------------------------------------------------------"
-print term
-print "-----------------------------------------------------------------------"
+#print "-----------------------------------------------------------------------"
+#print term
+#print "-----------------------------------------------------------------------"
 
 
 

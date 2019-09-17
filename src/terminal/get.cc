@@ -32,11 +32,11 @@
  *
  */
 
- #include "private.h"
-
+ #include <py3270.h>
 
 /*---[ Implement ]----------------------------------------------------------------------------------*/
 
+/*
 PyObject * terminal_get_version(PyObject *self, PyObject *args) {
 
     return PyString_FromString( ((pw3270_TerminalObject *) self)->session->get_version().c_str() );
@@ -152,3 +152,5 @@ PyObject * terminal_get_contents(PyObject *self) {
 
 
 }
+
+*/

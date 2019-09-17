@@ -18,70 +18,24 @@
  * programa; se não, escreva para a Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA  02110-1301  USA
  *
- * Este programa está nomeado como py3270.cc e possui - linhas de código.
+ * Este programa está nomeado como - e possui - linhas de código.
  *
  * Contatos:
  *
  * perry.werneck@gmail.com	(Alexandre Perry de Souza Werneck)
  * erico.mendonca@gmail.com	(Erico Mascarenhas Mendonça)
  *
- * Implementa métodos básicos inicio/final do objeto python
- *
- * Referências:
- *
- * <https://docs.python.org/2/extending/newtypes.html>
- * <https://docs.python.org/2.7/extending/extending.html#a-simple-example>
- *
  */
 
- #include "private.h"
-
+ #include <py3270.h>
 
 /*---[ Implement ]----------------------------------------------------------------------------------*/
 
-PyObject * terminal_new(PyTypeObject *type, PyObject *args, PyObject *kwds) {
-
-	PW3270_NAMESPACE::session * session;
-	const char *id = "";
-
-	if (!PyArg_ParseTuple(args, "s", &id)) {
-		id = "";
-	}
-
-	trace("%s(%s)",__FUNCTION__,id);
-
-	try {
-
-		session = PW3270_NAMESPACE::session::create(id);
-
-	} catch(std::exception &e) {
-
-		trace("%s failed: %s",__FUNCTION__,e.what());
-		PyErr_SetString(terminalError, e.what());
-		return NULL;
-
-	}
-
-    pw3270_TerminalObject *self = (pw3270_TerminalObject *) type->tp_alloc(type, 0);
-
-	self->session = session;
-
-    return (PyObject *)self;
+PyObject * py3270_get_module_version(PyObject *self, PyObject *args) {
+    return PyUnicode_FromString(PACKAGE_VERSION);
 }
 
-
-int terminal_init(pw3270_TerminalObject *self, PyObject *args, PyObject *kwds) {
-
-	return 0;
-
+PyObject * py3270_get_module_revision(PyObject *self, PyObject *args) {
+    return PyLong_FromLong(PACKAGE_REVISION);
 }
 
-void terminal_dealloc(pw3270_TerminalObject * self) {
-
-	trace("%s",__FUNCTION__);
-
-	delete self->session;
-
-    self->ob_type->tp_free((PyObject*)self);
-
-}

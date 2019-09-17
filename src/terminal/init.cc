@@ -18,12 +18,14 @@
  * programa; se não, escreva para a Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA  02110-1301  USA
  *
- * Este programa está nomeado como actions.cc e possui - linhas de código.
+ * Este programa está nomeado como py3270.cc e possui - linhas de código.
  *
- * Contatos
+ * Contatos:
  *
  * perry.werneck@gmail.com	(Alexandre Perry de Souza Werneck)
  * erico.mendonca@gmail.com	(Erico Mascarenhas Mendonça)
+ *
+ * Implementa métodos básicos inicio/final do objeto python
  *
  * Referências:
  *
@@ -32,97 +34,55 @@
  *
  */
 
- #include "private.h"
+ #include <py3270.h>
 
 /*---[ Implement ]----------------------------------------------------------------------------------*/
 
- PyObject * terminal_pfkey(PyObject *self, PyObject *args) {
+/*
+PyObject * terminal_new(PyTypeObject *type, PyObject *args, PyObject *kwds) {
 
-	int rc, key;
+	PW3270_NAMESPACE::session * session;
+	const char *id = "";
 
-	if (!PyArg_ParseTuple(args, "i", &key)) {
-		PyErr_SetString(terminalError, strerror(EINVAL));
-		return NULL;
+	if (!PyArg_ParseTuple(args, "s", &id)) {
+		id = "";
 	}
+
+	trace("%s(%s)",__FUNCTION__,id);
 
 	try {
 
-		rc = ((pw3270_TerminalObject *) self)->session->pfkey(key);
+		session = PW3270_NAMESPACE::session::create(id);
 
 	} catch(std::exception &e) {
 
+		trace("%s failed: %s",__FUNCTION__,e.what());
 		PyErr_SetString(terminalError, e.what());
 		return NULL;
+
 	}
 
-	return PyLong_FromLong(rc);
+    pw3270_TerminalObject *self = (pw3270_TerminalObject *) type->tp_alloc(type, 0);
 
- }
+	self->session = session;
 
- PyObject * terminal_pakey(PyObject *self, PyObject *args) {
-
-	int rc, key;
-
-	if (!PyArg_ParseTuple(args, "i", &key)) {
-		PyErr_SetString(terminalError, strerror(EINVAL));
-		return NULL;
-	}
-
-	try {
-
-		rc = ((pw3270_TerminalObject *) self)->session->pakey(key);
-
-	} catch(std::exception &e) {
-
-		PyErr_SetString(terminalError, e.what());
-		return NULL;
-	}
-
-	return PyLong_FromLong(rc);
-
- }
-
- PyObject * terminal_enter(PyObject *self, PyObject *args) {
-
-	int rc;
-
-	try {
-
-		rc = ((pw3270_TerminalObject *) self)->session->enter();
-
-	} catch(std::exception &e) {
-
-		PyErr_SetString(terminalError, e.what());
-		return NULL;
-	}
-
-	return PyLong_FromLong(rc);
+    return (PyObject *)self;
+}
 
 
- }
+int terminal_init(pw3270_TerminalObject *self, PyObject *args, PyObject *kwds) {
 
- PyObject * terminal_action(PyObject *self, PyObject *args) {
+	return 0;
 
-	int rc;
-	const char *name;
+}
 
-	if (!PyArg_ParseTuple(args, "s", &name)) {
-		PyErr_SetString(terminalError, strerror(EINVAL));
-		return NULL;
-	}
+void terminal_dealloc(pw3270_TerminalObject * self) {
 
-	try {
+	trace("%s",__FUNCTION__);
 
-		rc = ((pw3270_TerminalObject *) self)->session->action(name);
+	delete self->session;
 
-	} catch(std::exception &e) {
+    self->ob_type->tp_free((PyObject*)self);
 
-		PyErr_SetString(terminalError, e.what());
-		return NULL;
-	}
-
-	return PyLong_FromLong(rc);
-
-
- }
-
+}
+*/

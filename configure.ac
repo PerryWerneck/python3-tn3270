@@ -31,7 +31,7 @@ AC_PREREQ(2.61)
 
 dnl Initialise automake with the package name, version and
 dnl bug-reporting address.
-AC_INIT([py3270], [5.2], [perry.werneck@gmail.com])
+AC_INIT([python3-tn3270], [5.2], [perry.werneck@gmail.com])
 
 dnl Place auxilliary scripts here.
 AC_CONFIG_AUX_DIR([scripts])
@@ -60,7 +60,10 @@ dnl ---------------------------------------------------------------------------
 dnl Version info
 dnl ---------------------------------------------------------------------------
 
-AC_SUBST(PACKAGE_DESCRIPTION,"Python binding for pw3270/lib3270")
+app_cv_description="Python binding for pw3270/lib3270"
+
+AC_SUBST(PACKAGE_DESCRIPTION,"$app_cv_description")
+AC_DEFINE_UNQUOTED(PACKAGE_DESCRIPTION,"$app_cv_description")
 
 app_vrs_major=$(echo $VERSION | cut -d. -f1)
 app_vrs_minor=$(echo $VERSION | cut -d. -f2)
@@ -71,16 +74,19 @@ AC_DEFINE_UNQUOTED(PACKAGE_MINOR_VERSION, $app_vrs_minor)
 AC_SUBST(PACKAGE_MAJOR_VERSION,$app_vrs_major)
 AC_SUBST(PACKAGE_MINOR_VERSION,$app_vrs_minor)
 
-AC_ARG_WITH([release], [AS_HELP_STRING([--with-release], [Set release])], [ app_cv_release="$withval" ],[ app_cv_release="`date +%-y`.`date +%-m`.`date +%-d`" ])
+app_cv_release="`date +%-y`.`date +%-m`.`date +%-d`"
+app_cv_revision=`date +%y%m%d`
 
 app_rls_major=$(echo $app_cv_release.0.0 | cut -d. -f1)
 app_rls_minor=$(echo $app_cv_release.0.0 | cut -d. -f2)
 
 AC_DEFINE_UNQUOTED(PACKAGE_RELEASE, $app_cv_release)
+AC_DEFINE_UNQUOTED(PACKAGE_REVISION,$app_cv_revision)
 AC_DEFINE_UNQUOTED(PACKAGE_MAJOR_RELEASE, $app_rls_major)
 AC_DEFINE_UNQUOTED(PACKAGE_MINOR_RELEASE, $app_rls_minor)
 
 AC_SUBST(PACKAGE_RELEASE,$app_cv_release)
+AC_SUBST(PACKAGE_REVISION,$app_cv_revision)
 AC_SUBST(PACKAGE_MAJOR_RELEASE,$app_rls_major)
 AC_SUBST(PACKAGE_MINOR_RELEASE,$app_rls_minor)
 
@@ -102,7 +108,7 @@ case "$host" in
 		app_win32_file_version=$(date +%-y,%-m,%-d,%-H)
 		AC_SUBST(WIN32_FILE_VERSION,$app_win32_file_version)
 
-dnl		AC_CONFIG_FILES(src/core/windows/resources.rc)
+		AC_CONFIG_FILES(src/module/windows/resources.rc)
 dnl		AC_CONFIG_FILES(win/py3270.nsi)
 
 		if test "$host_cpu" = "x86_64"; then
@@ -115,7 +121,7 @@ dnl			app_cv_winarch="32"
 
 		AC_SUBST(PROGRAMFILES,$app_cv_programfiles)
 dnl		AC_SUBST(WINARCH,$app_cv_winarch)
-                AC_SUBST(SONAME,py3270.dll)
+dnl                AC_SUBST(SONAME,py3270.dll)
 
 		;;
 
@@ -125,7 +131,7 @@ dnl		AC_SUBST(WINARCH,$app_cv_winarch)
 		app_cv_osname="linux"
 		LOGDIR="/var/log"
 		DLLEXT=".so"
-                AC_SUBST(SONAME,py3270.so.$app_vrs_major.$app_vrs_minor)
+dnl                AC_SUBST(SONAME,py3270.so.$app_vrs_major.$app_vrs_minor)
 
 esac
 
@@ -203,10 +209,64 @@ dnl ---------------------------------------------------------------------------
 dnl Check for Python
 dnl ---------------------------------------------------------------------------
 
-PKG_CHECK_MODULES( [PYTHON], [python], AC_DEFINE(HAVE_PYTHON), AC_MSG_ERROR([Python devel is unavailable]))
+PKG_CHECK_MODULES( [PYTHON], [python3], AC_DEFINE(HAVE_PYTHON3), AC_MSG_ERROR([Python devel is unavailable]))
 
 AC_SUBST(PYTHON_LIBS)
 AC_SUBST(PYTHON_CFLAGS)
+
+dnl ---------------------------------------------------------------------------
+dnl Check for ELF symbol visibility support
+dnl ---------------------------------------------------------------------------
+m4_define([GLIB_CHECK_COMPILE_WARNINGS],
+[m4_ifvaln([$1], [AC_LANG_CONFTEST([$1])])dnl
+rm -f conftest.$ac_objext
+glib_ac_compile_save="$ac_compile"
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext'
+AS_IF([_AC_EVAL_STDERR($ac_compile) &&
+         AC_TRY_COMMAND([(if test -s conftest.err; then false ; else true; fi)])],
+      [$2],
+      [echo "$as_me: failed program was:" >&AS_MESSAGE_LOG_FD
+cat conftest.$ac_ext >&AS_MESSAGE_LOG_FD
+m4_ifvaln([$3],[$3])dnl])
+ac_compile="$glib_ac_compile_save"
+rm -f conftest.$ac_objext conftest.err m4_ifval([$1], [conftest.$ac_ext])[]dnl
+])# GLIB_CHECK_COMPILE_WARNINGS
+
+AC_MSG_CHECKING(for GNUC visibility attribute)
+GLIB_CHECK_COMPILE_WARNINGS([
+void
+__attribute__ ((visibility ("hidden")))
+     f_hidden (void)
+{
+}
+void
+__attribute__ ((visibility ("internal")))
+     f_internal (void)
+{
+}
+void
+__attribute__ ((visibility ("protected")))
+     f_protected (void)
+{
+}
+void
+__attribute__ ((visibility ("default")))
+     f_default (void)
+{
+}
+int main (int argc, char **argv)
+{
+        f_hidden();
+        f_internal();
+        f_protected();
+        f_default();
+        return 0;
+}
+],g_have_gnuc_visibility=yes,g_have_gnuc_visibility=no)
+AC_MSG_RESULT($g_have_gnuc_visibility)
+if test x$g_have_gnuc_visibility = xyes; then
+  AC_DEFINE(HAVE_GNUC_VISIBILITY, 1, [supports GCC visibility attributes])
+fi
 
 dnl ---------------------------------------------------------------------------
 dnl Check for pic
@@ -254,7 +314,7 @@ dnl ---------------------------------------------------------------------------
 dnl Configure which files to generate.
 dnl ---------------------------------------------------------------------------
 
-# AC_CONFIG_FILES(Makefile)
+AC_CONFIG_FILES(Makefile)
 
 dnl ---------------------------------------------------------------------------
 dnl Output the generated config.status script.
