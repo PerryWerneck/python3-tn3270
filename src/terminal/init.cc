@@ -38,6 +38,57 @@
 
 /*---[ Implement ]----------------------------------------------------------------------------------*/
 
+PyObject * py3270_session_new(PyTypeObject *type, PyObject *args, PyObject *kwds) {
+
+	const char *id = "";
+
+	if (!PyArg_ParseTuple(args, "s", &id))
+		id = "";
+
+	pySession * session = (pySession *) type->tp_alloc(type,0);
+
+	printf("---[%s]---\n",id);
+
+	if(session) {
+
+		try {
+
+			session->host = new TN3270::Host(id);
+
+			printf("---[%s=%p]---\n",id,session->host);
+			return (PyObject *) session;
+
+		} catch(const exception &e) {
+
+			printf("---[%s]---\n",e.what());
+			PyErr_SetString(PyExc_RuntimeError, e.what());
+
+		} catch( ... ) {
+
+			printf("---[%s]---\n","???");
+			PyErr_SetString(PyExc_RuntimeError, "Unexpected error in core module");
+
+		}
+
+	}
+
+	type->tp_free(session);
+
+	return NULL;
+
+}
+
+void py3270_session_dealloc(pySession * self) {
+
+	if(self->host) {
+		delete self->host;
+	}
+
+	Py_TYPE(self)->tp_free((PyObject *) self);
+
+}
+
+
 /*
 PyObject * terminal_new(PyTypeObject *type, PyObject *args, PyObject *kwds) {
 
@@ -70,19 +121,4 @@ PyObject * terminal_new(PyTypeObject *type, PyObject *args, PyObject *kwds) {
 }
 
 
-int terminal_init(pw3270_TerminalObject *self, PyObject *args, PyObject *kwds) {
-
-	return 0;
-
-}
-
-void terminal_dealloc(pw3270_TerminalObject * self) {
-
-	trace("%s",__FUNCTION__);
-
-	delete self->session;
-
-    self->ob_type->tp_free((PyObject*)self);
-
-}
 */

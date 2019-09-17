@@ -45,7 +45,9 @@
 		<Unit filename="src/include/config.h" />
 		<Unit filename="src/include/config.h.in" />
 		<Unit filename="src/include/py3270.h" />
-		<Unit filename="src/module/init.cc" />
+		<Unit filename="src/module/init.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="src/module/properties.cc" />
 		<Unit filename="src/terminal/actions.cc" />
 		<Unit filename="src/terminal/get.cc" />

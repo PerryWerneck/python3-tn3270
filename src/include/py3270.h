@@ -35,7 +35,6 @@
 	#include <Python.h>
 
 	#include <config.h>
-	#include <lib3270/ipc.h>
 
 	#if defined(_WIN32)
 
@@ -60,12 +59,37 @@
 
 	#endif
 
+#ifdef __cplusplus
+
 	#include <functional>
+	#include <exception>
+	#include <stdexcept>
+	#include <lib3270/ipc.h>
+
+	using std::exception;
+	using std::runtime_error;
+	using TN3270::Host;
 
 	extern "C" {
 
+#else
+
+	typedef void Host;
+
+#endif
+
+		typedef struct {
+			PyObject_HEAD
+			Host *host;
+		} pySession;
+
 		DLL_PRIVATE PyObject * py3270_get_module_version(PyObject *self, PyObject *args);
 		DLL_PRIVATE PyObject * py3270_get_module_revision(PyObject *self, PyObject *args);
+
+		DLL_PRIVATE PyObject * py3270_session_new(PyTypeObject *type, PyObject *args, PyObject *kwds);
+//		DLL_PRIVATE int py3270_session_init(pySession *self, PyObject *args, PyObject *kwds);
+		DLL_PRIVATE void py3270_session_dealloc(pySession * self);
+
 
 		/*
 
@@ -99,6 +123,8 @@
 		DLL_PRIVATE PyObject	* terminal_wait_for_string_at(PyObject *self, PyObject *args);
 		*/
 
+#ifdef __cplusplus
 	}
+#endif
 
 #endif // PY3270_H_INCLUDED

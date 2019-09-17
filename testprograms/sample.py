@@ -8,7 +8,7 @@ print("Teste extensão pw3270")
 print("Using TN3270 Version " + tn3270.version())
 print(tn3270.revision())
 
-#term = py3270.Terminal("")
+session = tn3270.Session(":a")
 
 #print "Using pw3270 version " + term.Version() + " revision " + term.Revision()
 

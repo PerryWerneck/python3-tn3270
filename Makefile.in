@@ -29,6 +29,7 @@
 LIBNAME=tn3270
 
 SOURCES= \
+	$(wildcard src/module/*.c) \
 	$(wildcard src/module/*.cc) \
 	$(wildcard src/module/@OSNAME@/*.cc) \
 	$(wildcard src/terminal/*.cc)
@@ -36,6 +37,7 @@ SOURCES= \
 #---[ Tools ]----------------------------------------------------------------------------
 
 CXX=@CXX@
+CC=@CC@
 LD=@CXX@
 LN_S=@LN_S@
 MKDIR=@MKDIR_P@
@@ -91,6 +93,14 @@ CFLAGS= \
 	-DBUILD_DATE=`date +%Y%m%d` \
 	@IPC3270_CFLAGS@
 
+CXXFLAGS= \
+	@CXXFLAGS@ \
+	@PYTHON_CFLAGS@ \
+	-g \
+	-Isrc/include \
+	-DBUILD_DATE=`date +%Y%m%d` \
+	@IPC3270_CFLAGS@
+
 LDFLAGS= \
 	@LDFLAGS@
 
@@ -109,6 +119,20 @@ $(OBJDBG)/%.o: \
 	@$(MKDIR) $(dir $@)
 
 	@$(CXX) \
+		$(CXXFLAGS) \
+		-Wall -Wextra -fstack-check \
+		-DDEBUG=1 \
+		-o $@ \
+		-c $<
+
+$(OBJDBG)/%.o: \
+	%.c \
+	$(DEPENDS)
+
+	@echo $< ...
+	@$(MKDIR) $(dir $@)
+
+	@$(CC) \
 		$(CFLAGS) \
 		-Wall -Wextra -fstack-check \
 		-DDEBUG=1 \

@@ -99,6 +99,7 @@ case "$host" in
 		app_cv_osname="windows"
 
 		CFLAGS="$CFLAGS -pthread -D_WIN32_WINNT=0x0600"
+		CXXFLAGS="$CXXFLAGS -pthread -D_WIN32_WINNT=0x0600"
 		LIBS="$LIBS -lws2_32 -lwtsapi32 -lcomdlg32"
 		DLLEXT=".dll"
 
@@ -127,6 +128,7 @@ dnl                AC_SUBST(SONAME,py3270.dll)
 
  	*)
 		CFLAGS="$CFLAGS -pthread"
+		CXXFLAGS="$CXXFLAGS -pthread"
 		LDFLAGS="$LDFLAGS -pthread"
 		app_cv_osname="linux"
 		LOGDIR="/var/log"
@@ -164,7 +166,7 @@ AS_IF([test x"AS_VAR_GET(CACHEVAR)" = xyes],
 AS_VAR_POPDEF([CACHEVAR])dnl
 ])dnl AX_CHECK_COMPILE_FLAGS
 
-AX_CHECK_COMPILE_FLAG([-std=gnu++11], [CFLAGS="$CFLAGS -std=gnu++11"])
+AX_CHECK_COMPILE_FLAG([-std=gnu++11], [CXXFLAGS="$CXXFLAGS -std=gnu++11"])
 
 dnl ---------------------------------------------------------------------------
 dnl Check for IPC3270
