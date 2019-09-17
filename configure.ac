@@ -57,18 +57,6 @@ AC_PROG_LN_S
 AC_LANG([C++])
 
 dnl ---------------------------------------------------------------------------
-dnl Initialize defaults
-dnl ---------------------------------------------------------------------------
-
-DBG_CFLAGS="-g -fstack-check -DDEBUG=1"
-RLS_CFLAGS="-DNDEBUG=1"
-PLUGINS=""
-APP_RESOURCES=""
-APP_LDFLAGS=""
-DLL_LDFLAGS="-shared -Wl,-soname,\$(@F)"
-DEPENDS=""
-
-dnl ---------------------------------------------------------------------------
 dnl Version info
 dnl ---------------------------------------------------------------------------
 
@@ -96,11 +84,6 @@ AC_SUBST(PACKAGE_RELEASE,$app_cv_release)
 AC_SUBST(PACKAGE_MAJOR_RELEASE,$app_rls_major)
 AC_SUBST(PACKAGE_MINOR_RELEASE,$app_rls_minor)
 
-AC_ARG_WITH([application-datadir], [AS_HELP_STRING([--with-application-datadir], [Set path for configuration file])], [ app_cv_source_appdatadir="$withval" ],[ app_cv_source_appdatadir="\$(datarootdir)/\$(PACKAGE_NAME)" ])
-
-AC_DEFINE_UNQUOTED(APPDATADIR, $app_cv_source_appdatadir)
-AC_SUBST(APPDATADIR,$app_cv_source_appdatadir)
-
 dnl ---------------------------------------------------------------------------
 dnl Check for OS specifics
 dnl ---------------------------------------------------------------------------
@@ -124,14 +107,14 @@ dnl		AC_CONFIG_FILES(win/py3270.nsi)
 
 		if test "$host_cpu" = "x86_64"; then
 			app_cv_programfiles="PROGRAMFILES64"
-			app_cv_winarch="64"
+dnl			app_cv_winarch="64"
 		else
 			app_cv_programfiles="PROGRAMFILES"
-			app_cv_winarch="32"
+dnl			app_cv_winarch="32"
 		fi
 
 		AC_SUBST(PROGRAMFILES,$app_cv_programfiles)
-		AC_SUBST(WINARCH,$app_cv_winarch)
+dnl		AC_SUBST(WINARCH,$app_cv_winarch)
                 AC_SUBST(SONAME,py3270.dll)
 
 		;;
@@ -139,24 +122,12 @@ dnl		AC_CONFIG_FILES(win/py3270.nsi)
  	*)
 		CFLAGS="$CFLAGS -pthread"
 		LDFLAGS="$LDFLAGS -pthread"
-		app_cv_datadir="/usr/share"
-		app_cv_confdir="/etc"
 		app_cv_osname="linux"
 		LOGDIR="/var/log"
 		DLLEXT=".so"
                 AC_SUBST(SONAME,py3270.so.$app_vrs_major.$app_vrs_minor)
 
 esac
-
-AC_SUBST(DATADIR,$app_cv_datadir)
-AC_SUBST(CONFDIR,$app_cv_confdir)
-AC_SUBST(OSNAME,$app_cv_osname)
-AC_SUBST(LIBS)
-AC_SUBST(LOGDIR)
-AC_SUBST(DLLEXT)
-AC_SUBST(DLLPREFIX)
-AC_SUBST(LDFLAGS)
-AC_SUBST(DLL_LDFLAGS)
 
 dnl ---------------------------------------------------------------------------
 dnl Check for other programs
@@ -237,7 +208,6 @@ PKG_CHECK_MODULES( [PYTHON], [python], AC_DEFINE(HAVE_PYTHON), AC_MSG_ERROR([Pyt
 AC_SUBST(PYTHON_LIBS)
 AC_SUBST(PYTHON_CFLAGS)
 
-
 dnl ---------------------------------------------------------------------------
 dnl Check for pic
 dnl ---------------------------------------------------------------------------
@@ -269,6 +239,18 @@ if test "$app_cv_pic" == "yes"; then
 fi
 
 dnl ---------------------------------------------------------------------------
+dnl Configure program options
+dnl ---------------------------------------------------------------------------
+
+AC_SUBST(OSNAME,$app_cv_osname)
+AC_SUBST(LIBS)
+AC_SUBST(DLLEXT)
+AC_SUBST(CFLAGS)
+AC_SUBST(CXXFLAGS)
+AC_SUBST(LDFLAGS)
+AC_SUBST(BASEDIR,$ac_pwd)
+
+dnl ---------------------------------------------------------------------------
 dnl Configure which files to generate.
 dnl ---------------------------------------------------------------------------
 
@@ -277,7 +259,6 @@ dnl ---------------------------------------------------------------------------
 dnl ---------------------------------------------------------------------------
 dnl Output the generated config.status script.
 dnl ---------------------------------------------------------------------------
-AC_SUBST(BASEDIR,$ac_pwd)
 
 AC_OUTPUT
 
