@@ -67,15 +67,48 @@ static struct PyModuleDef definition = {
 	.m_methods = methods				// Module methods
 };
 
+//# Tornar essa tabela pública e testar em getattr, se for um método usar PyMethod_New para retornar um método.
+
+static PyMethodDef py3270_session_methods[] = {
+    {
+		"connect",
+		(PyCFunction) py3270_session_connect,
+		METH_VARARGS,
+		""
+    },
+
+    {
+		"disconnect",
+		(PyCFunction) py3270_session_disconnect,
+		METH_NOARGS,
+		""
+    },
+
+    {
+    	NULL
+	}
+};
+
+// https://docs.python.org/3/c-api/typeobj.html
 static PyTypeObject SessionType = {
 	PyVarObject_HEAD_INIT(NULL, 0)
 	.tp_name = "tn3270.Session",
 	.tp_doc = "TN3270 Session Object",
 	.tp_basicsize = sizeof(pySession),
 	.tp_itemsize = 0,
-	.tp_flags = Py_TPFLAGS_DEFAULT,
+	.tp_flags = Py_TPFLAGS_HAVE_FINALIZE|Py_TPFLAGS_DEFAULT,
+
+	.tp_new = py3270_session_alloc,
 	.tp_dealloc = py3270_session_dealloc,
-	.tp_new = py3270_session_new,
+
+	.tp_init = py3270_session_init,
+	.tp_finalize = py3270_session_finalize,
+
+	.tp_methods = py3270_session_methods,
+
+//	.tp_alloc =
+//	.tp_free =
+//	.tp_getattr = py3270_session_getattr
 };
 
 /*---[ Implement ]----------------------------------------------------------------------------------*/

@@ -49,10 +49,11 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/module/properties.cc" />
+		<Unit filename="src/module/tools.cc" />
 		<Unit filename="src/terminal/actions.cc" />
 		<Unit filename="src/terminal/get.cc" />
 		<Unit filename="src/terminal/init.cc" />
-		<Unit filename="src/terminal/misc.cc" />
+		<Unit filename="src/terminal/network.cc" />
 		<Unit filename="src/terminal/set.cc" />
 		<Extensions>
 			<code_completion />

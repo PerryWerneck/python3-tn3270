@@ -38,6 +38,39 @@
 
 /*---[ Implement ]----------------------------------------------------------------------------------*/
 
+ PyObject * py3270_session_connect(PyObject *self, PyObject *args) {
+
+	printf("\n\n*************%s\n\n",__FUNCTION__);
+
+ 	return py3270_session_call(self, [args](TN3270::Host &host){
+
+ 		const char * url = "";
+
+		if(!PyArg_ParseTuple(args, "s", &url)) {
+			throw runtime_error("connect requires a host URL");
+		}
+
+		host.connect(url);
+
+		return 0;
+
+	});
+
+ }
+
+ PyObject * py3270_session_disconnect(PyObject *self, PyObject *args) {
+
+ 	return py3270_session_call(self, [args](TN3270::Host &host){
+
+		host.disconnect();
+
+		return 0;
+
+	});
+
+ }
+
+
 /*
  PyObject * terminal_connect(PyObject *self, PyObject *args) {
 

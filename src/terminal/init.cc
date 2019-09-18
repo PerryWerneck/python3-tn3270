@@ -38,16 +38,77 @@
 
 /*---[ Implement ]----------------------------------------------------------------------------------*/
 
-PyObject * py3270_session_new(PyTypeObject *type, PyObject *args, PyObject *kwds) {
+static void cleanup(pySession * session) {
+
+	if(session->host) {
+		delete session->host;
+		session->host = nullptr;
+	}
+
+}
+
+int py3270_session_init(PyObject *self, PyObject *args, PyObject *kwds) {
+
+	pySession * session = (pySession *) self;
+	debug("%s session=%p host=%p",__FUNCTION__,session,session->host);
+
+	try {
+
+		cleanup(session);
+
+		const char *id = "";
+
+		if (!PyArg_ParseTuple(args, "s", &id))
+			id = "";
+
+		session->host = new TN3270::Host(id);
+
+        return 0;
+
+	} catch(const std::exception &e) {
+
+		PyErr_SetString(PyExc_RuntimeError, e.what());
+
+	} catch(...) {
+
+		PyErr_SetString(PyExc_RuntimeError, "Unexpected error in core module");
+
+	}
+
+	return -1;
+
+}
+
+void py3270_session_finalize(PyObject *self) {
+
+	debug("%s",__FUNCTION__);
+	cleanup((pySession *) self);
+
+}
+
+PyObject * py3270_session_alloc(PyTypeObject *type, PyObject *args, PyObject *kwds) {
+
+	debug("%s",__FUNCTION__);
+	return type->tp_alloc(type,0);
+
+}
+
+void py3270_session_dealloc(PyObject * self) {
+
+	debug("%s",__FUNCTION__);
+
+	cleanup((pySession *) self);
+	Py_TYPE(self)->tp_free(self);
+
+}
+
+	/*
 
 	const char *id = "";
 
 	if (!PyArg_ParseTuple(args, "s", &id))
 		id = "";
 
-	pySession * session = (pySession *) type->tp_alloc(type,0);
-
-	printf("---[%s]---\n",id);
 
 	if(session) {
 
@@ -55,17 +116,12 @@ PyObject * py3270_session_new(PyTypeObject *type, PyObject *args, PyObject *kwds
 
 			session->host = new TN3270::Host(id);
 
-			printf("---[%s=%p]---\n",id,session->host);
-			return (PyObject *) session;
-
 		} catch(const exception &e) {
 
-			printf("---[%s]---\n",e.what());
 			PyErr_SetString(PyExc_RuntimeError, e.what());
 
 		} catch( ... ) {
 
-			printf("---[%s]---\n","???");
 			PyErr_SetString(PyExc_RuntimeError, "Unexpected error in core module");
 
 		}
@@ -87,6 +143,7 @@ void py3270_session_dealloc(pySession * self) {
 	Py_TYPE(self)->tp_free((PyObject *) self);
 
 }
+	*/
 
 
 /*

@@ -59,6 +59,17 @@
 
 	#endif
 
+	#ifdef DEBUG
+		#include <stdio.h>
+		#undef trace
+		#define trace( fmt, ... )       fprintf(stderr, "%s(%d) " fmt "\n", __FILE__, __LINE__, __VA_ARGS__ ); fflush(stderr);
+		#define debug( fmt, ... )       fprintf(stderr, "%s(%d) " fmt "\n", __FILE__, __LINE__, __VA_ARGS__ ); fflush(stderr);
+	#else
+		#undef trace
+		#define trace(x, ...)           // __VA_ARGS__
+		#define debug(x, ...)           // __VA_ARGS__
+	#endif
+
 #ifdef __cplusplus
 
 	#include <functional>
@@ -69,6 +80,9 @@
 	using std::exception;
 	using std::runtime_error;
 	using TN3270::Host;
+
+	DLL_PRIVATE PyObject	* py3270_session_call(PyObject *self, std::function<PyObject * (TN3270::Host &host)> worker) noexcept;
+	DLL_PRIVATE PyObject	* py3270_session_call(PyObject *self, std::function<int (TN3270::Host &host)> worker) noexcept;
 
 	extern "C" {
 
@@ -83,13 +97,20 @@
 			Host *host;
 		} pySession;
 
-		DLL_PRIVATE PyObject * py3270_get_module_version(PyObject *self, PyObject *args);
-		DLL_PRIVATE PyObject * py3270_get_module_revision(PyObject *self, PyObject *args);
+		DLL_PRIVATE PyObject	* py3270_get_module_version(PyObject *self, PyObject *args);
+		DLL_PRIVATE PyObject	* py3270_get_module_revision(PyObject *self, PyObject *args);
 
-		DLL_PRIVATE PyObject * py3270_session_new(PyTypeObject *type, PyObject *args, PyObject *kwds);
-//		DLL_PRIVATE int py3270_session_init(pySession *self, PyObject *args, PyObject *kwds);
-		DLL_PRIVATE void py3270_session_dealloc(pySession * self);
+		DLL_PRIVATE PyObject	* py3270_session_alloc(PyTypeObject *type, PyObject *args, PyObject *kwds);
+		DLL_PRIVATE void		  py3270_session_dealloc(PyObject * self);
 
+		DLL_PRIVATE int			  py3270_session_init(PyObject *self, PyObject *args, PyObject *kwds);
+		DLL_PRIVATE void		  py3270_session_finalize(PyObject *self);
+
+
+//		DLL_PRIVATE PyObject	* py3270_session_getattr(PyObject *self, char *attr_name);
+
+		DLL_PRIVATE PyObject	* py3270_session_connect(PyObject *self, PyObject *args);
+		DLL_PRIVATE PyObject	* py3270_session_disconnect(PyObject *self, PyObject *args);
 
 		/*
 

@@ -1,6 +1,7 @@
 #!/usr/bin/python
 #-*- coding: utf-8
 
+import weakref
 import tn3270
 
 print("Teste extensão pw3270")
@@ -8,11 +9,22 @@ print("Teste extensão pw3270")
 print("Using TN3270 Version " + tn3270.version())
 print(tn3270.revision())
 
-session = tn3270.Session(":a")
+session = tn3270.Session("")
 
-#print "Using pw3270 version " + term.Version() + " revision " + term.Revision()
+del session
 
-#term.Connect("tn3270://zos.efglobe.com:telnet",10);
+input("Press enter to exit")
+
+#print("Using tn3270 version " + session.version + " revision " + session.revision)
+
+#print(session.cstate)
+#print(session.width)
+#print(session.connected)
+#print(session.url)
+
+# print(session.connect)
+
+#print(session.connected)
 
 #print term.IsConnected()
 #print term.IsReady()

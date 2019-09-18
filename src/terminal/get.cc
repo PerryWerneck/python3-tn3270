@@ -36,6 +36,89 @@
 
 /*---[ Implement ]----------------------------------------------------------------------------------*/
 
+	/*
+DLL_PRIVATE PyObject * py3270_session_getattr(PyObject *self, char *attr_name) {
+
+	PyObject * rc = NULL;
+
+	printf("\n\n*************%s(%s)\n\n",__FUNCTION__,attr_name);
+
+	try {
+
+		TN3270::Property * property = ((pySession * ) self)->host->getProperty(attr_name);
+
+		try {
+
+			switch(property->getType()) {
+			case TN3270::Property::String:
+				rc = PyUnicode_FromString(property->toString().c_str());
+				break;
+
+			case TN3270::Property::Boolean:
+				rc = PyBool_FromLong(property->toBool());
+				break;
+
+			case TN3270::Property::Uchar:
+				throw std::system_error(ENOTSUP, std::system_category());
+				break;
+
+			case TN3270::Property::Int16:
+				throw std::system_error(ENOTSUP, std::system_category());
+				break;
+
+			case TN3270::Property::Uint16:
+				throw std::system_error(ENOTSUP, std::system_category());
+				break;
+
+			case TN3270::Property::Int32:
+				rc = PyLong_FromLong(property->toInt32());
+				break;
+
+			case TN3270::Property::Int32x:
+				throw std::system_error(ENOTSUP, std::system_category());
+				break;
+
+			case TN3270::Property::Uint32:
+				rc = PyLong_FromLong(property->toUint32());
+				break;
+
+			case TN3270::Property::Int64:
+				throw std::system_error(ENOTSUP, std::system_category());
+				break;
+
+			case TN3270::Property::Uint64:
+				throw std::system_error(ENOTSUP, std::system_category());
+				break;
+
+			default:
+				throw runtime_error("Unexpected property type");
+			}
+
+		} catch(...) {
+
+			delete property;
+			throw;
+
+		}
+
+		delete property;
+
+	} catch(const exception &e) {
+
+		PyErr_SetString(PyExc_RuntimeError, e.what());
+
+	} catch( ... ) {
+
+		PyErr_SetString(PyExc_RuntimeError, "Unexpected error in core module");
+
+	}
+
+	return rc;
+
+}
+*/
+
+
 /*
 PyObject * terminal_get_version(PyObject *self, PyObject *args) {
 
