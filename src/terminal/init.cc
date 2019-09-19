@@ -35,6 +35,7 @@
  */
 
  #include <py3270.h>
+ #include <lib3270/ipc.h>
 
 /*---[ Implement ]----------------------------------------------------------------------------------*/
 
@@ -46,6 +47,35 @@ static void cleanup(pySession * session) {
 	}
 
 }
+
+void py3270_session_type_init(PyTypeObject *type) {
+
+	// Load lib3270's attributes
+	{
+		auto attributes = TN3270::getAttributes();
+		size_t szData = sizeof(struct PyGetSetDef) * (attributes.size()+1);
+
+		type->tp_getset = (struct PyGetSetDef *) malloc(szData);
+		memset(type->tp_getset,0,szData);
+
+		size_t ix = 0;
+		for(auto attribute : attributes) {
+
+			debug("Creating attribute %s",attribute->name);
+
+			type->tp_getset[ix].name    = (char *) attribute->name;
+			type->tp_getset[ix].doc     = (char *) (attribute->description ? attribute->description : attribute->summary);
+			type->tp_getset[ix].get     = py3270_session_getter;
+			type->tp_getset[ix].set     = py3270_session_setter;
+			type->tp_getset[ix].closure = (void *) attribute->name;
+			ix++;
+		}
+
+
+	}
+
+}
+
 
 int py3270_session_init(PyObject *self, PyObject *args, PyObject *kwds) {
 

@@ -40,8 +40,6 @@
 
  PyObject * py3270_session_connect(PyObject *self, PyObject *args) {
 
-	printf("\n\n*************%s\n\n",__FUNCTION__);
-
  	return py3270_session_call(self, [args](TN3270::Host &host){
 
  		const char * url = "";

@@ -51,6 +51,7 @@
 		<Unit filename="src/module/properties.cc" />
 		<Unit filename="src/module/tools.cc" />
 		<Unit filename="src/terminal/actions.cc" />
+		<Unit filename="src/terminal/attributes.cc" />
 		<Unit filename="src/terminal/get.cc" />
 		<Unit filename="src/terminal/init.cc" />
 		<Unit filename="src/terminal/network.cc" />

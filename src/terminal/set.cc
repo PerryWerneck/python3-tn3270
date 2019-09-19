@@ -36,6 +36,7 @@
 
 /*---[ Implement ]----------------------------------------------------------------------------------*/
 
+
 /*
  PyObject * terminal_set_string_at(PyObject *self, PyObject *args) {
 

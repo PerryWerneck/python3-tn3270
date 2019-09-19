@@ -97,6 +97,8 @@
 			Host *host;
 		} pySession;
 
+		DLL_PRIVATE void 		  py3270_session_type_init(PyTypeObject *type);
+
 		DLL_PRIVATE PyObject	* py3270_get_module_version(PyObject *self, PyObject *args);
 		DLL_PRIVATE PyObject	* py3270_get_module_revision(PyObject *self, PyObject *args);
 
@@ -106,6 +108,8 @@
 		DLL_PRIVATE int			  py3270_session_init(PyObject *self, PyObject *args, PyObject *kwds);
 		DLL_PRIVATE void		  py3270_session_finalize(PyObject *self);
 
+		DLL_PRIVATE PyObject	* py3270_session_getter(PyObject *self, void *name);
+		DLL_PRIVATE int			  py3270_session_setter(PyObject *self, PyObject *value, void *name);
 
 //		DLL_PRIVATE PyObject	* py3270_session_getattr(PyObject *self, char *attr_name);
 

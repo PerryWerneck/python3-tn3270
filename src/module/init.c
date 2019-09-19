@@ -31,6 +31,8 @@
 
  #include <py3270.h>
 
+ static void cleanup(PyObject *module);
+
 /*---[ Globals ]------------------------------------------------------------------------------------*/
 
 static PyMethodDef methods[] = {
@@ -64,7 +66,8 @@ static struct PyModuleDef definition = {
 	.m_name = "tn3270",					// name of module
 	.m_doc = PACKAGE_DESCRIPTION,		// module documentation, may be NUL
 	.m_size = -1,						// size of per-interpreter state of the module or -1 if the module keeps state in global variables.
-	.m_methods = methods				// Module methods
+	.m_methods = methods,				// Module methods
+	.m_free = (freefunc) cleanup
 };
 
 //# Tornar essa tabela pública e testar em getattr, se for um método usar PyMethod_New para retornar um método.
@@ -106,15 +109,15 @@ static PyTypeObject SessionType = {
 
 	.tp_methods = py3270_session_methods,
 
-//	.tp_alloc =
-//	.tp_free =
-//	.tp_getattr = py3270_session_getattr
 };
 
 /*---[ Implement ]----------------------------------------------------------------------------------*/
 
 PyMODINIT_FUNC PyInit_tn3270(void)
 {
+	// Initialize custom attributes & methods.
+	py3270_session_type_init(&SessionType);
+
     //
     // Initialize module.
     //
@@ -125,23 +128,10 @@ PyMODINIT_FUNC PyInit_tn3270(void)
 
     PyObject *module = PyModule_Create(&definition);
 
+	debug("Initializing module %p", module);
+
     if(!module)
 		return NULL;
-
-	/*
-	//
-	// Create exception object
-	//
-	PyObject * except = PyErr_NewException("tn3270.Error", NULL, NULL);
-
-	Py_XINCREF(except);
-	if (PyModule_AddObject(module, "error", except) < 0) {
-		Py_XDECREF(except);
-		Py_CLEAR(except);
-		Py_DECREF(module);
-		return NULL;
-	}
-	*/
 
 	//
 	// Create custom type
@@ -155,3 +145,15 @@ PyMODINIT_FUNC PyInit_tn3270(void)
 
     return module;
 }
+
+static void cleanup(PyObject *module) {
+
+	debug("Cleaning up module %p", module);
+
+	if(SessionType.tp_getset) {
+		free(SessionType.tp_getset);
+		SessionType.tp_getset = NULL;
+	}
+
+}
+

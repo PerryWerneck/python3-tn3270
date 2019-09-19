@@ -1,7 +1,7 @@
 #!/usr/bin/python
 #-*- coding: utf-8
 
-import weakref
+import inspect
 import tn3270
 
 print("Teste extensão pw3270")
@@ -11,20 +11,22 @@ print(tn3270.revision())
 
 session = tn3270.Session("")
 
-del session
+print("Using tn3270 version " + session.version + " revision " + session.revision)
 
-input("Press enter to exit")
+print(session.cstate)
+print(session.width)
+print(session.connected)
+print(session.url)
 
-#print("Using tn3270 version " + session.version + " revision " + session.revision)
+session.connect('')
 
-#print(session.cstate)
-#print(session.width)
-#print(session.connected)
-#print(session.url)
+print(session.connected)
 
-# print(session.connect)
+print('----------------------')
+inspect.getmembers(session)
+print('----------------------')
 
-#print(session.connected)
+
 
 #print term.IsConnected()
 #print term.IsReady()
@@ -34,6 +36,9 @@ input("Press enter to exit")
 #print "-----------------------------------------------------------------------"
 #print term
 #print "-----------------------------------------------------------------------"
+
+del session
+input("Press enter to exit")
 
 
 
