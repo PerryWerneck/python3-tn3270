@@ -83,6 +83,16 @@
 
  }
 
+ DLL_PRIVATE PyObject * py3270_session_str(PyObject *self) {
+
+ 	return py3270_session_call(self, [](TN3270::Host &host){
+
+		return PyUnicode_FromString(host.toString().c_str());
+
+ 	});
+
+ }
+
 
 	/*
 DLL_PRIVATE PyObject * py3270_session_getattr(PyObject *self, char *attr_name) {

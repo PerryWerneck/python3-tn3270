@@ -4,8 +4,6 @@
 import inspect
 import tn3270
 
-print("Teste extensão pw3270")
-
 print("Using TN3270 Version " + tn3270.version())
 print(tn3270.revision())
 
@@ -26,10 +24,10 @@ print(session.connected)
 #print(dir(session))
 #print('----------------------')
 
-print(session.get(14,22,38))
+#print(session.get(14,22,38))
 
 #print "-----------------------------------------------------------------------"
-#print term
+print(session)
 #print "-----------------------------------------------------------------------"
 
 del session

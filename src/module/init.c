@@ -114,6 +114,8 @@ static PyTypeObject SessionType = {
 	.tp_init = py3270_session_init,
 	.tp_finalize = py3270_session_finalize,
 
+	.tp_str = py3270_session_str,
+
 	.tp_methods = py3270_session_methods,
 
 };
