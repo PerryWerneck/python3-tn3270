@@ -88,6 +88,13 @@ static PyMethodDef py3270_session_methods[] = {
     },
 
     {
+		"set",
+		(PyCFunction) py3270_session_set,
+		METH_VARARGS,
+		""
+    },
+
+    {
 		"get",
 		(PyCFunction) py3270_session_get,
 		METH_VARARGS,

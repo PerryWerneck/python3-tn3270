@@ -36,6 +36,59 @@
 
 /*---[ Implement ]----------------------------------------------------------------------------------*/
 
+ PyObject * py3270_session_set(PyObject *self, PyObject *args) {
+
+ 	return py3270_session_call(self, [args](TN3270::Host &host){
+
+		switch(PyTuple_Size(args)) {
+		case 1:	// Only text.
+			{
+				const char *text;
+
+				if(!PyArg_ParseTuple(args, "s", &text))
+					return (PyObject *) NULL;
+
+				host.push(text,-1);
+
+			}
+			break;
+
+		case 2:	// Address and text.
+			{
+				int baddr;
+				const char *text;
+
+				if(!PyArg_ParseTuple(args, "is", &baddr, &text))
+					return (PyObject *) NULL;
+
+				host.push(baddr, text);
+			}
+			break;
+
+		case 3:	// Row, col and text
+			{
+				unsigned int row, col;
+				const char *text;
+
+				if (!PyArg_ParseTuple(args, "IIs", &row, &col, &text))
+					return (PyObject *) NULL;
+
+				host.push(row,col,text);
+
+			}
+			break;
+
+		default:
+			throw std::system_error(EINVAL, std::system_category());
+
+		}
+
+		return PyLong_FromLong(0);
+
+ 	});
+
+ }
+
 
 /*
  PyObject * terminal_set_string_at(PyObject *self, PyObject *args) {
