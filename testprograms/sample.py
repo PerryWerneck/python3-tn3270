@@ -22,16 +22,11 @@ session.connect('')
 
 print(session.connected)
 
-print('----------------------')
-inspect.getmembers(session)
-print('----------------------')
+#print('----------------------')
+#print(dir(session))
+#print('----------------------')
 
-
-
-#print term.IsConnected()
-#print term.IsReady()
-
-#print term.GetStringAt(14,19,38)
+print(session.get(14,22,38))
 
 #print "-----------------------------------------------------------------------"
 #print term

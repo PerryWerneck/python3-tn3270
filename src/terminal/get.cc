@@ -34,7 +34,55 @@
 
  #include <py3270.h>
 
+ using std::string;
+
 /*---[ Implement ]----------------------------------------------------------------------------------*/
+
+ PyObject * py3270_session_get(PyObject *self, PyObject *args) {
+
+ 	return py3270_session_call(self, [args](TN3270::Host &host){
+
+		string text;
+
+		switch(PyTuple_Size(args)) {
+		case 0: // Get the entire screen
+			text = host.toString();
+			break;
+
+		case 2:	// Address and length.
+			{
+				int baddr, length;
+
+				if (!PyArg_ParseTuple(args, "ii", &baddr, &length))
+					return (PyObject *) NULL;
+
+				text = host.toString(baddr, length);
+			}
+			break;
+
+		case 3:	// Row, col and length
+			{
+				unsigned int row, col;
+				int length;
+
+				if (!PyArg_ParseTuple(args, "IIi", &row, &col, &length))
+					return (PyObject *) NULL;
+
+				text = host.toString(row, col, length);
+			}
+			break;
+
+		default:
+			throw std::system_error(EINVAL, std::system_category());
+
+		}
+
+		return PyUnicode_FromString(text.c_str());
+
+ 	});
+
+ }
+
 
 	/*
 DLL_PRIVATE PyObject * py3270_session_getattr(PyObject *self, char *attr_name) {
