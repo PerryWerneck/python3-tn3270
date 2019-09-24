@@ -38,7 +38,7 @@
 
 PyObject * py3270_session_getter(PyObject *self, void *name) {
 
-	debug("%s(%s)",__FUNCTION__,(const char *) name);
+//	debug("%s(%s)",__FUNCTION__,(const char *) name);
 
 	return py3270_session_call(self, [name](TN3270::Host &host){
 

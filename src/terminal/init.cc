@@ -61,7 +61,7 @@ void py3270_session_type_init(PyTypeObject *type) {
 		size_t ix = 0;
 		for(auto attribute : attributes) {
 
-			debug("Creating attribute %s",attribute->name);
+//			debug("Creating attribute %s",attribute->name);
 
 			type->tp_getset[ix].name    = (char *) attribute->name;
 			type->tp_getset[ix].doc     = (char *) (attribute->description ? attribute->description : attribute->summary);
