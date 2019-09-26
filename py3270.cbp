@@ -44,6 +44,7 @@
 		</Linker>
 		<Unit filename="src/action/init.cc" />
 		<Unit filename="src/action/new.cc" />
+		<Unit filename="src/action/tools.cc" />
 		<Unit filename="src/action/type.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -54,13 +55,13 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/module/properties.cc" />
-		<Unit filename="src/module/tools.cc" />
 		<Unit filename="src/session/actions.cc" />
 		<Unit filename="src/session/attributes.cc" />
 		<Unit filename="src/session/get.cc" />
 		<Unit filename="src/session/init.cc" />
 		<Unit filename="src/session/network.cc" />
 		<Unit filename="src/session/set.cc" />
+		<Unit filename="src/session/tools.cc" />
 		<Unit filename="src/session/type.c">
 			<Option compilerVar="CC" />
 		</Unit>

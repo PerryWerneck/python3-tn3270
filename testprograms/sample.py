@@ -20,9 +20,17 @@ print(session.url)
 
 print(session.connected)
 
+#print('----------------------')
+#print(dir(session))
+#print('----------------------')
+
+test = session.reconnect
 print('----------------------')
-print(dir(session))
+print(dir(test))
 print('----------------------')
+
+print(test.activatable())
+
 
 #print(session.get(14,22,38))
 

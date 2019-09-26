@@ -77,20 +77,25 @@
 	#include <stdexcept>
 	#include <vector>
 	#include <lib3270/ipc.h>
+	#include <lib3270/ipc/action.h>
 	#include <lib3270/actions.h>
 
 	using std::exception;
 	using std::runtime_error;
 	using TN3270::Host;
+	using TN3270::Action;
 
 	DLL_PRIVATE PyObject	* py3270_session_call(PyObject *self, std::function<PyObject * (TN3270::Host &host)> worker) noexcept;
 	DLL_PRIVATE PyObject	* py3270_session_call(PyObject *self, std::function<int (TN3270::Host &host)> worker) noexcept;
+
+	DLL_PRIVATE PyObject	* py3270_action_call(PyObject *self, std::function<PyObject * (TN3270::Action &action)> worker) noexcept;
 
 	extern "C" {
 
 #else
 
 	typedef void Host;
+	typedef void Action;
 
 #endif
 
@@ -101,8 +106,7 @@
 
 		typedef struct {
 			PyObject_HEAD
-			Host *host;
-			const struct _lib3270_action * action;
+			Action *action;
 		} pyAction;
 
 		DLL_PRIVATE PyTypeObject py3270_session_type;
@@ -136,6 +140,10 @@
 		// Action object
 		DLL_PRIVATE PyObject	* py3270_action_new_from_session(PyObject *session, void *action);
 
+		DLL_PRIVATE void		  py3270_action_dealloc(PyObject * self);
+		DLL_PRIVATE void		  py3270_action_finalize(PyObject *self);
+
+		DLL_PRIVATE PyObject	* py3270_action_activatable(PyObject *self, PyObject *args);
 
 		/*
 

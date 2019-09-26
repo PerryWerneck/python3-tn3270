@@ -18,7 +18,7 @@
  * programa; se não, escreva para a Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA  02110-1301  USA
  *
- * Este programa está nomeado como py3270.cc e possui - linhas de código.
+ * Este programa está nomeado como misc.cc e possui - linhas de código.
  *
  * Contatos:
  *
@@ -35,43 +35,27 @@
  */
 
  #include <py3270.h>
- #include <lib3270/ipc.h>
- #include <lib3270/ipc/action.h>
 
 /*---[ Implement ]----------------------------------------------------------------------------------*/
 
-void py3270_action_type_init(PyTypeObject *type) {
+PyObject * py3270_action_call(PyObject *self, std::function<PyObject * (TN3270::Action &Action)> worker) noexcept {
 
+	try {
 
-}
+		TN3270::Action *action = ((pyAction * ) self)->action;
+		return worker(*action);
 
-static void cleanup(pyAction * self) {
+	} catch(const exception &e) {
 
-	if(self->action) {
-		delete self->action;
-		self->action = nullptr;
+		PyErr_SetString(PyExc_RuntimeError, e.what());
+
+	} catch( ... ) {
+
+		PyErr_SetString(PyExc_RuntimeError, "Unexpected error in action object");
+
 	}
 
-}
-
-void py3270_action_dealloc(PyObject * self) {
-	debug("%s",__FUNCTION__);
-	cleanup((pyAction *) self);
-}
-
-void py3270_action_finalize(PyObject *self) {
-	debug("%s",__FUNCTION__);
-	cleanup((pyAction *) self);
-}
-
-PyObject * py3270_action_activatable(PyObject *self, PyObject *args) {
-
-	return py3270_action_call(self, [](TN3270::Action &action) {
-
-		return PyBool_FromLong(action.activatable());
-
-	});
-
+	return NULL;
 
 }
 

@@ -70,7 +70,7 @@ void py3270_session_type_init(PyTypeObject *type) {
 
 		for(auto attribute : attributes) {
 
-//			debug("Creating attribute %s",attribute->name);
+			debug("Creating attribute %s",attribute->name);
 
 			py3270_session_attribute_init(&type->tp_getset[ix], (const LIB3270_PROPERTY *) attribute);
 

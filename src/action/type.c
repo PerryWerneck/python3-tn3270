@@ -38,14 +38,12 @@
 
 static PyMethodDef py3270_action_methods[] = {
 
-	/*
     {
 		"activatable",
 		(PyCFunction) py3270_action_activatable,
 		METH_NOARGS,
 		""
     },
-    */
 
     {
     	NULL
@@ -58,12 +56,16 @@ PyTypeObject py3270_action_type = {
 	PyVarObject_HEAD_INIT(NULL, 0)
 
 	.tp_name = "tn3270.Session.Action",
-	.tp_doc = "TN3270 Session Action Object",
+	.tp_doc = "TN3270 Action Object",
 	.tp_basicsize = sizeof(pyAction),
 	.tp_itemsize = 0,
 	.tp_flags = Py_TPFLAGS_DEFAULT,
 
 	.tp_methods = py3270_action_methods,
+
+	.tp_dealloc = py3270_action_dealloc,
+	.tp_finalize = py3270_action_finalize,
+
 
 };
 
