@@ -70,75 +70,46 @@ static struct PyModuleDef definition = {
 	.m_free = (freefunc) cleanup
 };
 
-//# Tornar essa tabela pública e testar em getattr, se for um método usar PyMethod_New para retornar um método.
+/*
+static PyTypeObject ActionType = {
 
-static PyMethodDef py3270_session_methods[] = {
-    {
-		"connect",
-		(PyCFunction) py3270_session_connect,
-		METH_VARARGS,
-		""
-    },
-
-    {
-		"disconnect",
-		(PyCFunction) py3270_session_disconnect,
-		METH_NOARGS,
-		""
-    },
-
-    {
-		"set",
-		(PyCFunction) py3270_session_set,
-		METH_VARARGS,
-		""
-    },
-
-    {
-		"get",
-		(PyCFunction) py3270_session_get,
-		METH_VARARGS,
-		""
-    },
-
-    {
-    	NULL
-	}
-};
-
-// https://docs.python.org/3/c-api/typeobj.html
-static PyTypeObject SessionType = {
 	PyVarObject_HEAD_INIT(NULL, 0)
-	.tp_name = "tn3270.Session",
-	.tp_doc = "TN3270 Session Object",
-	.tp_basicsize = sizeof(pySession),
+
+	.tp_name = "tn3270.Action",
+	.tp_doc = "TN3270 Action Object",
+	.tp_basicsize = sizeof(pyAction),
 	.tp_itemsize = 0,
-	.tp_flags = Py_TPFLAGS_HAVE_FINALIZE|Py_TPFLAGS_DEFAULT,
+	.tp_flags = Py_TPFLAGS_DEFAULT,
 
-	.tp_new = py3270_session_alloc,
-	.tp_dealloc = py3270_session_dealloc,
+//	.tp_new = py3270_session_alloc,
+//	.tp_dealloc = py3270_session_dealloc,
 
-	.tp_init = py3270_session_init,
-	.tp_finalize = py3270_session_finalize,
+//	.tp_init = py3270_session_init,
+//	.tp_finalize = py3270_session_finalize,
 
-	.tp_str = py3270_session_str,
+//	.tp_str = py3270_session_str,
 
-	.tp_methods = py3270_session_methods,
+//	.tp_methods = py3270_session_methods,
 
 };
+*/
 
 /*---[ Implement ]----------------------------------------------------------------------------------*/
 
 PyMODINIT_FUNC PyInit_tn3270(void)
 {
 	// Initialize custom attributes & methods.
-	py3270_session_type_init(&SessionType);
+	py3270_session_type_init(&py3270_session_type);
+	if (PyType_Ready(&py3270_session_type) < 0)
+		return NULL;
+
+	py3270_action_type_init(&py3270_action_type);
+	if (PyType_Ready(&py3270_action_type) < 0)
+		return NULL;
 
     //
     // Initialize module.
     //
-	if (PyType_Ready(&SessionType) < 0)
-		return NULL;
 
     Py_Initialize();
 
@@ -152,9 +123,9 @@ PyMODINIT_FUNC PyInit_tn3270(void)
 	//
 	// Create custom type
 	//
-	Py_INCREF(&SessionType);
-    if (PyModule_AddObject(module, "Session", (PyObject *) &SessionType) < 0) {
-		Py_DECREF(&SessionType);
+	Py_INCREF(&py3270_session_type);
+    if (PyModule_AddObject(module, "Session", (PyObject *) &py3270_session_type) < 0) {
+		Py_DECREF(&py3270_session_type);
 		Py_DECREF(module);
 		return NULL;
     }
@@ -166,9 +137,9 @@ static void cleanup(PyObject *module) {
 
 	debug("Cleaning up module %p", module);
 
-	if(SessionType.tp_getset) {
-		free(SessionType.tp_getset);
-		SessionType.tp_getset = NULL;
+	if(py3270_session_type.tp_getset) {
+		free(py3270_session_type.tp_getset);
+		py3270_session_type.tp_getset = NULL;
 	}
 
 }

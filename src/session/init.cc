@@ -48,31 +48,54 @@ static void cleanup(pySession * session) {
 
 }
 
+static void py3270_session_attribute_init(struct PyGetSetDef *attribute, const LIB3270_PROPERTY * descriptor) {
+
+	attribute->name    = (char *) descriptor->name;
+	attribute->doc     = (char *) (descriptor->description ? descriptor->description : descriptor->summary);
+
+}
+
 void py3270_session_type_init(PyTypeObject *type) {
 
-	// Load lib3270's attributes
+	// Load attributes
 	{
 		auto attributes = TN3270::getAttributes();
-		size_t szData = sizeof(struct PyGetSetDef) * (attributes.size()+1);
+		auto actions	= TN3270::getActions();
+		size_t ix = 0;
+
+		size_t szData = sizeof(struct PyGetSetDef) * (attributes.size() + actions.size() + 1);
 
 		type->tp_getset = (struct PyGetSetDef *) malloc(szData);
 		memset(type->tp_getset,0,szData);
 
-		size_t ix = 0;
 		for(auto attribute : attributes) {
 
 //			debug("Creating attribute %s",attribute->name);
 
-			type->tp_getset[ix].name    = (char *) attribute->name;
-			type->tp_getset[ix].doc     = (char *) (attribute->description ? attribute->description : attribute->summary);
+			py3270_session_attribute_init(&type->tp_getset[ix], (const LIB3270_PROPERTY *) attribute);
+
 			type->tp_getset[ix].get     = py3270_session_getter;
 			type->tp_getset[ix].set     = py3270_session_setter;
 			type->tp_getset[ix].closure = (void *) attribute->name;
+
 			ix++;
+
 		}
 
+		for(auto action : actions) {
 
+			debug("Creating action %s",action->name);
+
+			py3270_session_attribute_init(&type->tp_getset[ix], (const LIB3270_PROPERTY *) action);
+
+			type->tp_getset[ix].get = py3270_action_new_from_session;
+			type->tp_getset[ix].closure = (void *) action;
+
+			ix++;
+
+		}
 	}
+
 
 }
 
@@ -92,6 +115,25 @@ int py3270_session_init(PyObject *self, PyObject *args, PyObject *kwds) {
 			id = "";
 
 		session->host = new TN3270::Host(id);
+
+		/*
+		// Load lib3270's actions
+		{
+			auto actions = TN3270::getActions();
+
+			for(auto action : actions) {
+
+				pyAction * object = (pyAction *) _PyObject_New(&py3270_action_type);
+
+				object->host = session->host;
+				object->action = action;
+
+				PyObject_SetAttr(self, PyUnicode_FromString(action->name), (PyObject *) object);
+
+			}
+
+		}
+		*/
 
         return 0;
 

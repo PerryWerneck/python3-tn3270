@@ -75,7 +75,9 @@
 	#include <functional>
 	#include <exception>
 	#include <stdexcept>
+	#include <vector>
 	#include <lib3270/ipc.h>
+	#include <lib3270/actions.h>
 
 	using std::exception;
 	using std::runtime_error;
@@ -97,11 +99,24 @@
 			Host *host;
 		} pySession;
 
-		DLL_PRIVATE void 		  py3270_session_type_init(PyTypeObject *type);
+		typedef struct {
+			PyObject_HEAD
+			Host *host;
+			const struct _lib3270_action * action;
+		} pyAction;
+
+		DLL_PRIVATE PyTypeObject py3270_session_type;
+		DLL_PRIVATE PyTypeObject py3270_action_type;
 
 		DLL_PRIVATE PyObject	* py3270_get_module_version(PyObject *self, PyObject *args);
 		DLL_PRIVATE PyObject	* py3270_get_module_revision(PyObject *self, PyObject *args);
 
+		// Types
+		DLL_PRIVATE void 		  py3270_action_type_init(PyTypeObject *type);
+		DLL_PRIVATE void 		  py3270_session_type_init(PyTypeObject *type);
+
+
+		// Session object
 		DLL_PRIVATE PyObject	* py3270_session_alloc(PyTypeObject *type, PyObject *args, PyObject *kwds);
 		DLL_PRIVATE void		  py3270_session_dealloc(PyObject * self);
 
@@ -111,14 +126,16 @@
 		DLL_PRIVATE PyObject	* py3270_session_getter(PyObject *self, void *name);
 		DLL_PRIVATE int			  py3270_session_setter(PyObject *self, PyObject *value, void *name);
 
-//		DLL_PRIVATE PyObject	* py3270_session_getattr(PyObject *self, char *attr_name);
-
 		DLL_PRIVATE PyObject	* py3270_session_connect(PyObject *self, PyObject *args);
 		DLL_PRIVATE PyObject	* py3270_session_disconnect(PyObject *self, PyObject *args);
 
 		DLL_PRIVATE PyObject	* py3270_session_get(PyObject *self, PyObject *args);
 		DLL_PRIVATE PyObject	* py3270_session_set(PyObject *self, PyObject *args);
 		DLL_PRIVATE PyObject 	* py3270_session_str(PyObject *self);
+
+		// Action object
+		DLL_PRIVATE PyObject	* py3270_action_new_from_session(PyObject *session, void *action);
+
 
 		/*
 
