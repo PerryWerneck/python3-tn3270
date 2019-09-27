@@ -2,12 +2,12 @@ Source: python-tn3270
 Section: unknown
 Priority: optional
 Maintainer: Perry Werneck <perry.werneck@gmail.com>
-Build-Depends: debhelper (>= 7), autotools-dev, autoconf, gettext, pw3270-dev, python-dev
+Build-Depends: debhelper (>= 7), autotools-dev, autoconf, gettext, python-dev, libipc3270-dev
 
 Package: python-tn3270
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}, lib3270 
 Description: PHP Extension Module implementing tn3270 protocol.
- This is an extension for acessing 3270 hosts directly from PHP apps.
+ This is an extension for acessing 3270 hosts directly from python apps.
 
 

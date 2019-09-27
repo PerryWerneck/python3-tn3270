@@ -4,7 +4,7 @@ Version: 5.2-0
 Binary: python-tn3270
 Maintainer: Perry Werneck <perry.werneck@gmail.com>
 Architecture: any
-Build-Depends: debhelper (>= 7), autotools-dev, autoconf, automake, pw3270-dev, python-dev
+Build-Depends: debhelper (>= 7), autotools-dev, autoconf, automake, python-dev, libipc3270-dev
 Standards-Version: 3.9.1.0
 DEBTRANSFORM-RELEASE: 1
 Files: 
