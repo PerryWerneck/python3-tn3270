@@ -45,9 +45,9 @@ static PyMethodDef py3270_session_methods[] = {
     },
 
     {
-		"disconnect",
-		(PyCFunction) py3270_session_disconnect,
-		METH_NOARGS,
+		"wait",
+		(PyCFunction) py3270_session_wait,
+		METH_VARARGS,
 		""
     },
 

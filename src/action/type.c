@@ -39,14 +39,34 @@
 static PyMethodDef py3270_action_methods[] = {
 
     {
-		"activatable",
-		(PyCFunction) py3270_action_activatable,
+		"activate",
+		(PyCFunction) py3270_action_activate,
 		METH_NOARGS,
 		""
     },
 
     {
+		"wait",
+		(PyCFunction) py3270_action_wait,
+		METH_VARARGS,
+		""
+    },
+
+    {
     	NULL
+	}
+};
+
+static struct PyGetSetDef py3270_action_attributes[] = {
+
+	{
+		.name = "activatable",
+		.doc = "True if the action can be activated",
+		.get = py3270_action_get_activatable
+	},
+
+	{
+		NULL
 	}
 };
 
@@ -61,10 +81,13 @@ PyTypeObject py3270_action_type = {
 	.tp_itemsize = 0,
 	.tp_flags = Py_TPFLAGS_DEFAULT,
 
+	.tp_call = py3270_action_call,
+    .tp_descr_get = py3270_action_describe,
+
 	.tp_methods = py3270_action_methods,
+	.tp_getset = py3270_action_attributes,
 
 	.tp_dealloc = py3270_action_dealloc,
-	.tp_finalize = py3270_action_finalize,
 
 
 };

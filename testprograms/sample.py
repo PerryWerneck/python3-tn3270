@@ -11,10 +11,17 @@ session = tn3270.Session("")
 
 print("Using tn3270 version " + session.version + " revision " + session.revision)
 
-print(session.cstate)
-print(session.width)
-print(session.connected)
-print(session.url)
+#print(session.cstate)
+#print(session.width)
+#print(session.connected)
+#print(session.url)
+
+#
+# Can reconnect? If yes do it!
+#
+if session.reconnect.activatable:
+    print("Reconnecting...")
+    session.reconnect().wait(10)
 
 #session.connect('')
 
@@ -24,27 +31,21 @@ print(session.connected)
 #print(dir(session))
 #print('----------------------')
 
-test = session.reconnect
-print('----------------------')
-print(dir(test))
-print('----------------------')
-
-print(test.activatable())
-
-
 #print(session.get(14,22,38))
 
-#print("-----------------------------------------------------------------------")
-#print(session)
-#print("-----------------------------------------------------------------------")
+print("-----------------------------------------------------------------------")
+print(session)
+print("-----------------------------------------------------------------------")
+
+session.enter().wait(2)
+
 
 #session.set("value")
 
-#print("-----------------------------------------------------------------------")
-#print(session)
-#print("-----------------------------------------------------------------------")
+print("-----------------------------------------------------------------------")
+print(session)
+print("-----------------------------------------------------------------------")
 
-del session
 input("Press enter to exit")
 
 

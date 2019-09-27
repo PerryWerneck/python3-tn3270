@@ -42,8 +42,7 @@ PyObject * py3270_action_call(PyObject *self, std::function<PyObject * (TN3270::
 
 	try {
 
-		TN3270::Action *action = ((pyAction * ) self)->action;
-		return worker(*action);
+		return worker(* (((pyAction * ) self)->action));
 
 	} catch(const exception &e) {
 
@@ -51,11 +50,12 @@ PyObject * py3270_action_call(PyObject *self, std::function<PyObject * (TN3270::
 
 	} catch( ... ) {
 
-		PyErr_SetString(PyExc_RuntimeError, "Unexpected error in action object");
+		PyErr_SetString(PyExc_RuntimeError, "Unexpected error in action method");
 
 	}
 
 	return NULL;
 
 }
+
 

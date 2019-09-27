@@ -18,14 +18,12 @@
  * programa; se não, escreva para a Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA  02110-1301  USA
  *
- * Este programa está nomeado como misc.cc e possui - linhas de código.
+ * Este programa está nomeado como set.cc e possui - linhas de código.
  *
- * Contatos:
+ * Contatos
  *
  * perry.werneck@gmail.com	(Alexandre Perry de Souza Werneck)
  * erico.mendonca@gmail.com	(Erico Mascarenhas Mendonça)
- *
- * Implementa métodos básicos inicio/final do objeto python
  *
  * Referências:
  *
@@ -38,107 +36,75 @@
 
 /*---[ Implement ]----------------------------------------------------------------------------------*/
 
- PyObject * py3270_session_connect(PyObject *self, PyObject *args) {
+ PyObject * py3270_session_wait(PyObject *self, PyObject *args) {
 
  	return py3270_session_call(self, [args](TN3270::Host &host){
 
- 		const char * url = "";
+		switch(PyTuple_Size(args)) {
+		case 0:	// No time defined, use the default one.
+			host.waitForReady();
+			break;
 
-		if(!PyArg_ParseTuple(args, "s", &url)) {
-			throw runtime_error("connect requires a host URL");
+		case 1:	// Has argument, wait for it.
+			{
+				unsigned int seconds;
+
+				if(!PyArg_ParseTuple(args, "I", &seconds))
+					return (PyObject *) NULL;
+
+				host.waitForReady(seconds);
+			}
+			break;
+
+		default:
+			throw std::system_error(EINVAL, std::system_category());
+
 		}
 
-		host.connect(url);
+		return PyLong_FromLong(0);
 
-		return 0;
-
-	});
+ 	});
 
  }
+
 
 /*
- PyObject * terminal_connect(PyObject *self, PyObject *args) {
-
-	int			  rc	= -1;
-	int 		  wait	= 60;
-	const char 	* host	= "";
-
-	if (!PyArg_ParseTuple(args, "s|i", &host, &wait)) {
-		PyErr_SetString(terminalError, "connect requires a host URL");
-		return NULL;
-	}
-
-	try {
-
-		rc = ((pw3270_TerminalObject *) self)->session->connect(host,wait);
-
-	} catch(std::exception &e) {
-
-		PyErr_SetString(terminalError, e.what());
-		return NULL;
-	}
-
-	return PyLong_FromLong(rc);
-
- }
-
- PyObject * terminal_disconnect(PyObject *self, PyObject *args) {
-
-	int rc = -1;
-
-	try {
-
-		rc = ((pw3270_TerminalObject *) self)->session->disconnect();
-
-	} catch(std::exception &e) {
-
-		PyErr_SetString(terminalError, e.what());
-		return NULL;
-	}
-
-	return PyLong_FromLong(rc);
-
- }
-
- PyObject * terminal_wait_for_ready(PyObject *self, PyObject *args) {
-
-	int rc;
-	int timeout = 60;
-
-	if (!PyArg_ParseTuple(args, "|i", &timeout)) {
-		PyErr_SetString(terminalError, strerror(EINVAL));
-		return NULL;
-	}
-
-	try {
-
-		rc = ((pw3270_TerminalObject *) self)->session->wait_for_ready(timeout);
-
-	} catch(std::exception &e) {
-
-		PyErr_SetString(terminalError, e.what());
-		return NULL;
-	}
-
-	return PyLong_FromLong(rc);
-
- }
-
-
- PyObject * terminal_wait_for_string_at(PyObject *self, PyObject *args) {
+ PyObject * terminal_set_string_at(PyObject *self, PyObject *args) {
 
 	int row, col, rc;
-	int timeout = 10;
 	const char *text;
 
-	if (!PyArg_ParseTuple(args, "iis|i", &row, &col, &text, &timeout)) {
+	if (!PyArg_ParseTuple(args, "iis", &row, &col, &text)) {
 		PyErr_SetString(terminalError, strerror(EINVAL));
 		return NULL;
 	}
 
 	try {
 
-		rc = ((pw3270_TerminalObject *) self)->session->wait_for_string_at(row,col,text,timeout);
+		rc = ((pw3270_TerminalObject *) self)->session->set_string_at(row,col,text);
+
+	} catch(std::exception &e) {
+
+		PyErr_SetString(terminalError, e.what());
+		return NULL;
+	}
+
+	return PyLong_FromLong(rc);
+
+ }
+
+ PyObject * terminal_set_cursor_at(PyObject *self, PyObject *args) {
+
+ 	int row, col, rc;
+
+	if (!PyArg_ParseTuple(args, "ii", &row, &col)) {
+		PyErr_SetString(terminalError, strerror(EINVAL));
+		return NULL;
+	}
+
+	try {
+
+		rc = ((pw3270_TerminalObject *) self)->session->set_cursor_position(row,col);
 
 	} catch(std::exception &e) {
 

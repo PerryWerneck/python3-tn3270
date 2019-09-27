@@ -29,8 +29,8 @@
  *
  * Referências:
  *
- * <https://docs.python.org/2/extending/newtypes.html>
- * <https://docs.python.org/2.7/extending/extending.html#a-simple-example>
+ * <https://pythonextensionpatterns.readthedocs.io/en/latest/refcount.html>
+ *
  *
  */
 
@@ -41,10 +41,29 @@
 
 DLL_PRIVATE PyObject * py3270_action_new_from_session(PyObject *session, void *action) {
 
-	pyAction * object = (pyAction *) _PyObject_New(&py3270_action_type);
+	pyAction * pObj = (pyAction *) _PyObject_New(&py3270_action_type);
 
-	object->action = ((pySession *) session)->host->getAction((const LIB3270_ACTION *) action);
+	pObj->session = session;
+	pObj->action = ((pySession *) session)->host->getAction((const LIB3270_ACTION *) action);
 
-	return (PyObject *) object;
+	debug("%s: ob_refcnt@%p=%ld",__FUNCTION__,pObj,((PyObject *) pObj)->ob_refcnt);
+
+	Py_INCREF(pObj->session);
+
+	return (PyObject *) pObj;
 
 }
+
+void py3270_action_dealloc(PyObject * self) {
+
+	pyAction * pObj = (pyAction *) self;
+
+	debug("%s: %p",__FUNCTION__,self);
+
+	Py_DECREF(pObj->session);
+
+	delete pObj->action;
+	pObj->action = nullptr;
+
+}
+

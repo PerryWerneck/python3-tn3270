@@ -106,7 +106,8 @@
 
 		typedef struct {
 			PyObject_HEAD
-			Action *action;
+			PyObject	* session;
+			Action		* action;
 		} pyAction;
 
 		DLL_PRIVATE PyTypeObject py3270_session_type;
@@ -131,19 +132,22 @@
 		DLL_PRIVATE int			  py3270_session_setter(PyObject *self, PyObject *value, void *name);
 
 		DLL_PRIVATE PyObject	* py3270_session_connect(PyObject *self, PyObject *args);
-		DLL_PRIVATE PyObject	* py3270_session_disconnect(PyObject *self, PyObject *args);
 
 		DLL_PRIVATE PyObject	* py3270_session_get(PyObject *self, PyObject *args);
 		DLL_PRIVATE PyObject	* py3270_session_set(PyObject *self, PyObject *args);
 		DLL_PRIVATE PyObject 	* py3270_session_str(PyObject *self);
+		DLL_PRIVATE PyObject	* py3270_session_wait(PyObject *self, PyObject *args);
 
 		// Action object
 		DLL_PRIVATE PyObject	* py3270_action_new_from_session(PyObject *session, void *action);
-
 		DLL_PRIVATE void		  py3270_action_dealloc(PyObject * self);
-		DLL_PRIVATE void		  py3270_action_finalize(PyObject *self);
 
-		DLL_PRIVATE PyObject	* py3270_action_activatable(PyObject *self, PyObject *args);
+		DLL_PRIVATE PyObject	* py3270_action_call(PyObject *callable, PyObject *args, PyObject *kwargs);
+		DLL_PRIVATE PyObject	* py3270_action_describe(PyObject *self, PyObject *obj, PyObject *type);
+		DLL_PRIVATE PyObject	* py3270_action_activate(PyObject *self, PyObject *args);
+		DLL_PRIVATE PyObject	* py3270_action_wait(PyObject *self, PyObject *args);
+
+		DLL_PRIVATE PyObject	* py3270_action_get_activatable(PyObject *self, void *dunno);
 
 		/*
 

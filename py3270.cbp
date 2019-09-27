@@ -43,6 +43,7 @@
 			<Add library="pw3270cpp" />
 		</Linker>
 		<Unit filename="src/action/init.cc" />
+		<Unit filename="src/action/methods.cc" />
 		<Unit filename="src/action/new.cc" />
 		<Unit filename="src/action/tools.cc" />
 		<Unit filename="src/action/type.c">
@@ -65,6 +66,7 @@
 		<Unit filename="src/session/type.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="src/session/wait.cc" />
 		<Extensions>
 			<code_completion />
 			<envvars />
