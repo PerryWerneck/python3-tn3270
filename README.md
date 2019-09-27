@@ -10,5 +10,5 @@ Installation repositories
 
  You can find instalation repositories in SuSE Build Service:
 
- * Linux (Many distributions): https://build.opensuse.org/package/show/home:PerryWerneck:pw3270/lib3270-python-bindings
+ * Linux (Many distributions): https://build.opensuse.org/package/show/home:PerryWerneck:pw3270/python-tn3270
 
