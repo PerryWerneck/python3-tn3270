@@ -122,7 +122,6 @@
 		DLL_PRIVATE void 		  py3270_action_type_init(PyTypeObject *type);
 		DLL_PRIVATE void 		  py3270_session_type_init(PyTypeObject *type);
 
-
 		// Session object
 		DLL_PRIVATE PyObject	* py3270_session_alloc(PyTypeObject *type, PyObject *args, PyObject *kwds);
 		DLL_PRIVATE void		  py3270_session_dealloc(PyObject * self);
@@ -150,6 +149,7 @@
 		DLL_PRIVATE PyObject	* py3270_action_wait(PyObject *self, PyObject *args);
 
 		DLL_PRIVATE PyObject	* py3270_action_get_activatable(PyObject *self, void *dunno);
+		DLL_PRIVATE PyObject 	* py3270_action_str(PyObject *self);
 
 		/*
 

@@ -93,7 +93,7 @@ PyObject * py3270_action_get_activatable(PyObject *self, void *dunno) {
 
 }
 
-DLL_PRIVATE PyObject * py3270_action_wait(PyObject *self, PyObject *args) {
+PyObject * py3270_action_wait(PyObject *self, PyObject *args) {
 
 	return py3270_action_call(self, [args, self](TN3270::Action &action) {
 
@@ -101,6 +101,16 @@ DLL_PRIVATE PyObject * py3270_action_wait(PyObject *self, PyObject *args) {
 
 		Py_INCREF(self);
 		return self;
+
+	});
+
+}
+
+PyObject * py3270_action_str(PyObject *self) {
+
+	return py3270_action_call(self, [](TN3270::Action &action) {
+
+		return PyUnicode_FromString(action.getSummary());
 
 	});
 

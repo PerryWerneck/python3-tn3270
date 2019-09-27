@@ -23,6 +23,7 @@ if session.reconnect.activatable:
     print("Reconnecting...")
     session.reconnect().wait(10)
 
+print(session.reconnect)
 print(session.connected)
 
 #print('----------------------')

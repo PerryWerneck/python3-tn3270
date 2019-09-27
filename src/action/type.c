@@ -86,6 +86,7 @@ PyTypeObject py3270_action_type = {
 
 	.tp_methods = py3270_action_methods,
 	.tp_getset = py3270_action_attributes,
+	.tp_str = py3270_action_str,
 
 	.tp_dealloc = py3270_action_dealloc,
 

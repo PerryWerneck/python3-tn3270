@@ -70,30 +70,6 @@ static struct PyModuleDef definition = {
 	.m_free = (freefunc) cleanup
 };
 
-/*
-static PyTypeObject ActionType = {
-
-	PyVarObject_HEAD_INIT(NULL, 0)
-
-	.tp_name = "tn3270.Action",
-	.tp_doc = "TN3270 Action Object",
-	.tp_basicsize = sizeof(pyAction),
-	.tp_itemsize = 0,
-	.tp_flags = Py_TPFLAGS_DEFAULT,
-
-//	.tp_new = py3270_session_alloc,
-//	.tp_dealloc = py3270_session_dealloc,
-
-//	.tp_init = py3270_session_init,
-//	.tp_finalize = py3270_session_finalize,
-
-//	.tp_str = py3270_session_str,
-
-//	.tp_methods = py3270_session_methods,
-
-};
-*/
-
 /*---[ Implement ]----------------------------------------------------------------------------------*/
 
 PyMODINIT_FUNC PyInit_tn3270(void)
