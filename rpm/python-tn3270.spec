@@ -5,7 +5,7 @@ Version:	5.2
 Release:	0
 License:	GPL-2.0
 Source:		%{name}-%{version}.tar.xz
-URL:		https://portal.softwarepublico.gov.br/social/pw3270/
+URL:		https://github.com/PerryWerneck/python-tn3270
 Group:      Development/Libraries/Python
 
 BuildRoot:	/var/tmp/%{name}-%{version}
