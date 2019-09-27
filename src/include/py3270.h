@@ -75,6 +75,7 @@
 	#include <functional>
 	#include <exception>
 	#include <stdexcept>
+	#include <system_error>
 	#include <vector>
 	#include <lib3270/ipc.h>
 	#include <lib3270/ipc/action.h>
