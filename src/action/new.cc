@@ -43,8 +43,8 @@ DLL_PRIVATE PyObject * py3270_action_new_from_session(PyObject *session, void *a
 
 	pyAction * pObj = (pyAction *) _PyObject_New(&py3270_action_type);
 
-	pObj->session = session;
-	pObj->action = ((pySession *) session)->host->getAction((const LIB3270_ACTION *) action);
+	pObj->session	= (pySession *) session;
+	pObj->action	= pObj->session->host->getAction((const LIB3270_ACTION *) action);
 
 	debug("%s: ob_refcnt@%p=%ld",__FUNCTION__,pObj,((PyObject *) pObj)->ob_refcnt);
 

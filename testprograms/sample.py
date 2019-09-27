@@ -23,8 +23,6 @@ if session.reconnect.activatable:
     print("Reconnecting...")
     session.reconnect().wait(10)
 
-#session.connect('')
-
 print(session.connected)
 
 #print('----------------------')
@@ -37,10 +35,9 @@ print("-----------------------------------------------------------------------")
 print(session)
 print("-----------------------------------------------------------------------")
 
-session.enter().wait(2)
+session.enter().wait(14,2,"Senha")
 
-
-#session.set("value")
+session.set("value")
 
 print("-----------------------------------------------------------------------")
 print(session)

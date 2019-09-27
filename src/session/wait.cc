@@ -36,84 +36,68 @@
 
 /*---[ Implement ]----------------------------------------------------------------------------------*/
 
- PyObject * py3270_session_wait(PyObject *self, PyObject *args) {
+ void py3270_wait(TN3270::Host &host, PyObject *args) {
 
- 	return py3270_session_call(self, [args](TN3270::Host &host){
+	switch(PyTuple_Size(args)) {
+	case 0:	// No time defined, use the default one.
+		host.waitForReady();
+		break;
 
-		switch(PyTuple_Size(args)) {
-		case 0:	// No time defined, use the default one.
-			host.waitForReady();
-			break;
+	case 1:	// Only one argument, its the time.
+		{
+			unsigned int seconds;
 
-		case 1:	// Has argument, wait for it.
-			{
-				unsigned int seconds;
+			if(!PyArg_ParseTuple(args, "I", &seconds))
+				throw std::system_error(EINVAL, std::system_category());
 
-				if(!PyArg_ParseTuple(args, "I", &seconds))
-					return (PyObject *) NULL;
+			host.waitForReady(seconds);
+		}
+		break;
 
-				host.waitForReady(seconds);
-			}
-			break;
+	case 2:	// 2 arguments, it's the address and content.
+		{
+			int baddr;
+			const char *text;
 
-		default:
-			throw std::system_error(EINVAL, std::system_category());
+			if(!PyArg_ParseTuple(args, "is", &baddr, &text))
+				throw std::system_error(EINVAL, std::system_category());
+
+			host.wait(baddr,text);
+		}
+		break;
+
+	case 3:	// 3 arguments, it's the row, col, and content.
+		{
+			unsigned int row, col;
+			const char *text;
+
+			if (!PyArg_ParseTuple(args, "IIs", &row, &col, &text))
+				throw std::system_error(EINVAL, std::system_category());
+
+			host.wait(row,col,text);
 
 		}
+		break;
 
-		return PyLong_FromLong(0);
+	default:
+		throw std::system_error(EINVAL, std::system_category());
+
+	}
+
+
+ }
+
+
+ PyObject * py3270_session_wait(PyObject *self, PyObject *args) {
+
+ 	return py3270_session_call(self, [self, args](TN3270::Host &host){
+
+		py3270_wait(host, args);
+
+		Py_INCREF(self);
+		return self;
 
  	});
 
  }
 
-
-/*
- PyObject * terminal_set_string_at(PyObject *self, PyObject *args) {
-
-	int row, col, rc;
-	const char *text;
-
-	if (!PyArg_ParseTuple(args, "iis", &row, &col, &text)) {
-		PyErr_SetString(terminalError, strerror(EINVAL));
-		return NULL;
-	}
-
-	try {
-
-		rc = ((pw3270_TerminalObject *) self)->session->set_string_at(row,col,text);
-
-	} catch(std::exception &e) {
-
-		PyErr_SetString(terminalError, e.what());
-		return NULL;
-	}
-
-	return PyLong_FromLong(rc);
-
- }
-
- PyObject * terminal_set_cursor_at(PyObject *self, PyObject *args) {
-
- 	int row, col, rc;
-
-	if (!PyArg_ParseTuple(args, "ii", &row, &col)) {
-		PyErr_SetString(terminalError, strerror(EINVAL));
-		return NULL;
-	}
-
-	try {
-
-		rc = ((pw3270_TerminalObject *) self)->session->set_cursor_position(row,col);
-
-	} catch(std::exception &e) {
-
-		PyErr_SetString(terminalError, e.what());
-		return NULL;
-	}
-
-	return PyLong_FromLong(rc);
-
- }
-
-*/

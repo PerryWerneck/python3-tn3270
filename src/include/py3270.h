@@ -90,6 +90,8 @@
 
 	DLL_PRIVATE PyObject	* py3270_action_call(PyObject *self, std::function<PyObject * (TN3270::Action &action)> worker) noexcept;
 
+	DLL_PRIVATE void		  py3270_wait(Host &host, PyObject *args);
+
 	extern "C" {
 
 #else
@@ -106,7 +108,7 @@
 
 		typedef struct {
 			PyObject_HEAD
-			PyObject	* session;
+			pySession	* session;
 			Action		* action;
 		} pyAction;
 

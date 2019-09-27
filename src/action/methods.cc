@@ -97,31 +97,9 @@ DLL_PRIVATE PyObject * py3270_action_wait(PyObject *self, PyObject *args) {
 
 	return py3270_action_call(self, [args, self](TN3270::Action &action) {
 
-		switch(PyTuple_Size(args)) {
-		case 0:
-			action.wait();
-			break;
+		py3270_wait( * ((pyAction *) self)->session->host, args);
 
-		case 1:
-			{
-				unsigned int seconds;
-
-				if (!PyArg_ParseTuple(args, "I", &seconds))
-					return (PyObject *) NULL;
-
-				action.wait(seconds);
-
-			}
-			break;
-
-		default:
-			throw std::system_error(EINVAL, std::system_category());
-
-		}
-
-		debug("%s: ob_refcnt@%p=%ld",__FUNCTION__,self,self->ob_refcnt);
 		Py_INCREF(self);
-
 		return self;
 
 	});
