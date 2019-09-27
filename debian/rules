@@ -50,10 +50,10 @@ install: build
 	dh_installdirs
 
 	# Install ooRexx extension
-	make DESTDIR=$(PWD)/debian/lib3270-python-bindings install
+	make DESTDIR=$(PWD)/debian/python-tn3270 install
 
 	# Create updated file lists
-	find $(PWD)/debian/lib3270-python-bindings -type f | sed -e "s@^$(PWD)/debian/lib3270-python-bindings/@/@g" > $(PWD)/debian/lib3270-python-bindings.install
+	find $(PWD)/debian/python-tn3270 -type f | sed -e "s@^$(PWD)/debian/python-tn3270/@/@g" > $(PWD)/debian/python-tn3270.install
 
 	# --- end custom part for installing
 
