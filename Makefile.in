@@ -70,6 +70,7 @@ datarootdir=@datarootdir@
 localedir=@localedir@
 docdir=@docdir@
 sysconfdir=@sysconfdir@
+PYTHON_SITELIB=@PYTHON_SITELIB@
 
 BASEDIR=@BASEDIR@
 
@@ -157,8 +158,24 @@ $(OBJRLS)/%.o: \
 
 	@echo $< ...
 	@$(MKDIR) $(dir $@)
+
 	@$(CXX) \
+		$(CXXFLAGS) \
+		-Wall -Wextra \
+		-DNDEBUG=1 \
+		-o $@ \
+		-c $<
+
+$(OBJRLS)/%.o: \
+	%.c \
+	$(DEPENDS)
+
+	@echo $< ...
+	@$(MKDIR) $(dir $@)
+
+	@$(CC) \
 		$(CFLAGS) \
+		-Wall -Wextra \
 		-DNDEBUG=1 \
 		-o $@ \
 		-c $<
@@ -186,6 +203,7 @@ $(BINRLS)/$(LIBNAME)@DLLEXT@: \
 	@$(LD) \
 		-shared -Wl,-soname,$(@F) \
 		-o $@ \
+		-L$(OBJRLS) \
 		$(LDFLAGS) \
 		$^ \
 		$(LIBS)
@@ -194,6 +212,10 @@ $(BINRLS)/$(LIBNAME)@DLLEXT@: \
 
 install: \
 	$(BINRLS)/$(LIBNAME)@DLLEXT@
+
+	@echo $(INSTALL_PROGRAM) \
+		$(BINRLS)/$(LIBNAME)@DLLEXT@) \
+		$(DESTDIR)$(PYTHON_SITELIB)
 
 
 #---[ Debug Targets ]--------------------------------------------------------------------

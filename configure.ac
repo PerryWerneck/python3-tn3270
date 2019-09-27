@@ -216,6 +216,10 @@ PKG_CHECK_MODULES( [PYTHON], [python3], AC_DEFINE(HAVE_PYTHON3), AC_MSG_ERROR([P
 AC_SUBST(PYTHON_LIBS)
 AC_SUBST(PYTHON_CFLAGS)
 
+AC_ARG_WITH([python-sitelib], [AS_HELP_STRING([--with-python-sitelib], [Set python-sitelib])], [ app_cv_python_sitelib="$withval" ],[ app_cv_python_sitelib=`python3 -c 'import site; print(site.getsitepackages().pop(0))'` ])
+AC_DEFINE_UNQUOTED(PYTHON_SITELIB, $app_cv_python_sitelib)
+AC_SUBST(PYTHON_SITELIB,$app_cv_python_sitelib)
+
 dnl ---------------------------------------------------------------------------
 dnl Check for ELF symbol visibility support
 dnl ---------------------------------------------------------------------------
