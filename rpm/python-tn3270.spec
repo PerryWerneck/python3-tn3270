@@ -47,7 +47,7 @@ make Release
 
 %install
 
-%makeinstall
+%make_install
 %fdupes %{buildroot}
 
 %clean
