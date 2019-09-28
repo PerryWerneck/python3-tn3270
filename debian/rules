@@ -20,14 +20,8 @@ build-stamp:
 	dh_testdir
 
 	# Add here commands to compile the package.
-	aclocal
-	autoconf
-
-	./configure
-
-	rm -f debian/*.install
-	make clean
-	make Release
+	./autogen.sh
+	make all
 	# --- end custom part for compiling
 
 	touch build-stamp
@@ -49,7 +43,7 @@ install: build
 	dh_clean -k
 	dh_installdirs
 
-	# Install ooRexx extension
+	# Install extension
 	make DESTDIR=$(PWD)/debian/python-tn3270 install
 
 	# Create updated file lists

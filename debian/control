@@ -2,7 +2,7 @@ Source: python-tn3270
 Section: unknown
 Priority: optional
 Maintainer: Perry Werneck <perry.werneck@gmail.com>
-Build-Depends: debhelper (>= 7), autotools-dev, autoconf, gettext, python-dev, libipc3270-dev
+Build-Depends: debhelper (>= 7), autotools-dev, autoconf, gettext, python3-dev, libipc3270-dev
 
 Package: python-tn3270
 Architecture: any
