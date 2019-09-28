@@ -6,6 +6,7 @@ Build-Depends: debhelper (>= 7), autotools-dev, autoconf, gettext, python3-dev, 
 
 Package: python-tn3270
 Architecture: any
+Recommends: pw3270-plugin-ipc
 Depends: ${misc:Depends}, ${shlibs:Depends}, lib3270 
 Description: PHP Extension Module implementing tn3270 protocol.
  This is an extension for acessing 3270 hosts directly from python apps.
