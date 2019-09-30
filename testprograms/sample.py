@@ -7,7 +7,7 @@ import tn3270
 print("Using TN3270 Version " + tn3270.version())
 print(tn3270.revision())
 
-session = tn3270.Session("")
+session = tn3270.Session(":a")
 
 print("Using tn3270 version " + session.version + " revision " + session.revision)
 
@@ -16,6 +16,8 @@ print("Using tn3270 version " + session.version + " revision " + session.revisio
 #print(session.connected)
 #print(session.url)
 
+print(session.reconnect)
+
 #
 # Can reconnect? If yes do it!
 #
@@ -23,7 +25,6 @@ if session.reconnect.activatable:
     print("Reconnecting...")
     session.reconnect().wait(10)
 
-print(session.reconnect)
 print(session.connected)
 
 #print('----------------------')

@@ -42,13 +42,27 @@
 DLL_PRIVATE PyObject * py3270_action_new_from_session(PyObject *session, void *action) {
 
 	pyAction * pObj = (pyAction *) _PyObject_New(&py3270_action_type);
-
+	pObj->action	= nullptr;
 	pObj->session	= (pySession *) session;
-	pObj->action	= pObj->session->host->getAction((const LIB3270_ACTION *) action);
-
-	debug("%s: ob_refcnt@%p=%ld",__FUNCTION__,pObj,((PyObject *) pObj)->ob_refcnt);
-
 	Py_INCREF(pObj->session);
+
+	try {
+
+		pObj->action = pObj->session->host->getAction((const LIB3270_ACTION *) action);
+
+	} catch(const std::exception &e) {
+
+		Py_DECREF((PyObject *) pObj);
+		PyErr_SetString(PyExc_RuntimeError, e.what());
+		return NULL;
+
+	} catch(...) {
+
+		Py_DECREF((PyObject *) pObj);
+		PyErr_SetString(PyExc_RuntimeError, "Unexpected error creating action object");
+		return NULL;
+
+	}
 
 	return (PyObject *) pObj;
 
@@ -62,7 +76,9 @@ void py3270_action_dealloc(PyObject * self) {
 
 	Py_DECREF(pObj->session);
 
-	delete pObj->action;
+	if(pObj->action)
+		delete pObj->action;
+
 	pObj->action = nullptr;
 
 }
