@@ -63,14 +63,25 @@ void py3270_session_type_init(PyTypeObject *type) {
 		auto actions	= TN3270::getActions();
 		size_t ix = 0;
 
+		// Compute block size
 		size_t szData = sizeof(struct PyGetSetDef) * (attributes.size() + actions.size() + 1);
 
+		for(size_t i = 0; py3270_session_attributes[i].name; i++) {
+			szData += sizeof(struct PyGetSetDef);
+		}
+
+		// Allocate and clean
 		type->tp_getset = (struct PyGetSetDef *) malloc(szData);
 		memset(type->tp_getset,0,szData);
 
-		for(auto attribute : attributes) {
+		// Copy internal attributes
+		for(size_t i = 0; py3270_session_attributes[i].name; i++) {
+			type->tp_getset[ix] = py3270_session_attributes[i];
+			ix++;
+		}
 
-//			debug("Creating attribute %s",attribute->name);
+		// Copy lib3270's attributes
+		for(auto attribute : attributes) {
 
 			py3270_session_attribute_init(&type->tp_getset[ix], (const LIB3270_PROPERTY *) attribute);
 

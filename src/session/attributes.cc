@@ -87,6 +87,39 @@ PyObject * py3270_session_getter(PyObject *self, void *name) {
 
 int py3270_session_setter(PyObject *self, PyObject *value, void *name) {
 
+	try {
+
+		auto attribute = ((pySession * ) self)->host->getAttribute((const char *) name);
+
+		if(PyLong_Check(value)) {
+
+			// Is a long, use PyLong_AsUnsignedLong
+			attribute = (int) PyLong_AsUnsignedLong(value);
+
+		} else if(PyBool_Check(value)) {
+
+			// Is a boolean, use PyLong_AsUnsignedLong != 0
+			attribute = (bool) (PyLong_AsUnsignedLong(value) != 0);
+
+		} else if(PyUnicode_Check(value)) {
+
+			// Is a unicode string
+			attribute = (const char *) PyUnicode_AsUTF8AndSize(value,NULL);
+
+		}
+
+	} catch(const exception &e) {
+
+		PyErr_SetString(PyExc_RuntimeError, e.what());
+		return -1;
+
+	} catch( ... ) {
+
+		PyErr_SetString(PyExc_RuntimeError, "Unexpected error setting timeout");
+		return -1;
+
+	}
+
 	return 0;
 }
 

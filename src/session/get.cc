@@ -93,3 +93,12 @@
 
  }
 
+ PyObject * py3270_session_get_timeout(PyObject *self, void *dunno) {
+
+ 	return py3270_session_call(self, [](TN3270::Host &host){
+
+		return PyLong_FromLong(host.getTimeout());
+
+ 	});
+
+ }

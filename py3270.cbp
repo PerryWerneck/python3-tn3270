@@ -60,6 +60,7 @@
 		<Unit filename="src/session/attributes.cc" />
 		<Unit filename="src/session/get.cc" />
 		<Unit filename="src/session/init.cc" />
+		<Unit filename="src/session/misc.cc" />
 		<Unit filename="src/session/network.cc" />
 		<Unit filename="src/session/set.cc" />
 		<Unit filename="src/session/tools.cc" />

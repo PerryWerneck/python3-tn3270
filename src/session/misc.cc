@@ -36,88 +36,32 @@
 
 /*---[ Implement ]----------------------------------------------------------------------------------*/
 
- PyObject * py3270_session_set(PyObject *self, PyObject *args) {
+ PyObject * py3270_session_find(PyObject *self, PyObject *args) {
 
- 	return py3270_session_call(self, [args](TN3270::Host &host){
+ 	return py3270_session_call(self, [self, args](TN3270::Host &host){
 
-		switch(PyTuple_Size(args)) {
-		case 1:	// Only text.
-			{
-				const char *text;
+		const char *text;
 
-				if(!PyArg_ParseTuple(args, "s", &text))
-					return (PyObject *) NULL;
-
-				host.push(text,-1);
-
-			}
-			break;
-
-		case 2:	// Address and text.
-			{
-				int baddr;
-				const char *text;
-
-				if(!PyArg_ParseTuple(args, "is", &baddr, &text))
-					return (PyObject *) NULL;
-
-				host.push(baddr, text);
-			}
-			break;
-
-		case 3:	// Row, col and text
-			{
-				unsigned int row, col;
-				const char *text;
-
-				if (!PyArg_ParseTuple(args, "IIs", &row, &col, &text))
-					return (PyObject *) NULL;
-
-				host.push(row,col,text);
-
-			}
-			break;
-
-		default:
+		if(!PyArg_ParseTuple(args, "s", &text))
 			throw std::system_error(EINVAL, std::system_category());
 
-		}
-
-		return PyLong_FromLong(0);
+		return PyLong_FromLong(host.find(text));
 
  	});
 
  }
 
- int py3270_session_set_timeout(PyObject *self, PyObject *value, void *dunno) {
+ PyObject	* py3270_session_count(PyObject *self, PyObject *args) {
 
-	try {
+ 	return py3270_session_call(self, [self, args](TN3270::Host &host){
 
-		auto host = ((pySession * ) self)->host;
+		const char *text;
 
-		if(PyLong_Check(value)) {
-
-			host->setTimeout( (time_t) PyLong_AsUnsignedLong(value));
-
-		} else {
-
+		if(!PyArg_ParseTuple(args, "s", &text))
 			throw std::system_error(EINVAL, std::system_category());
 
-		}
+		return PyLong_FromLong(host.count(text));
 
-	} catch(const exception &e) {
-
-		PyErr_SetString(PyExc_RuntimeError, e.what());
-		return -1;
-
-	} catch( ... ) {
-
-		PyErr_SetString(PyExc_RuntimeError, "Unexpected error setting timeout");
-		return -1;
-
-	}
-
-	return 0;
+ 	});
 
  }
-

@@ -66,7 +66,36 @@ static PyMethodDef py3270_session_methods[] = {
     },
 
     {
+		"find",
+		(PyCFunction) py3270_session_find,
+		METH_VARARGS,
+		""
+    },
+
+    {
+		"count",
+		(PyCFunction) py3270_session_count,
+		METH_VARARGS,
+		""
+    },
+
+    {
     	NULL
+	}
+};
+
+
+const struct PyGetSetDef py3270_session_attributes[] = {
+
+	{
+		.name = "timeout",
+		.doc = "Timeout (in seconds) for host access",
+		.get = py3270_session_get_timeout,
+		.set = py3270_session_set_timeout
+	},
+
+	{
+		.name = NULL
 	}
 };
 
