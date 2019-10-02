@@ -143,7 +143,7 @@ PyTypeObject py3270_session_type = {
 	.tp_doc = "TN3270 Session Object",
 	.tp_basicsize = sizeof(pySession),
 	.tp_itemsize = 0,
-	.tp_flags = Py_TPFLAGS_HAVE_FINALIZE|Py_TPFLAGS_DEFAULT,
+	.tp_flags = Py_TPFLAGS_HAVE_FINALIZE|Py_TPFLAGS_DEFAULT|Py_TPFLAGS_BASETYPE,
 
 	.tp_new = py3270_session_alloc,
 	.tp_dealloc = py3270_session_dealloc,

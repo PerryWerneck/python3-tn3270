@@ -4,13 +4,32 @@
 #import inspect
 import tn3270
 
-print("Using TN3270 Version " + tn3270.version())
-print(tn3270.revision())
+class Host(tn3270.Session):
 
-session = tn3270.Session("")
-session.timeout = 10
+    def __init__(self):
 
-print("Using tn3270 version " + session.version + " revision " + session.revision)
+        super().__init__(":a")
+        print("Using tn3270 version " + self.version + " revision " + self.revision)
+
+    def reconnect(self):
+        if super().reconnect.activatable:
+            print("Reconnecting...")
+            super().reconnect().wait(10)
+
+
+host = Host()
+
+host.reconnect()
+
+
+
+#print("Using TN3270 Version " + tn3270.version())
+#print(tn3270.revision())
+
+#session = tn3270.Session("")
+#session.timeout = 10
+
+#print("Using tn3270 version " + session.version + " revision " + session.revision)
 
 #print(session.cstate)
 #print(session.width)
@@ -21,9 +40,9 @@ print("Using tn3270 version " + session.version + " revision " + session.revisio
 #
 # Can reconnect? If yes do it!
 #
-if session.reconnect.activatable:
-    print("Reconnecting...")
-    session.reconnect().wait(10)
+#if session.reconnect.activatable:
+#    print("Reconnecting...")
+#    session.reconnect().wait(10)
 
 #print(session.connected)
 #print(session.find('sisbb'))
