@@ -18,19 +18,12 @@
  * programa; se não, escreva para a Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA  02110-1301  USA
  *
- * Este programa está nomeado como misc.cc e possui - linhas de código.
+ * Este programa está nomeado como - e possui - linhas de código.
  *
  * Contatos:
  *
  * perry.werneck@gmail.com	(Alexandre Perry de Souza Werneck)
  * erico.mendonca@gmail.com	(Erico Mascarenhas Mendonça)
- *
- * Implementa métodos básicos inicio/final do objeto python
- *
- * Referências:
- *
- * <https://docs.python.org/2/extending/newtypes.html>
- * <https://docs.python.org/2.7/extending/extending.html#a-simple-example>
  *
  */
 

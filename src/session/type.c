@@ -38,45 +38,80 @@
 
 static PyMethodDef py3270_session_methods[] = {
     {
-		"connect",
-		(PyCFunction) py3270_session_connect,
-		METH_VARARGS,
-		""
+		.ml_name = "connect",
+		.ml_meth = (PyCFunction) py3270_session_connect,
+		.ml_flags = METH_VARARGS,
+		.ml_doc = ""
     },
 
     {
-		"wait",
-		(PyCFunction) py3270_session_wait,
-		METH_VARARGS,
-		""
+		.ml_name = "wait",
+		.ml_meth = (PyCFunction) py3270_session_wait,
+		.ml_flags = METH_VARARGS,
+		.ml_doc = ""
     },
 
     {
-		"set",
-		(PyCFunction) py3270_session_set,
-		METH_VARARGS,
-		""
+		.ml_name = "set",
+		.ml_meth = (PyCFunction) py3270_session_set,
+		.ml_flags = METH_VARARGS,
+		.ml_doc = ""
     },
 
     {
-		"get",
-		(PyCFunction) py3270_session_get,
-		METH_VARARGS,
-		""
+		.ml_name = "get",
+		.ml_meth = (PyCFunction) py3270_session_get,
+		.ml_flags = METH_VARARGS,
+		.ml_doc = ""
     },
 
     {
-		"find",
-		(PyCFunction) py3270_session_find,
-		METH_VARARGS,
-		""
+		.ml_name = "find",
+		.ml_meth = (PyCFunction) py3270_session_find,
+		.ml_flags = METH_VARARGS,
+		.ml_doc = ""
     },
 
     {
-		"count",
-		(PyCFunction) py3270_session_count,
-		METH_VARARGS,
-		""
+		.ml_name = "count",
+		.ml_meth = (PyCFunction) py3270_session_count,
+		.ml_flags = METH_VARARGS,
+		.ml_doc = ""
+    },
+
+    {
+		.ml_name = "setcursor",
+		.ml_meth = (PyCFunction) py3270_session_set_cursor_position,
+		.ml_flags = METH_VARARGS,
+		.ml_doc = ""
+    },
+
+    {
+		.ml_name = "pf",
+		.ml_meth = (PyCFunction) py3270_session_pfkey,
+		.ml_flags = METH_VARARGS,
+		.ml_doc = ""
+    },
+
+    {
+		.ml_name = "pa",
+		.ml_meth = (PyCFunction) py3270_session_pakey,
+		.ml_flags = METH_VARARGS,
+		.ml_doc = ""
+    },
+
+    {
+		.ml_name = "pfkey",
+		.ml_meth = (PyCFunction) py3270_session_pfkey,
+		.ml_flags = METH_VARARGS,
+		.ml_doc = ""
+    },
+
+    {
+		.ml_name = "pakey",
+		.ml_meth = (PyCFunction) py3270_session_pakey,
+		.ml_flags = METH_VARARGS,
+		.ml_doc = ""
     },
 
     {

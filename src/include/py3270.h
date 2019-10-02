@@ -147,6 +147,10 @@
 		DLL_PRIVATE PyObject	* py3270_session_find(PyObject *self, PyObject *args);
 		DLL_PRIVATE PyObject	* py3270_session_count(PyObject *self, PyObject *args);
 
+		DLL_PRIVATE PyObject	* py3270_session_pfkey(PyObject *self, PyObject *args);
+		DLL_PRIVATE PyObject	* py3270_session_pakey(PyObject *self, PyObject *args);
+		DLL_PRIVATE PyObject	* py3270_session_set_cursor_position(PyObject *self, PyObject *args);
+
 		// Action object
 		DLL_PRIVATE PyObject	* py3270_action_new_from_session(PyObject *session, void *action);
 		DLL_PRIVATE void		  py3270_action_dealloc(PyObject * self);

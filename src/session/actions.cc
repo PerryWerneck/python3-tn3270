@@ -25,105 +25,81 @@
  * perry.werneck@gmail.com	(Alexandre Perry de Souza Werneck)
  * erico.mendonca@gmail.com	(Erico Mascarenhas Mendonça)
  *
- * Referências:
- *
- * <https://docs.python.org/2/extending/newtypes.html>
- * <https://docs.python.org/2.7/extending/extending.html#a-simple-example>
- *
  */
 
  #include <py3270.h>
 
 /*---[ Implement ]----------------------------------------------------------------------------------*/
 
-/*
- PyObject * terminal_pfkey(PyObject *self, PyObject *args) {
+PyObject * py3270_session_pfkey(PyObject *self, PyObject *args) {
 
-	int rc, key;
+ 	return py3270_session_call(self, [args](TN3270::Host &host){
 
-	if (!PyArg_ParseTuple(args, "i", &key)) {
-		PyErr_SetString(terminalError, strerror(EINVAL));
-		return NULL;
-	}
+		unsigned int keycode;
 
-	try {
+		if (!PyArg_ParseTuple(args, "I", &keycode))
+			return (PyObject *) NULL;
 
-		rc = ((pw3270_TerminalObject *) self)->session->pfkey(key);
+		host.pfkey((unsigned short) keycode);
 
-	} catch(std::exception &e) {
+		return PyLong_FromLong(0);
 
-		PyErr_SetString(terminalError, e.what());
-		return NULL;
-	}
+	});
 
-	return PyLong_FromLong(rc);
+}
 
- }
+PyObject * py3270_session_pakey(PyObject *self, PyObject *args) {
 
- PyObject * terminal_pakey(PyObject *self, PyObject *args) {
+ 	return py3270_session_call(self, [args](TN3270::Host &host){
 
-	int rc, key;
+		unsigned int keycode;
 
-	if (!PyArg_ParseTuple(args, "i", &key)) {
-		PyErr_SetString(terminalError, strerror(EINVAL));
-		return NULL;
-	}
+		if (!PyArg_ParseTuple(args, "I", &keycode))
+			return (PyObject *) NULL;
 
-	try {
+		host.pakey((unsigned short) keycode);
 
-		rc = ((pw3270_TerminalObject *) self)->session->pakey(key);
+		return PyLong_FromLong(0);
 
-	} catch(std::exception &e) {
+ 	});
 
-		PyErr_SetString(terminalError, e.what());
-		return NULL;
-	}
+}
 
-	return PyLong_FromLong(rc);
+PyObject * py3270_session_set_cursor_position(PyObject *self, PyObject *args) {
 
- }
+ 	return py3270_session_call(self, [args](TN3270::Host &host){
 
- PyObject * terminal_enter(PyObject *self, PyObject *args) {
+		switch(PyTuple_Size(args)) {
+		case 1:	// Only Address
+			{
+				int baddr;
 
-	int rc;
+				if(!PyArg_ParseTuple(args, "i", &baddr))
+					return (PyObject *) NULL;
 
-	try {
+				host.setCursor(baddr);
+			}
+			break;
 
-		rc = ((pw3270_TerminalObject *) self)->session->enter();
+		case 2:	// Row, col
+			{
+				unsigned int row, col;
 
-	} catch(std::exception &e) {
+				if (!PyArg_ParseTuple(args, "II", &row, &col))
+					return (PyObject *) NULL;
 
-		PyErr_SetString(terminalError, e.what());
-		return NULL;
-	}
+				host.setCursor(row,col);
 
-	return PyLong_FromLong(rc);
+			}
+			break;
 
+		default:
+			throw std::system_error(EINVAL, std::system_category());
 
- }
+		}
 
- PyObject * terminal_action(PyObject *self, PyObject *args) {
+		return PyLong_FromLong(0);
 
-	int rc;
-	const char *name;
+ 	});
 
-	if (!PyArg_ParseTuple(args, "s", &name)) {
-		PyErr_SetString(terminalError, strerror(EINVAL));
-		return NULL;
-	}
-
-	try {
-
-		rc = ((pw3270_TerminalObject *) self)->session->action(name);
-
-	} catch(std::exception &e) {
-
-		PyErr_SetString(terminalError, e.what());
-		return NULL;
-	}
-
-	return PyLong_FromLong(rc);
-
-
- }
-*/
+}

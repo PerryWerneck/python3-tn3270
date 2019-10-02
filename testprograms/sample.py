@@ -12,23 +12,18 @@ session.timeout = 10
 
 print("Using tn3270 version " + session.version + " revision " + session.revision)
 
-print(session.timeout)
-
 #print(session.cstate)
 #print(session.width)
 #print(session.connected)
-print(session.url)
-session.url = "http://www.google.com"
-print(session.url)
 
 #print(session.reconnect)
 
 #
 # Can reconnect? If yes do it!
 #
-#if session.reconnect.activatable:
-#    print("Reconnecting...")
-#    session.reconnect().wait(10)
+if session.reconnect.activatable:
+    print("Reconnecting...")
+    session.reconnect().wait(10)
 
 #print(session.connected)
 #print(session.find('sisbb'))

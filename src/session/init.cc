@@ -18,16 +18,14 @@
  * programa; se não, escreva para a Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA  02110-1301  USA
  *
- * Este programa está nomeado como py3270.cc e possui - linhas de código.
+ * Este programa está nomeado como - e possui - linhas de código.
  *
  * Contatos:
  *
  * perry.werneck@gmail.com	(Alexandre Perry de Souza Werneck)
  * erico.mendonca@gmail.com	(Erico Mascarenhas Mendonça)
  *
- * Implementa métodos básicos inicio/final do objeto python
- *
- * Referências:
+ * Referênces:
  *
  * <https://docs.python.org/2/extending/newtypes.html>
  * <https://docs.python.org/2.7/extending/extending.html#a-simple-example>
@@ -93,9 +91,8 @@ void py3270_session_type_init(PyTypeObject *type) {
 
 		}
 
+		// Copy lib3270's actions
 		for(auto action : actions) {
-
-//			debug("Creating action %s",action->name);
 
 			py3270_session_attribute_init(&type->tp_getset[ix], (const LIB3270_PROPERTY *) action);
 
@@ -105,11 +102,10 @@ void py3270_session_type_init(PyTypeObject *type) {
 			ix++;
 
 		}
+
 	}
 
-
 }
-
 
 int py3270_session_init(PyObject *self, PyObject *args, PyObject *kwds) {
 
@@ -126,25 +122,6 @@ int py3270_session_init(PyObject *self, PyObject *args, PyObject *kwds) {
 			id = "";
 
 		session->host = new TN3270::Host(id);
-
-		/*
-		// Load lib3270's actions
-		{
-			auto actions = TN3270::getActions();
-
-			for(auto action : actions) {
-
-				pyAction * object = (pyAction *) _PyObject_New(&py3270_action_type);
-
-				object->host = session->host;
-				object->action = action;
-
-				PyObject_SetAttr(self, PyUnicode_FromString(action->name), (PyObject *) object);
-
-			}
-
-		}
-		*/
 
         return 0;
 
@@ -184,81 +161,3 @@ void py3270_session_dealloc(PyObject * self) {
 	Py_TYPE(self)->tp_free(self);
 
 }
-
-	/*
-
-	const char *id = "";
-
-	if (!PyArg_ParseTuple(args, "s", &id))
-		id = "";
-
-
-	if(session) {
-
-		try {
-
-			session->host = new TN3270::Host(id);
-
-		} catch(const exception &e) {
-
-			PyErr_SetString(PyExc_RuntimeError, e.what());
-
-		} catch( ... ) {
-
-			PyErr_SetString(PyExc_RuntimeError, "Unexpected error in core module");
-
-		}
-
-	}
-
-	type->tp_free(session);
-
-	return NULL;
-
-}
-
-void py3270_session_dealloc(pySession * self) {
-
-	if(self->host) {
-		delete self->host;
-	}
-
-	Py_TYPE(self)->tp_free((PyObject *) self);
-
-}
-	*/
-
-
-/*
-PyObject * terminal_new(PyTypeObject *type, PyObject *args, PyObject *kwds) {
-
-	PW3270_NAMESPACE::session * session;
-	const char *id = "";
-
-	if (!PyArg_ParseTuple(args, "s", &id)) {
-		id = "";
-	}
-
-	trace("%s(%s)",__FUNCTION__,id);
-
-	try {
-
-		session = PW3270_NAMESPACE::session::create(id);
-
-	} catch(std::exception &e) {
-
-		trace("%s failed: %s",__FUNCTION__,e.what());
-		PyErr_SetString(terminalError, e.what());
-		return NULL;
-
-	}
-
-    pw3270_TerminalObject *self = (pw3270_TerminalObject *) type->tp_alloc(type, 0);
-
-	self->session = session;
-
-    return (PyObject *)self;
-}
-
-
-*/

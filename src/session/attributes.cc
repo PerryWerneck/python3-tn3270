@@ -115,7 +115,7 @@ int py3270_session_setter(PyObject *self, PyObject *value, void *name) {
 
 	} catch( ... ) {
 
-		PyErr_SetString(PyExc_RuntimeError, "Unexpected error setting timeout");
+		PyErr_SetString(PyExc_RuntimeError, "Unexpected error setting attribute");
 		return -1;
 
 	}
