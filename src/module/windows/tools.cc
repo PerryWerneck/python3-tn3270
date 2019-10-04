@@ -51,6 +51,7 @@
 		"Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\pw3270"
 	};
 
+	memset(datadir,0,sizeof(datadir));
 	for(size_t ix = 0; !*datadir && ix < (sizeof(keys)/sizeof(keys[0])); ix++) {
 
 		rc = RegOpenKeyEx(HKEY_LOCAL_MACHINE,keys[ix],0,KEY_QUERY_VALUE,&hKey);

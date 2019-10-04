@@ -229,7 +229,8 @@ python-@PYTHON_VERSION@-tn3270-@PACKAGE_VERSION@.@host_cpu@.zip: \
 		-9 \
 		-j \
 		$@ \
-		$(BINRLS)/$(LIBNAME)@DLLEXT@
+		$(BINRLS)/$(LIBNAME)@DLLEXT@ \
+		testprograms/*.py
 
 #---[ Debug Targets ]--------------------------------------------------------------------
 
