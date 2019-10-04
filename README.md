@@ -37,10 +37,10 @@ Compiling for Windows (With MSYS2)
 
 	* git clone https://github.com/PerryWerneck/python-tn3270.git
 
-6. Build library using the mingw shell
+6. Build zip file with the modules using the mingw shell
 
 	* cd python-tn3270
 	* ./autogen.sh
-	* make all
+	* make zip
 
 

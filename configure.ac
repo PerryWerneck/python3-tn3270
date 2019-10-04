@@ -60,11 +60,6 @@ dnl ---------------------------------------------------------------------------
 dnl Version info
 dnl ---------------------------------------------------------------------------
 
-app_cv_description="Python bindings for lib3270/pw3270"
-
-AC_SUBST(PACKAGE_DESCRIPTION,"$app_cv_description")
-AC_DEFINE_UNQUOTED(PACKAGE_DESCRIPTION,"$app_cv_description")
-
 app_vrs_major=$(echo $VERSION | cut -d. -f1)
 app_vrs_minor=$(echo $VERSION | cut -d. -f2)
 
@@ -145,6 +140,7 @@ dnl ---------------------------------------------------------------------------
 AC_PATH_TOOL([AR], [ar], [ar])
 AC_PATH_TOOL([WINDRES], [windres], [no])
 AC_PATH_TOOL([VALGRIND], [valgrind], [no])
+AC_PATH_TOOL([ZIP], [zip], [zip])
 
 PKG_CHECK_EXISTS
 
@@ -191,7 +187,7 @@ fi
 AC_SUBST(IPC3270_LIBS)
 AC_SUBST(IPC3270_CFLAGS)
 
-AC_ARG_WITH([product-name], [AS_HELP_STRING([--with-product-name], [Set product name])], [ app_cv_product="$withval" ],[ app_cv_product=`pkg-config --variable=product_name ipc3270` ])
+AC_ARG_WITH([product-name], [AS_HELP_STRING([--with-product-name], [Set product name])], [ app_cv_product="$withval" ],[ app_cv_product=`$PKG_CONFIG --variable=product_name ipc3270` ])
 AC_DEFINE_UNQUOTED(PRODUCT_NAME, $app_cv_product)
 AC_SUBST(PRODUCT_NAME,$app_cv_product)
 
@@ -207,6 +203,10 @@ AC_SUBST(PYTHON_CFLAGS)
 AC_ARG_WITH([python-sitelib], [AS_HELP_STRING([--with-python-sitelib], [Set python-sitelib])], [ app_cv_python_sitelib="$withval" ],[ app_cv_python_sitelib=`python3 -c 'import site; print(site.getsitepackages().pop(0))'` ])
 AC_DEFINE_UNQUOTED(PYTHON_SITELIB, $app_cv_python_sitelib)
 AC_SUBST(PYTHON_SITELIB,$app_cv_python_sitelib)
+
+AC_ARG_WITH([python-version], [AS_HELP_STRING([--with-python-version], [Set Python Version])], [ app_cv_python_version="$withval" ],[ app_cv_python_version=`$PKG_CONFIG --modversion python3` ])
+AC_DEFINE_UNQUOTED(PYTHON_VERSION, $app_cv_python_version)
+AC_SUBST(PYTHON_VERSION,$app_cv_python_version)
 
 dnl ---------------------------------------------------------------------------
 dnl Check for ELF symbol visibility support
@@ -295,6 +295,11 @@ fi
 dnl ---------------------------------------------------------------------------
 dnl Configure program options
 dnl ---------------------------------------------------------------------------
+
+app_cv_description="Python $app_cv_python_version bindings for lib3270/pw3270"
+
+AC_SUBST(PACKAGE_DESCRIPTION,"$app_cv_description")
+AC_DEFINE_UNQUOTED(PACKAGE_DESCRIPTION,"$app_cv_description")
 
 AC_SUBST(OSNAME,$app_cv_osname)
 AC_SUBST(LIBS)

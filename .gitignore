@@ -25,3 +25,4 @@ scripts
 *.[0-9]
 *.bak
 *.rc
+*.cache

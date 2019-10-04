@@ -218,6 +218,18 @@ install: \
 		$(BINRLS)/$(LIBNAME)@DLLEXT@ \
 		$(DESTDIR)$(PYTHON_SITELIB)
 
+zip: \
+	python-@PYTHON_VERSION@-tn3270-@PACKAGE_VERSION@.@host_cpu@.zip
+
+python-@PYTHON_VERSION@-tn3270-@PACKAGE_VERSION@.@host_cpu@.zip: \
+	$(BINRLS)/$(LIBNAME)@DLLEXT@
+
+	@rm -f $@
+	@$(ZIP) \
+		-9 \
+		-j \
+		$@ \
+		$(BINRLS)/$(LIBNAME)@DLLEXT@
 
 #---[ Debug Targets ]--------------------------------------------------------------------
 
