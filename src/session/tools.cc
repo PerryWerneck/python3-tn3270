@@ -44,7 +44,7 @@ PyObject * py3270_session_call(PyObject *self, std::function<PyObject * (TN3270:
 
 	} catch( ... ) {
 
-		PyErr_SetString(PyExc_RuntimeError, "Unexpected error in core module");
+		PyErr_SetString(PyExc_RuntimeError, "Unexpected error in tn3270 module");
 
 	}
 

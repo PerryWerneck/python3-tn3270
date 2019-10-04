@@ -60,7 +60,7 @@ dnl ---------------------------------------------------------------------------
 dnl Version info
 dnl ---------------------------------------------------------------------------
 
-app_cv_description="Python binding for pw3270/lib3270"
+app_cv_description="Python bindings for lib3270/pw3270"
 
 AC_SUBST(PACKAGE_DESCRIPTION,"$app_cv_description")
 AC_DEFINE_UNQUOTED(PACKAGE_DESCRIPTION,"$app_cv_description")
@@ -101,6 +101,7 @@ case "$host" in
 		CFLAGS="$CFLAGS -pthread -D_WIN32_WINNT=0x0600"
 		CXXFLAGS="$CXXFLAGS -pthread -D_WIN32_WINNT=0x0600"
 		LIBS="$LIBS -lws2_32 -lwtsapi32 -lcomdlg32"
+		LDFLAGS="$LDFLAGS -static-libgcc -static-libstdc++ -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive,-Bdynamic"
 		DLLEXT=".dll"
 
 		app_win32_revision=$(date +%-y.%-m.%-d.%-H)
