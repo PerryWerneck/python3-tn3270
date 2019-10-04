@@ -85,6 +85,10 @@ AC_SUBST(PACKAGE_REVISION,$app_cv_revision)
 AC_SUBST(PACKAGE_MAJOR_RELEASE,$app_rls_major)
 AC_SUBST(PACKAGE_MINOR_RELEASE,$app_rls_minor)
 
+AC_ARG_WITH([product-name], [AS_HELP_STRING([--with-product-name], [Set product name])], [ app_cv_product="$withval" ],[ app_cv_product=`$PKG_CONFIG --variable=product_name ipc3270` ])
+AC_DEFINE_UNQUOTED(PRODUCT_NAME, $app_cv_product)
+AC_SUBST(PRODUCT_NAME,$app_cv_product)
+
 dnl ---------------------------------------------------------------------------
 dnl Check for OS specifics
 dnl ---------------------------------------------------------------------------
@@ -178,18 +182,28 @@ AC_ARG_WITH([static-ipc3270],
 ])
 
 if test "$app_cv_static_ipc3270" == "yes"; then
+
 	PKG_CHECK_MODULES( [IPC3270], [ipc3270-static], AC_DEFINE(USING_STATIC_IPC3270), AC_MSG_ERROR([IPC3270 not present.]))
+
 else
-	LDFLAGS="$LDFLAGS -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive,-Bdynamic"
+
 	PKG_CHECK_MODULES( [IPC3270], [ipc3270], AC_DEFINE(USING_SHARED_IPC3270), AC_MSG_ERROR([IPC3270 not present.]))
+
+	case "$host" in
+	*-mingw32|*-pc-msys)
+		LDFLAGS="$LDFLAGS -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive,-Bdynamic"
+		AC_MSG_NOTICE([Using shared version of libipc3270 with static winpthread.])
+		;;
+
+	*)
+		AC_MSG_NOTICE([Using shared version of libipc3270.])
+
+	esac
+
 fi
 
 AC_SUBST(IPC3270_LIBS)
 AC_SUBST(IPC3270_CFLAGS)
-
-AC_ARG_WITH([product-name], [AS_HELP_STRING([--with-product-name], [Set product name])], [ app_cv_product="$withval" ],[ app_cv_product=`$PKG_CONFIG --variable=product_name ipc3270` ])
-AC_DEFINE_UNQUOTED(PRODUCT_NAME, $app_cv_product)
-AC_SUBST(PRODUCT_NAME,$app_cv_product)
 
 dnl ---------------------------------------------------------------------------
 dnl Check for Python
