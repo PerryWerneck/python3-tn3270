@@ -32,10 +32,18 @@
 /*---[ Implement ]----------------------------------------------------------------------------------*/
 
 PyObject * py3270_get_module_version(PyObject *self, PyObject *args) {
+#ifdef PACKAGE_VERSION
     return PyUnicode_FromString(PACKAGE_VERSION);
+#else
+    return PyUnicode_FromString("");
+#endif // PACKAGE_VERSION
 }
 
 PyObject * py3270_get_module_revision(PyObject *self, PyObject *args) {
+#ifdef PACKAGE_REVISION
     return PyLong_FromLong(PACKAGE_REVISION);
+#else
+    return PyLong_FromLong(0);
+#endif // PACKAGE_REVISION
 }
 

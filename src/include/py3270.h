@@ -31,10 +31,19 @@
 
 	#define PY3270_H_INCLUDED
 
+	#ifdef HAVE_CONFIG_H
+		#include <config.h>
+	#else
+		#define PACKAGE_DESCRIPTION "Python bindings for lib3270/pw3270"
+		#define HAVE_GNUC_VISIBILITY 1
+	#endif // HAVE_CONFIG_H
+
+	#ifndef PACKAGE_NAME
+		#define PACKAGE_NAME "Python-TN3270"
+	#endif // !PACKAGE_NAME
+
 	#define PY_SSIZE_T_CLEAN
 	#include <Python.h>
-
-	#include <config.h>
 
 	#if defined(_WIN32)
 

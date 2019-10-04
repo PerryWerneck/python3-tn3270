@@ -36,18 +36,16 @@
  *
  */
 
- #include <config.h>
- #include <winsock2.h>
- #include <windows.h>
  #include <py3270.h>
+
+ #if defined(_WIN32) && defined(USING_STATIC_IPC3270)
+
  #include <lmcons.h>
  #include <delayimp.h>
  #include <fcntl.h>
  #include <string>
  #include <stdexcept>
  #include <lib3270.h>
-
- #ifdef USING_STATIC_IPC3270
 
  extern "C" {
 

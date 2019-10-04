@@ -1,10 +1,13 @@
 from distutils.core import setup, Extension
 
-tn3270 = Extension('tn3270',
-		define_macros = [('MAJOR_VERSION', '5'), ('MINOR_VERSION', '2')],
+tn3270 = Extension(
+		'tn3270',
+		define_macros = [
+			('PACKAGE_NAME', '\"python-tn3270\"'), 
+			('PACKAGE_VERSION', '\"5.2\"')
+		],
 		include_dirs = ['src/include'],
 		libraries = ['ipc3270'],
-		library_dirs = ['/usr/lib64'],
 		sources = [
 			'src/action/type.c',
 			'src/module/init.c',
@@ -22,11 +25,20 @@ tn3270 = Extension('tn3270',
 			'src/session/misc.cc',
 			'src/session/set.cc',
 			'src/session/attributes.cc',
-			'src/session/actions.cc'
+			'src/session/actions.cc',
+			'src/module/windows/init.cc',
+			'src/module/windows/tools.cc'
 		])
 
 setup ( name = 'tn3270',
 	version = '5.2',
-	description = 'TN3270 module.',
+	description = 'Python bindings for lib3270/pw3270.',
+	author = 'Perry Werneck',
+	author_email = 'perry.werneck@gmail.com',
+	url = 'https://github.com/PerryWerneck/python-tn3270',
+	long_description = '''
+This is an extension allowing tn3270 acess for python applications
+using lib3270 directly or ipc calls to an enabled pw3270 window.
+''',	
 	ext_modules = [ tn3270 ])
 

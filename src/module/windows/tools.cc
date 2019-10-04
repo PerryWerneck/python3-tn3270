@@ -27,9 +27,11 @@
  *
  */
 
- #include <py3270.h>
+#include <py3270.h>
 
 /*--[ Implement ]------------------------------------------------------------------------------------*/
+
+#ifdef _WIN32
 
  std::string py3270_get_datadir() noexcept {
 
@@ -75,4 +77,6 @@
 
 	return string(datadir);
  }
+
+#endif // _WIN32
 
