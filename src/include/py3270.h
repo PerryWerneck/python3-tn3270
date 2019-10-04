@@ -77,12 +77,14 @@
 	#include <stdexcept>
 	#include <system_error>
 	#include <vector>
+	#include <string>
 	#include <lib3270/ipc.h>
 	#include <lib3270/ipc/action.h>
 	#include <lib3270/actions.h>
 
 	using std::exception;
 	using std::runtime_error;
+	using std::string;
 	using TN3270::Host;
 	using TN3270::Action;
 
@@ -92,6 +94,8 @@
 	DLL_PRIVATE PyObject	* py3270_action_call(PyObject *self, std::function<PyObject * (TN3270::Action &action)> worker) noexcept;
 
 	DLL_PRIVATE void		  py3270_wait(Host &host, PyObject *args);
+
+	DLL_PRIVATE string		  py3270_get_datadir() noexcept;
 
 	extern "C" {
 
@@ -162,38 +166,6 @@
 
 		DLL_PRIVATE PyObject	* py3270_action_get_activatable(PyObject *self, void *dunno);
 		DLL_PRIVATE PyObject 	* py3270_action_str(PyObject *self);
-
-		/*
-
-		DLL_PRIVATE PyObject	* py3270_alloc(PyTypeObject *type, PyObject *args, PyObject *kwds);
-		DLL_PRIVATE int			  py3270_init(py3270_TerminalObject *self, PyObject *args, PyObject *kwds);
-		DLL_PRIVATE void		  py3270_dealloc(py3270_TerminalObject * self);
-
-		DLL_PRIVATE PyObject	* terminal_get_version(PyObject *self, PyObject *args);
-		DLL_PRIVATE PyObject	* terminal_get_revision(PyObject *self, PyObject *args);
-
-		DLL_PRIVATE PyObject	* terminal_is_connected(PyObject *self, PyObject *args);
-		DLL_PRIVATE PyObject	* terminal_is_ready(PyObject *self, PyObject *args);
-
-		DLL_PRIVATE PyObject	* terminal_connect(PyObject *self, PyObject *args);
-		DLL_PRIVATE PyObject	* terminal_disconnect(PyObject *self, PyObject *args);
-
-		DLL_PRIVATE PyObject 	* terminal_get_string_at(PyObject *self, PyObject *args);
-		DLL_PRIVATE PyObject 	* terminal_get_contents(PyObject *self);
-		DLL_PRIVATE PyObject 	* terminal_set_string_at(PyObject *self, PyObject *args);
-		DLL_PRIVATE PyObject	* terminal_cmp_string_at(PyObject *self, PyObject *args);
-
-		DLL_PRIVATE PyObject 	* terminal_pfkey(PyObject *self, PyObject *args);
-		DLL_PRIVATE PyObject 	* terminal_pakey(PyObject *self, PyObject *args);
-		DLL_PRIVATE PyObject 	* terminal_enter(PyObject *self, PyObject *args);
-		DLL_PRIVATE PyObject 	* terminal_action(PyObject *self, PyObject *args);
-
-		DLL_PRIVATE PyObject 	* terminal_is_protected_at(PyObject *self, PyObject *args);
-		DLL_PRIVATE PyObject 	* terminal_set_cursor_at(PyObject *self, PyObject *args);
-
-		DLL_PRIVATE PyObject	* terminal_wait_for_ready(PyObject *self, PyObject *args);
-		DLL_PRIVATE PyObject	* terminal_wait_for_string_at(PyObject *self, PyObject *args);
-		*/
 
 #ifdef __cplusplus
 	}

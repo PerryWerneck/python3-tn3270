@@ -56,6 +56,8 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/module/properties.cc" />
+		<Unit filename="src/module/windows/init.cc" />
+		<Unit filename="src/module/windows/tools.cc" />
 		<Unit filename="src/session/actions.cc" />
 		<Unit filename="src/session/attributes.cc" />
 		<Unit filename="src/session/get.cc" />
