@@ -35,11 +35,15 @@ Compiling for Windows (With MSYS2)
 
 5. Get python-tn3270 sources from git
 
-	* git clone https://github.com/PerryWerneck/python-tn3270.git
+	* git clone https://github.com/PerryWerneck/python-tn3270.git ./python-tn3270
 
 6. Build the extension using setup.py
 
 	* cd python-tn3270
 	* python setup.py build
 
+7. Install extension
+
+	* python setup.py install
+	
 
