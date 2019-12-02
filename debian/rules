@@ -44,10 +44,10 @@ install: build
 	dh_installdirs
 
 	# Install extension
-	make DESTDIR=$(PWD)/debian/python-tn3270 install
+	make DESTDIR=$(PWD)/debian/python3-tn3270 install
 
 	# Create updated file lists
-	find $(PWD)/debian/python-tn3270 -type f | sed -e "s@^$(PWD)/debian/python-tn3270/@/@g" > $(PWD)/debian/python-tn3270.install
+	find $(PWD)/debian/python3-tn3270 -type f | sed -e "s@^$(PWD)/debian/python3-tn3270/@/@g" > $(PWD)/debian/python3-tn3270.install
 
 	# --- end custom part for installing
 
