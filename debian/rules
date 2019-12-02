@@ -21,7 +21,7 @@ build-stamp:
 
 	# Add here commands to compile the package.
 	./autogen.sh
-	make all
+	python3 setup.py build
 	# --- end custom part for compiling
 
 	touch build-stamp
@@ -44,7 +44,7 @@ install: build
 	dh_installdirs
 
 	# Install extension
-	make DESTDIR=$(PWD)/debian/python3-tn3270 install
+	python3 setup.py install --prefix=/usr --root=$(PWD)/debian/python3-tn3270
 
 	# Create updated file lists
 	find $(PWD)/debian/python3-tn3270 -type f | sed -e "s@^$(PWD)/debian/python3-tn3270/@/@g" > $(PWD)/debian/python3-tn3270.install
