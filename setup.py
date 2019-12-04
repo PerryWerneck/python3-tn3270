@@ -3,10 +3,18 @@ import platform
 
 include_dirs = ['src/include']
 library_dirs = []
+extra_link_args = []
 
 if platform.system() == 'Windows':
 	include_dirs.append(os.getenv('PW3270_SDK_PATH') + '/include')
 	library_dirs.append(os.getenv('PW3270_SDK_PATH') + '/lib')
+
+	with open(os.getenv('PW3270_SDK_PATH') + "\\lib3270.mak") as file:
+		text = file.readlines()
+
+		for line in text:
+			if line.startswith("LIB3270_NAME="):
+				extra_link_args.append("/delayload:" + line.split("=")[1].rstrip("\r").rstrip("\n") + ".dll")
 
 tn3270 = Extension(
 		'tn3270',
@@ -17,6 +25,7 @@ tn3270 = Extension(
 		include_dirs = include_dirs,
 		libraries = ['ipc3270'],
 		library_dirs=library_dirs,
+		extra_link_args=extra_link_args,
 		sources = [
 			'src/action/type.c',
 			'src/module/init.c',

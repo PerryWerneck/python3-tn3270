@@ -27,3 +27,4 @@ scripts
 *.rc
 *.cache
 MANIFEST
+dist

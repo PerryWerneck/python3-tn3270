@@ -4,27 +4,25 @@
 #import inspect
 import tn3270
 
-class Host(tn3270.Session):
+#class Host(tn3270.Session):
+#
+#    def __init__(self):
+#
+#        super().__init__(":a")
+#        print("Using tn3270 version " + self.version + " revision " + self.revision)
+#
+#    def reconnect(self):
+#        if super().reconnect.activatable:
+#            print("Reconnecting...")
+#            super().reconnect().wait(10)
+#
+#host = Host()
+#host.reconnect()
 
-    def __init__(self):
+print("Testing python module")
 
-        super().__init__(":a")
-        print("Using tn3270 version " + self.version + " revision " + self.revision)
-
-    def reconnect(self):
-        if super().reconnect.activatable:
-            print("Reconnecting...")
-            super().reconnect().wait(10)
-
-
-host = Host()
-
-host.reconnect()
-
-
-
-#print("Using TN3270 Version " + tn3270.version())
-#print(tn3270.revision())
+print("Using TN3270 Version " + tn3270.version())
+print(tn3270.revision())
 
 #session = tn3270.Session("")
 #session.timeout = 10
