@@ -41,14 +41,14 @@ static PyMethodDef methods[] = {
 		"version",
 		py3270_get_module_version,
 		METH_NOARGS,
-		"Get " PACKAGE_NAME " version"
+		"Get package version"
 	},
 
 	{
 		"revision",
 		py3270_get_module_revision,
 		METH_NOARGS,
-		"Get " PACKAGE_NAME " revision"
+		"Get package revision"
 
 	},
 

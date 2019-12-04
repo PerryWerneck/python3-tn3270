@@ -11,8 +11,8 @@ if platform.system() == 'Windows':
 tn3270 = Extension(
 		'tn3270',
 		define_macros = [
-			('PACKAGE_NAME', '\"python3-tn3270\"'), 
-			('PACKAGE_VERSION', '\"5.2\"')
+			('TN3270_MODULE_NAME', 'python3-tn3270'), 
+			('TN3270_MODULE_VERSION', '5.2')
 		],
 		include_dirs = include_dirs,
 		libraries = ['ipc3270'],

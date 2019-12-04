@@ -28,11 +28,14 @@
  */
 
  #include <py3270.h>
+ #include <lib3270.h>
 
 /*---[ Implement ]----------------------------------------------------------------------------------*/
 
 PyObject * py3270_get_module_version(PyObject *self, PyObject *args) {
-#ifdef PACKAGE_VERSION
+#if defined(TN3270_MODULE_VERSION)
+    return PyUnicode_FromString(LIB3270_STRINGIZE_VALUE_OF(TN3270_MODULE_VERSION));
+#elif defined(PACKAGE_VERSION)
     return PyUnicode_FromString(PACKAGE_VERSION);
 #else
     return PyUnicode_FromString("");

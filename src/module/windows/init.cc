@@ -38,7 +38,7 @@
 
  #include <py3270.h>
 
- #if defined(_WIN32) && defined(USING_STATIC_IPC3270)
+ #if defined(_WIN32)
 
  #include <lmcons.h>
  #include <delayimp.h>
@@ -47,10 +47,15 @@
  #include <stdexcept>
  #include <lib3270.h>
 
+ #if defined(_MSC_VER)
+	#pragma comment(lib,"DelayImp.lib")
+	#pragma comment(lib,"Advapi32.lib")
+ #endif // _MSC_VER
+
  extern "C" {
 
-	extern __declspec (dllexport) PfnDliHook __pfnDliNotifyHook2;
-	extern __declspec (dllexport) PfnDliHook __pfnDliFailureHook2;
+//	extern __declspec (dllexport) PfnDliHook __pfnDliNotifyHook2;
+//	extern __declspec (dllexport) PfnDliHook __pfnDliFailureHook2;
 
 	FARPROC WINAPI py3270_delay_load_hook(unsigned reason, DelayLoadInfo * info);
 
@@ -62,8 +67,13 @@
 
  // https://docs.microsoft.com/en-us/cpp/build/reference/loading-all-imports-for-a-delay-loaded-dll?view=vs-2019
 
- PfnDliHook __pfnDliNotifyHook2 = py3270_delay_load_hook;
- PfnDliHook __pfnDliFailureHook2 = py3270_delay_load_hook;
+ #if defined(_MSC_VER)
+	const PfnDliHook __pfnDliNotifyHook2 = py3270_delay_load_hook;
+	const PfnDliHook __pfnDliFailureHook2 = py3270_delay_load_hook;
+ #else
+	PfnDliHook __pfnDliNotifyHook2 = py3270_delay_load_hook;
+	PfnDliHook __pfnDliFailureHook2 = py3270_delay_load_hook;
+ #endif // _MSC_VER
 
  static HANDLE hModule = 0;
  static HANDLE hEventLog = 0;
@@ -189,5 +199,5 @@
 
  }
 
- #endif // USING_STATIC_IPC3270
+ #endif // _WIN32
 
