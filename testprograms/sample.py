@@ -24,39 +24,39 @@ print("Testing python module")
 print("Using TN3270 Version " + tn3270.version())
 print(tn3270.revision())
 
-#session = tn3270.Session("")
-#session.timeout = 10
+session = tn3270.Session("")
+session.timeout = 10
 
-#print("Using tn3270 version " + session.version + " revision " + session.revision)
+print("Using tn3270 version " + session.version + " revision " + session.revision)
 
-#print(session.cstate)
-#print(session.width)
-#print(session.connected)
+print(session.cstate)
+print(session.width)
+print(session.connected)
 
-#print(session.reconnect)
+print(session.reconnect)
 
 #
 # Can reconnect? If yes do it!
 #
-#if session.reconnect.activatable:
-#    print("Reconnecting...")
-#    session.reconnect().wait(10)
+if session.reconnect.activatable:
+    print("Reconnecting...")
+    session.reconnect().wait(10)
 
-#print(session.connected)
-#print(session.find('sisbb'))
-#print(session.count('sisbb'))
+print(session.connected)
+print(session.find('sisbb'))
+print(session.count('sisbb'))
 
-#print('----------------------')
-#print(dir(session))
-#print('----------------------')
+print('----------------------')
+print(dir(session))
+print('----------------------')
 
-#print(session.get(14,22,38))
+print(session.get(14,22,38))
 
 #print("-----------------------------------------------------------------------")
 #print(session)
 #print("-----------------------------------------------------------------------")
 
-#session.enter().wait(14,2,"Senha")
+session.enter().wait(14,2,"Senha")
 
 #session.set("value")
 

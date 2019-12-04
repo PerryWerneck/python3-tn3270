@@ -138,13 +138,13 @@
 	static string savedpath;
 
 	// https://docs.microsoft.com/en-us/cpp/build/reference/structure-and-constant-definitions?view=vs-2019
+
 	switch (reason) {
 	case dliNoteStartProcessing:
 		{
+			string installLocation = TN3270::getInstallLocation();
 
-			string datadir = py3270_get_datadir();
-
-			if(!datadir.empty()) {
+			if(!installLocation.empty()) {
 
 				char curdir[4096];
 				memset(curdir,0,sizeof(curdir));
@@ -155,18 +155,20 @@
 					savedpath.clear();
 				}
 
-				SetCurrentDirectory(datadir.c_str());
+				SetCurrentDirectory(installLocation.c_str());
 
 			}
-
 		}
 		break;
 
 	case dliNoteEndProcessing:
+
 		if(!savedpath.empty()) {
 			SetCurrentDirectory(savedpath.c_str());
 			savedpath.clear();
+
 		}
+
 		break;
 
 	case dliNotePreLoadLibrary:
