@@ -18,10 +18,6 @@ if platform.system() == 'Windows':
 
 tn3270 = Extension(
 		'tn3270',
-		define_macros = [
-			('TN3270_MODULE_NAME', 'python3-tn3270'), 
-			('TN3270_MODULE_VERSION', '5.2')
-		],
 		include_dirs = include_dirs,
 		libraries = ['ipc3270'],
 		library_dirs=library_dirs,
@@ -57,6 +53,6 @@ setup ( name = 'tn3270',
 	long_description = '''
 This is an extension allowing tn3270 acess for python applications
 using lib3270 directly or ipc calls to an enabled pw3270 window.
-''',	
+''',
 	ext_modules = [ tn3270 ])
 

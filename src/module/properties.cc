@@ -33,20 +33,18 @@
 /*---[ Implement ]----------------------------------------------------------------------------------*/
 
 PyObject * py3270_get_module_version(PyObject *self, PyObject *args) {
-#if defined(TN3270_MODULE_VERSION)
-    return PyUnicode_FromString(LIB3270_STRINGIZE_VALUE_OF(TN3270_MODULE_VERSION));
-#elif defined(PACKAGE_VERSION)
+#if defined(PACKAGE_VERSION)
     return PyUnicode_FromString(PACKAGE_VERSION);
 #else
-    return PyUnicode_FromString("");
+    return PyUnicode_FromString(TN3270::getVersion());
 #endif // PACKAGE_VERSION
 }
 
 PyObject * py3270_get_module_revision(PyObject *self, PyObject *args) {
 #ifdef PACKAGE_REVISION
-    return PyLong_FromLong(PACKAGE_REVISION);
+    return PyUnicode_FromString(LIB3270_STRINGIZE_VALUE_OF(PACKAGE_REVISION));
 #else
-    return PyLong_FromLong(0);
+    return PyUnicode_FromString(TN3270::getRevision());
 #endif // PACKAGE_REVISION
 }
 

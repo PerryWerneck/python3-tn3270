@@ -82,7 +82,7 @@
     switch(dwcallpurpose) {
     case DLL_PROCESS_ATTACH:
         hModule = hInstance;
-        hEventLog = RegisterEventSource(NULL, LIB3270_STRINGIZE_VALUE_OF(PRODUCT_NAME));
+        hEventLog = RegisterEventSource(NULL, PACKAGE_NAME);
         break;
 
 	case DLL_PROCESS_DETACH:

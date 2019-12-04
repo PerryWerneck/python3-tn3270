@@ -85,10 +85,6 @@ AC_SUBST(PACKAGE_REVISION,$app_cv_revision)
 AC_SUBST(PACKAGE_MAJOR_RELEASE,$app_rls_major)
 AC_SUBST(PACKAGE_MINOR_RELEASE,$app_rls_minor)
 
-AC_ARG_WITH([product-name], [AS_HELP_STRING([--with-product-name], [Set product name])], [ app_cv_product="$withval" ],[ app_cv_product=`$PKG_CONFIG --variable=product_name ipc3270` ])
-AC_DEFINE_UNQUOTED(PRODUCT_NAME, $app_cv_product)
-AC_SUBST(PRODUCT_NAME,$app_cv_product)
-
 dnl ---------------------------------------------------------------------------
 dnl Check for OS specifics
 dnl ---------------------------------------------------------------------------
@@ -147,6 +143,10 @@ AC_PATH_TOOL([VALGRIND], [valgrind], [no])
 AC_PATH_TOOL([ZIP], [zip], [zip])
 
 PKG_CHECK_EXISTS
+
+AC_ARG_WITH([product-name], [AS_HELP_STRING([--with-product-name], [Set product name])], [ app_cv_product="$withval" ],[ app_cv_product=`$PKG_CONFIG --variable=product_name lib3270` ])
+AC_DEFINE_UNQUOTED(PRODUCT_NAME, $app_cv_product)
+AC_SUBST(PRODUCT_NAME,$app_cv_product)
 
 dnl ---------------------------------------------------------------------------
 dnl Check for C++ 2011 support
