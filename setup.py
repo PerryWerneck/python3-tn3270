@@ -1,13 +1,22 @@
-from distutils.core import setup, Extension
+from distutils.core import setup, Extension, os
+import platform
+
+include_dirs = ['src/include']
+library_dirs = []
+
+if platform.system() == 'Windows':
+	include_dirs.append(os.getenv('PW3270_SDK_PATH') + '/include')
+	library_dirs.append(os.getenv('PW3270_SDK_PATH') + '/lib')
 
 tn3270 = Extension(
 		'tn3270',
 		define_macros = [
-			('PACKAGE_NAME', '\"python-tn3270\"'), 
+			('PACKAGE_NAME', '\"python3-tn3270\"'), 
 			('PACKAGE_VERSION', '\"5.2\"')
 		],
-		include_dirs = ['src/include'],
+		include_dirs = include_dirs,
 		libraries = ['ipc3270'],
+		library_dirs=library_dirs,
 		sources = [
 			'src/action/type.c',
 			'src/module/init.c',
@@ -35,7 +44,7 @@ setup ( name = 'tn3270',
 	description = 'Python bindings for lib3270/pw3270.',
 	author = 'Perry Werneck',
 	author_email = 'perry.werneck@gmail.com',
-	url = 'https://github.com/PerryWerneck/python-tn3270',
+	url = 'https://github.com/PerryWerneck/python3-tn3270',
 	long_description = '''
 This is an extension allowing tn3270 acess for python applications
 using lib3270 directly or ipc calls to an enabled pw3270 window.
