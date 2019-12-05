@@ -121,7 +121,7 @@ int py3270_session_init(PyObject *self, PyObject *args, PyObject *kwds) {
 		if (!PyArg_ParseTuple(args, "s", &id))
 			id = "";
 
-		session->host = new TN3270::Host(id);
+		session->host = new TN3270::Host(id,"UTF-8");
 
         return 0;
 

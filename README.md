@@ -19,21 +19,16 @@ Cross-compiling on SuSE Linux (Native or WSL)
 Compiling for Windows (With MSYS2)
 ----------------------------------
 
-1. Install python and python devel
+1. Install pw3270 with remote control and sdk modules
 
-2. Build and install lib3270 
+2. Build and install the "glue" library
 
-	* Follow the guide on https://github.com/PerryWerneck/lib3270
+	* Open a MSVC Native tools command prompt as administrator.
+	* git clone  https://github.com/PerryWerneck/libipc3270.git ./ipc3270
+	* cd ipc3270
+	* install.bat
 
-3. Build and install libv3270 
-
-	* Follow the guide on https://github.com/PerryWerneck/libv3270
-
-4. Build and install libipc3270 
-
-	* Follow the guide on https://github.com/PerryWerneck/libipc3270
-
-5. Get python-tn3270 sources from git
+3. Get python-tn3270 sources from git
 
 	* git clone https://github.com/PerryWerneck/python-tn3270.git ./python-tn3270
 
@@ -46,4 +41,6 @@ Compiling for Windows (With MSYS2)
 
 	* python setup.py install
 	
+8. Build windows installer (optional)
 
+	* python setup.py bdist_wininst
