@@ -43,8 +43,8 @@ if session.reconnect.activatable:
     session.reconnect().wait(10)
 
 print(session.connected)
-print(session.find('sisbb'))
-print(session.count('sisbb'))
+print(session.find('sistema'))
+print(session.count('sistema'))
 
 print('----------------------')
 print(dir(session))
