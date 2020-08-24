@@ -31,6 +31,11 @@
 
 	#define PY3270_H_INCLUDED
 
+	#ifdef _WIN32
+		#include <winsock2.h>
+		#include <windows.h>
+	#endif  // _WIN32
+
 	#ifdef HAVE_CONFIG_H
 		#include <config.h>
 	#else
