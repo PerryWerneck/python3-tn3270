@@ -34,6 +34,11 @@
  *
  */
 
+#ifdef _WIN32
+    #include <winsock2.h>
+    #include <windows.h>
+#endif  // _WIN32
+
  #include <py3270.h>
  #include <lib3270/ipc.h>
  #include <lib3270/ipc/action.h>
