@@ -54,9 +54,6 @@
 
  extern "C" {
 
-//	extern __declspec (dllexport) PfnDliHook __pfnDliNotifyHook2;
-//	extern __declspec (dllexport) PfnDliHook __pfnDliFailureHook2;
-
 	FARPROC WINAPI py3270_delay_load_hook(unsigned reason, DelayLoadInfo * info);
 
  }
@@ -183,7 +180,7 @@
 			msg += (const char *) info->szDll;
 			eventlog(msg.c_str());
 		}
-		return (FARPROC) hModule;
+		break;
 
 	case dliFailGetProc:
 		{
