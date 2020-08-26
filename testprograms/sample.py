@@ -24,7 +24,7 @@ print("Testing python module")
 print("Using TN3270 Version " + tn3270.version())
 print(tn3270.revision())
 
-session = tn3270.Session("")
+session = tn3270.Session(":a")
 session.timeout = 10
 
 print("Using tn3270 version " + session.version + " revision " + session.revision)
@@ -32,8 +32,6 @@ print("Using tn3270 version " + session.version + " revision " + session.revisio
 print(session.cstate)
 print(session.width)
 print(session.connected)
-
-print(session.reconnect)
 
 #
 # Can reconnect? If yes do it!
@@ -43,6 +41,10 @@ if session.reconnect.activatable:
     session.reconnect().wait(10)
 
 print(session.connected)
+if not session.connected:
+    print('Session is offline')
+    exit
+
 print(session.find('sistema'))
 print(session.count('sistema'))
 
