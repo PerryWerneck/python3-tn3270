@@ -32,6 +32,8 @@ print("Using tn3270 version " + session.version + " revision " + session.revisio
 print(session.cstate)
 print(session.width)
 print(session.connected)
+print(session.cursor)
+exit(0)
 
 #
 # Can reconnect? If yes do it!

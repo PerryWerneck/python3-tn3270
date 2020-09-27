@@ -103,3 +103,15 @@ PyObject * py3270_session_set_cursor_position(PyObject *self, PyObject *args) {
  	});
 
 }
+
+PyObject * py3270_session_get_cursor_position(PyObject *self, void *dunno) {
+
+ 	return py3270_session_call(self, [](TN3270::Host &host){
+
+		auto cursor_position = host.getCursorPosition();
+
+		return Py_BuildValue("{s:i,s:i}", "row", (int) cursor_position.row , "col", (int) cursor_position.col );
+
+ 	});
+
+}
