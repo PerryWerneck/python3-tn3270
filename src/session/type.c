@@ -87,6 +87,13 @@ static PyMethodDef py3270_session_methods[] = {
     },
 
     {
+		.ml_name = "getcursor",
+		.ml_meth = (PyCFunction) py3270_session_get_cursor_position,
+		.ml_flags = METH_NOARGS,
+		.ml_doc = ""
+    },
+
+    {
 		.ml_name = "pf",
 		.ml_meth = (PyCFunction) py3270_session_pfkey,
 		.ml_flags = METH_VARARGS,
@@ -127,6 +134,13 @@ const struct PyGetSetDef py3270_session_attributes[] = {
 		.doc = "Timeout (in seconds) for host access",
 		.get = py3270_session_get_timeout,
 		.set = py3270_session_set_timeout
+	},
+
+	{
+		.name = "cursor",
+		.doc = "Cursor position (row/col); read-only attribute",
+		.get = py3270_session_get_cursor_position,
+		.set = NULL
 	},
 
 	{
