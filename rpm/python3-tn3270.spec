@@ -67,11 +67,9 @@ NOCONFIGURE=1 ./autogen.sh
 
 %install
 %python_install
-#%python_expand %fdupes %{buildroot}%{$python_sitelib}
 
-#python3 setup.py install --prefix=%{_prefix} --root=%{buildroot}
-#%make_install
-#%fdupes %{buildroot}
+mkdir -p %{buildroot}%{_datadir}/appdata
+install --mode=644 metainfo.xml %{buildroot}%{_datadir}/appdata/%{name}.metainfo.xml
 
 %clean
 
@@ -87,12 +85,6 @@ NOCONFIGURE=1 ./autogen.sh
 %endif
 
 %{python_sitearch}/*
-# https://en.opensuse.org/openSUSE:Packaging_Python
-#%{python_sitelib}/*
-#/home/abuild/rpmbuild/BUILDROOT/python3-tn3270-5.2-4.1.x86_64/usr/lib/python3.6/site-packages/*
-#/usr/lib/debug/usr/lib64/python3.6/site-packages/tn3270.cpython-36m-x86_64-linux-gnu.so-5.2-10.1.x86_64.debug
-#/usr/lib64/python3.6/site-packages/tn3270-5.2-py3.6.egg-info
-#/usr/lib64/python3.6/site-packages/tn3270.cpython-36m-x86_64-linux-gnu.so
-
+%{_datadir}/appdata/*.metainfo.xml
 
 %changelog
