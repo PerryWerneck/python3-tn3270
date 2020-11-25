@@ -46,8 +46,9 @@ install: build
 	# Install extension
 	python3 setup.py install --prefix=/usr --root=$(PWD)/debian/python3-tn3270
 
-	# Create updated file lists
-	find $(PWD)/debian/python3-tn3270 -type f | sed -e "s@^$(PWD)/debian/python3-tn3270/@/@g" > $(PWD)/debian/python3-tn3270.install
+	# Install metadata
+	mkdir -p $(PWD)/debian/python3-tn3270/usr/share/appdata
+	install --mode=644 metainfo.xml $(PWD)/debian/python3-tn3270/usr/share/appdata/python3-tn3270.metainfo.xml
 
 	# --- end custom part for installing
 

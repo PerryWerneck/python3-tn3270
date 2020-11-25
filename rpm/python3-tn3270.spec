@@ -51,7 +51,7 @@ BuildRequires:  %{python_module setuptools}
 %python_subpackages
 
 %description
-This is an extension allowing tn3270 acess for python applications
+This is an extension allowing tn3270 access for python applications
 using lib3270 directly or ipc calls to an enabled pw3270 window.
 
 %prep
