@@ -28,3 +28,4 @@ scripts
 *.cache
 MANIFEST
 dist
+*.xml
