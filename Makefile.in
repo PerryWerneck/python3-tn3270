@@ -239,7 +239,7 @@ python-@PYTHON_VERSION@-tn3270-@PACKAGE_VERSION@.@host_cpu@.zip: \
 		-j \
 		$@ \
 		$(BINRLS)/$(LIBNAME)@DLLEXT@ \
-		testprograms/*.py
+		./examples/simple.py
 
 #---[ Debug Targets ]--------------------------------------------------------------------
 
@@ -251,7 +251,7 @@ run: \
 	$(BINDBG)/$(LIBNAME)@DLLEXT@
 
 	@PYTHONPATH=$(BINDBG) python3 \
-		./testprograms/sample.py
+		./examples/simple.py
 
 $(BINDBG)/$(LIBNAME)@DLLEXT@: \
 	$(foreach SRC, $(basename $(SOURCES)), $(OBJDBG)/$(SRC).o)
