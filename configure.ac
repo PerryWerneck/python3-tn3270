@@ -31,7 +31,7 @@ AC_PREREQ(2.61)
 
 dnl Initialise automake with the package name, version and
 dnl bug-reporting address.
-AC_INIT([python3-tn3270], [5.3], [perry.werneck@gmail.com])
+AC_INIT([python3-tn3270], [5.4], [perry.werneck@gmail.com])
 
 dnl Place auxilliary scripts here.
 AC_CONFIG_AUX_DIR([scripts])
@@ -183,11 +183,11 @@ AC_ARG_WITH([static-ipc3270],
 
 if test "$app_cv_static_ipc3270" == "yes"; then
 
-	PKG_CHECK_MODULES( [IPC3270], [ipc3270-static], AC_DEFINE(USING_STATIC_IPC3270), AC_MSG_ERROR([IPC3270 not present.]))
+	PKG_CHECK_MODULES( [IPC3270], [libipc3270-static], AC_DEFINE(USING_STATIC_IPC3270), AC_MSG_ERROR([IPC3270 not present.]))
 
 else
 
-	PKG_CHECK_MODULES( [IPC3270], [ipc3270], AC_DEFINE(USING_SHARED_IPC3270), AC_MSG_ERROR([IPC3270 not present.]))
+	PKG_CHECK_MODULES( [IPC3270], [libipc3270], AC_DEFINE(USING_SHARED_IPC3270), AC_MSG_ERROR([IPC3270 not present.]))
 
 	case "$host" in
 	*-mingw32|*-pc-msys)
