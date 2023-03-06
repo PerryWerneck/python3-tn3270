@@ -31,6 +31,7 @@
 
 /*---[ Implement ]----------------------------------------------------------------------------------*/
 
+/*
 PyObject * py3270_session_call(PyObject *self, std::function<PyObject * (TN3270::Host &host)> worker) noexcept {
 
 	try {
@@ -73,3 +74,4 @@ PyObject * py3270_session_call(PyObject *self, std::function<int (TN3270::Host &
 
 }
 
+*/

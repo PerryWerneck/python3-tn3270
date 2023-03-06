@@ -36,7 +36,9 @@
 
 /*---[ Implement ]----------------------------------------------------------------------------------*/
 
+/*
  void py3270_wait(TN3270::Host &host, PyObject *args) {
+
 
 	switch(PyTuple_Size(args)) {
 	case 0:	// No time defined, use the default one.
@@ -99,3 +101,4 @@
  	});
 
  }
+*/

@@ -38,6 +38,7 @@
 
 /*---[ Implement ]----------------------------------------------------------------------------------*/
 
+/*
  PyObject * py3270_session_connect(PyObject *self, PyObject *args) {
 
  	return py3270_session_call(self, [args](TN3270::Host &host){
@@ -56,4 +57,4 @@
 	});
 
  }
-
+*/

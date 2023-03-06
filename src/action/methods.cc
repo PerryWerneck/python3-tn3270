@@ -45,6 +45,7 @@
 
 /*---[ Implement ]----------------------------------------------------------------------------------*/
 
+/*
 PyObject * py3270_action_call(PyObject *self, PyObject *args, PyObject *kwargs) {
 
 	return py3270_action_activate(self,args);
@@ -120,6 +121,6 @@ PyObject * py3270_action_str(PyObject *self) {
 	});
 
 }
-
+*/
 
 

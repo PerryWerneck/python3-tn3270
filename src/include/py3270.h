@@ -27,6 +27,56 @@
  *
  */
 
+ #pragma once
+
+ #ifdef HAVE_CONFIG_H
+	#include <config.h>
+ #else
+	#define PACKAGE_DESCRIPTION "Python bindings for lib3270/pw3270"
+	#define HAVE_GNUC_VISIBILITY 1
+ #endif // HAVE_CONFIG_H
+
+ #define PY_SSIZE_T_CLEAN
+ #include <Python.h>
+
+ #if defined(_WIN32)
+
+		#include <windows.h>
+
+		#define DLL_PRIVATE	extern
+		#define DLL_PUBLIC	extern __declspec (dllexport)
+
+ #elif defined(__SUNPRO_C) && (__SUNPRO_C >= 0x550)
+
+		#define DLL_PRIVATE		__hidden extern
+		#define DLL_PUBLIC		extern
+
+ #elif defined (HAVE_GNUC_VISIBILITY)
+
+		#define DLL_PRIVATE		__attribute__((visibility("hidden"))) extern
+		#define DLL_PUBLIC		__attribute__((visibility("default"))) extern
+
+ #else
+
+		#error Unable to set visibility attribute
+
+ #endif
+
+ #ifdef __cplusplus
+	extern "C" {
+ #endif // __cplusplus
+
+ DLL_PRIVATE PyTypeObject py3270_session_type;
+ DLL_PRIVATE PyTypeObject py3270_action_type;
+
+ DLL_PRIVATE PyObject * py3270_get_module_version(PyObject *self, PyObject *args);
+ DLL_PRIVATE PyObject * py3270_get_module_revision(PyObject *self, PyObject *args);
+
+ #ifdef __cplusplus
+	}
+ #endif // __cplusplus
+
+ /*
 #ifndef PY3270_H_INCLUDED
 
 	#define PY3270_H_INCLUDED
@@ -47,31 +97,6 @@
 		#define PACKAGE_NAME "Python-TN3270"
 	#endif // !PACKAGE_NAME
 
-	#define PY_SSIZE_T_CLEAN
-	#include <Python.h>
-
-	#if defined(_WIN32)
-
-			#include <windows.h>
-
-			#define DLL_PRIVATE	extern
-			#define DLL_PUBLIC	extern __declspec (dllexport)
-
-	#elif defined(__SUNPRO_C) && (__SUNPRO_C >= 0x550)
-
-			#define DLL_PRIVATE		__hidden extern
-			#define DLL_PUBLIC		extern
-
-	#elif defined (HAVE_GNUC_VISIBILITY)
-
-			#define DLL_PRIVATE		__attribute__((visibility("hidden"))) extern
-			#define DLL_PUBLIC		__attribute__((visibility("default"))) extern
-
-	#else
-
-			#error Unable to set visibility attribute
-
-	#endif
 
 	#ifdef DEBUG
 		#include <stdio.h>
@@ -125,30 +150,15 @@
 			Host *host;
 		} pySession;
 
-		typedef struct {
-			PyObject_HEAD
-			pySession	* session;
-			Action		* action;
-		} pyAction;
-
-		DLL_PRIVATE PyTypeObject py3270_session_type;
-		DLL_PRIVATE PyTypeObject py3270_action_type;
 
 		DLL_PRIVATE const PyGetSetDef	py3270_session_attributes[];
 
-		DLL_PRIVATE PyObject	* py3270_get_module_version(PyObject *self, PyObject *args);
-		DLL_PRIVATE PyObject	* py3270_get_module_revision(PyObject *self, PyObject *args);
 
 		// Types
 		DLL_PRIVATE void 		  py3270_action_type_init(PyTypeObject *type);
 		DLL_PRIVATE void 		  py3270_session_type_init(PyTypeObject *type);
 
 		// Session object
-		DLL_PRIVATE PyObject	* py3270_session_alloc(PyTypeObject *type, PyObject *args, PyObject *kwds);
-		DLL_PRIVATE void		  py3270_session_dealloc(PyObject * self);
-
-		DLL_PRIVATE int			  py3270_session_init(PyObject *self, PyObject *args, PyObject *kwds);
-		DLL_PRIVATE void		  py3270_session_finalize(PyObject *self);
 
 		DLL_PRIVATE PyObject	* py3270_session_getter(PyObject *self, void *name);
 		DLL_PRIVATE int			  py3270_session_setter(PyObject *self, PyObject *value, void *name);
@@ -188,3 +198,4 @@
 #endif
 
 #endif // PY3270_H_INCLUDED
+*/

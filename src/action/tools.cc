@@ -38,6 +38,7 @@
 
 /*---[ Implement ]----------------------------------------------------------------------------------*/
 
+/*
 PyObject * py3270_action_call(PyObject *self, std::function<PyObject * (TN3270::Action &Action)> worker) noexcept {
 
 	try {
@@ -57,5 +58,6 @@ PyObject * py3270_action_call(PyObject *self, std::function<PyObject * (TN3270::
 	return NULL;
 
 }
+*/
 
 

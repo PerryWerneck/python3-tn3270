@@ -36,6 +36,7 @@
 
 /*---[ Implement ]----------------------------------------------------------------------------------*/
 
+/*
 PyObject * py3270_session_getter(PyObject *self, void *name) {
 
 //	debug("%s(%s)",__FUNCTION__,(const char *) name);
@@ -122,4 +123,4 @@ int py3270_session_setter(PyObject *self, PyObject *value, void *name) {
 
 	return 0;
 }
-
+*/

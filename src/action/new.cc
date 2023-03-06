@@ -40,6 +40,7 @@
 
 /*---[ Implement ]----------------------------------------------------------------------------------*/
 
+/*
 DLL_PRIVATE PyObject * py3270_action_new_from_session(PyObject *session, void *action) {
 
 	pyAction * pObj = (pyAction *) _PyObject_New(&py3270_action_type);
@@ -83,4 +84,5 @@ void py3270_action_dealloc(PyObject * self) {
 	pObj->action = nullptr;
 
 }
+*/
 

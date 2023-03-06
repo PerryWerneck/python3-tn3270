@@ -36,95 +36,7 @@
 
 /*---[ Globals ]------------------------------------------------------------------------------------*/
 
-static PyMethodDef py3270_session_methods[] = {
-    {
-		.ml_name = "connect",
-		.ml_meth = (PyCFunction) py3270_session_connect,
-		.ml_flags = METH_VARARGS,
-		.ml_doc = ""
-    },
-
-    {
-		.ml_name = "wait",
-		.ml_meth = (PyCFunction) py3270_session_wait,
-		.ml_flags = METH_VARARGS,
-		.ml_doc = ""
-    },
-
-    {
-		.ml_name = "set",
-		.ml_meth = (PyCFunction) py3270_session_set,
-		.ml_flags = METH_VARARGS,
-		.ml_doc = ""
-    },
-
-    {
-		.ml_name = "get",
-		.ml_meth = (PyCFunction) py3270_session_get,
-		.ml_flags = METH_VARARGS,
-		.ml_doc = ""
-    },
-
-    {
-		.ml_name = "find",
-		.ml_meth = (PyCFunction) py3270_session_find,
-		.ml_flags = METH_VARARGS,
-		.ml_doc = ""
-    },
-
-    {
-		.ml_name = "count",
-		.ml_meth = (PyCFunction) py3270_session_count,
-		.ml_flags = METH_VARARGS,
-		.ml_doc = ""
-    },
-
-    {
-		.ml_name = "setcursor",
-		.ml_meth = (PyCFunction) py3270_session_set_cursor_position,
-		.ml_flags = METH_VARARGS,
-		.ml_doc = ""
-    },
-
-    {
-		.ml_name = "getcursor",
-		.ml_meth = (PyCFunction) py3270_session_get_cursor_position,
-		.ml_flags = METH_NOARGS,
-		.ml_doc = ""
-    },
-
-    {
-		.ml_name = "pf",
-		.ml_meth = (PyCFunction) py3270_session_pfkey,
-		.ml_flags = METH_VARARGS,
-		.ml_doc = ""
-    },
-
-    {
-		.ml_name = "pa",
-		.ml_meth = (PyCFunction) py3270_session_pakey,
-		.ml_flags = METH_VARARGS,
-		.ml_doc = ""
-    },
-
-    {
-		.ml_name = "pfkey",
-		.ml_meth = (PyCFunction) py3270_session_pfkey,
-		.ml_flags = METH_VARARGS,
-		.ml_doc = ""
-    },
-
-    {
-		.ml_name = "pakey",
-		.ml_meth = (PyCFunction) py3270_session_pakey,
-		.ml_flags = METH_VARARGS,
-		.ml_doc = ""
-    },
-
-    {
-    	NULL
-	}
-};
+/*
 
 
 const struct PyGetSetDef py3270_session_attributes[] = {
@@ -149,26 +61,6 @@ const struct PyGetSetDef py3270_session_attributes[] = {
 };
 
 // https://docs.python.org/3/c-api/typeobj.html
-PyTypeObject py3270_session_type = {
-
-	PyVarObject_HEAD_INIT(NULL, 0)
-
-	.tp_name = "tn3270.Session",
-	.tp_doc = "TN3270 Session Object",
-	.tp_basicsize = sizeof(pySession),
-	.tp_itemsize = 0,
-	.tp_flags = Py_TPFLAGS_HAVE_FINALIZE|Py_TPFLAGS_DEFAULT|Py_TPFLAGS_BASETYPE,
-
-	.tp_new = py3270_session_alloc,
-	.tp_dealloc = py3270_session_dealloc,
-
-	.tp_init = py3270_session_init,
-	.tp_finalize = py3270_session_finalize,
-
-	.tp_str = py3270_session_str,
-
-	.tp_methods = py3270_session_methods,
-
-};
+*/
 
 

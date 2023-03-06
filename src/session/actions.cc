@@ -31,6 +31,7 @@
 
 /*---[ Implement ]----------------------------------------------------------------------------------*/
 
+/*
 PyObject * py3270_session_pfkey(PyObject *self, PyObject *args) {
 
  	return py3270_session_call(self, [args](TN3270::Host &host){
@@ -115,3 +116,4 @@ PyObject * py3270_session_get_cursor_position(PyObject *self, void *dunno) {
  	});
 
 }
+*/

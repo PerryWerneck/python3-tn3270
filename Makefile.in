@@ -32,8 +32,7 @@ SOURCES= \
 	$(wildcard src/module/*.c) \
 	$(wildcard src/module/*.cc) \
 	$(wildcard src/module/@OSNAME@/*.cc) \
-	$(wildcard src/action/*.cc) \
-	$(wildcard src/action/*.c) \
+	$(wildcard src/objects/*.cc) \
 	$(wildcard src/session/*.cc) \
 	$(wildcard src/session/*.c)
 
