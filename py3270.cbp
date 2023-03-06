@@ -51,6 +51,7 @@
 		<Unit filename="src/include/py3270.h" />
 		<Unit filename="src/include/pyaction.h" />
 		<Unit filename="src/include/pysession.h" />
+		<Unit filename="src/include/workers.h" />
 		<Unit filename="src/module/init.c">
 			<Option compilerVar="CC" />
 		</Unit>

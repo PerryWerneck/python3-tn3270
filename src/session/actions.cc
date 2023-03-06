@@ -28,22 +28,22 @@
  */
 
  #include <py3270.h>
+ #include <pysession.h>
+ #include <workers.h>
 
 /*---[ Implement ]----------------------------------------------------------------------------------*/
 
-/*
 PyObject * py3270_session_pfkey(PyObject *self, PyObject *args) {
 
- 	return py3270_session_call(self, [args](TN3270::Host &host){
+ 	return py3270_call(self, [args](TN3270::Session &session){
 
 		unsigned int keycode;
 
 		if (!PyArg_ParseTuple(args, "I", &keycode))
-			return (PyObject *) NULL;
+			throw std::system_error(EINVAL, std::system_category());
 
-		host.pfkey((unsigned short) keycode);
-
-		return PyLong_FromLong(0);
+		session.pfkey((unsigned short) keycode);
+		return 0;
 
 	});
 
@@ -51,24 +51,23 @@ PyObject * py3270_session_pfkey(PyObject *self, PyObject *args) {
 
 PyObject * py3270_session_pakey(PyObject *self, PyObject *args) {
 
- 	return py3270_session_call(self, [args](TN3270::Host &host){
+ 	return py3270_call(self, [args](TN3270::Session &session){
 
 		unsigned int keycode;
 
 		if (!PyArg_ParseTuple(args, "I", &keycode))
-			return (PyObject *) NULL;
+			throw std::system_error(EINVAL, std::system_category());
 
-		host.pakey((unsigned short) keycode);
+		session.pakey((unsigned short) keycode);
+		return 0;
 
-		return PyLong_FromLong(0);
-
- 	});
+	});
 
 }
 
 PyObject * py3270_session_set_cursor_position(PyObject *self, PyObject *args) {
 
- 	return py3270_session_call(self, [args](TN3270::Host &host){
+ 	return py3270_call(self, [args](TN3270::Session &session){
 
 		switch(PyTuple_Size(args)) {
 		case 1:	// Only Address
@@ -76,9 +75,9 @@ PyObject * py3270_session_set_cursor_position(PyObject *self, PyObject *args) {
 				int baddr;
 
 				if(!PyArg_ParseTuple(args, "i", &baddr))
-					return (PyObject *) NULL;
+					throw std::system_error(EINVAL, std::system_category());
 
-				host.setCursor(baddr);
+				session.setCursor(baddr);
 			}
 			break;
 
@@ -87,9 +86,9 @@ PyObject * py3270_session_set_cursor_position(PyObject *self, PyObject *args) {
 				unsigned int row, col;
 
 				if (!PyArg_ParseTuple(args, "II", &row, &col))
-					return (PyObject *) NULL;
+					throw std::system_error(EINVAL, std::system_category());
 
-				host.setCursor(row,col);
+				session.setCursor(row,col);
 
 			}
 			break;
@@ -99,7 +98,7 @@ PyObject * py3270_session_set_cursor_position(PyObject *self, PyObject *args) {
 
 		}
 
-		return PyLong_FromLong(0);
+		return 0;
 
  	});
 
@@ -107,13 +106,12 @@ PyObject * py3270_session_set_cursor_position(PyObject *self, PyObject *args) {
 
 PyObject * py3270_session_get_cursor_position(PyObject *self, void *dunno) {
 
- 	return py3270_session_call(self, [](TN3270::Host &host){
+ 	return py3270_call(self, [](TN3270::Session &session){
 
-		auto cursor_position = host.getCursorPosition();
+		auto cursor_position = session.getCursorPosition();
 
 		return Py_BuildValue("{s:i,s:i}", "row", (int) cursor_position.row , "col", (int) cursor_position.col );
 
  	});
 
 }
-*/

@@ -23,6 +23,7 @@
 
  #include <py3270.h>
  #include <pysession.h>
+ #include <workers.h>
 
  #include <memory>
  #include <lib3270.h>
@@ -132,3 +133,92 @@
 	hSession->session.reset();
 	Py_TYPE(self)->tp_free(self);
  }
+
+ PyObject * py3270_call(PyObject *self, const std::function<std::string (TN3270::Session &session)> &worker) noexcept {
+
+	std::string text;
+
+	try {
+
+		pySessionPrivate * hSession = ((pySession *) self)->pvt;
+
+		if(hSession->session) {
+			throw runtime_error("Session is not initialized");
+		}
+
+		text = worker(*hSession->session);
+
+	} catch(const std::exception &e) {
+
+		PyErr_SetString(PyExc_RuntimeError, e.what());
+		return (PyObject *) NULL;
+
+	} catch(...) {
+
+		PyErr_SetString(PyExc_RuntimeError, "Unexpected error in core module");
+		return (PyObject *) NULL;
+
+	}
+
+	return PyUnicode_FromString(text.c_str());
+
+ }
+
+ PyObject * py3270_call(PyObject *self, const std::function<int (TN3270::Session &session)> &worker) noexcept {
+
+	int value = 0;
+
+	try {
+
+		pySessionPrivate * hSession = ((pySession *) self)->pvt;
+
+		if(hSession->session) {
+			throw runtime_error("Session is not initialized");
+		}
+
+		value = worker(*hSession->session);
+
+	} catch(const std::exception &e) {
+
+		PyErr_SetString(PyExc_RuntimeError, e.what());
+		return PyLong_FromLong(0);
+
+	} catch(...) {
+
+		PyErr_SetString(PyExc_RuntimeError, "Unexpected error in core module");
+		return PyLong_FromLong(0);
+
+	}
+
+	return PyLong_FromLong((long) value);
+
+ }
+
+ PyObject * py3270_call(PyObject *self, const std::function<PyObject * (TN3270::Session &session)> &worker) noexcept {
+
+	try {
+
+		pySessionPrivate * hSession = ((pySession *) self)->pvt;
+
+		if(hSession->session) {
+			throw runtime_error("Session is not initialized");
+		}
+
+		return worker(*hSession->session);
+
+	} catch(const std::exception &e) {
+
+		PyErr_SetString(PyExc_RuntimeError, e.what());
+		return PyLong_FromLong(0);
+
+	} catch(...) {
+
+		PyErr_SetString(PyExc_RuntimeError, "Unexpected error in core module");
+		return PyLong_FromLong(0);
+
+	}
+
+	return NULL;
+
+ }
+

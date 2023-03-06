@@ -33,17 +33,14 @@
  */
 
  #include <py3270.h>
+ #include <pysession.h>
 
 /*---[ Implement ]----------------------------------------------------------------------------------*/
 
 /*
-PyObject * py3270_session_getter(PyObject *self, void *name) {
+PyObject * py3270_session_get_attribute(PyObject *self, const LIB3270_PROPERTY *property) {
 
-//	debug("%s(%s)",__FUNCTION__,(const char *) name);
-
-	return py3270_session_call(self, [name](TN3270::Host &host){
-
-		auto attribute = host[(const char *) name];
+	return py3270_call(self, [property](TN3270::Session &session){
 
 		switch(attribute.getType()) {
 		case TN3270::Attribute::String:
@@ -86,7 +83,7 @@ PyObject * py3270_session_getter(PyObject *self, void *name) {
 
 }
 
-int py3270_session_setter(PyObject *self, PyObject *value, void *name) {
+int py3270_session_set_attribute(PyObject *self, PyObject *value, const LIB3270_PROPERTY *property) {
 
 	try {
 
