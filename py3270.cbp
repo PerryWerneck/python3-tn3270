@@ -42,7 +42,6 @@
 			<Add option="`pkg-config --libs python dbus-1`" />
 			<Add library="pw3270cpp" />
 		</Linker>
-		<Unit filename="src/action.cc" />
 		<Unit filename="src/action/init.cc" />
 		<Unit filename="src/action/methods.cc" />
 		<Unit filename="src/action/new.cc" />

@@ -75,11 +75,11 @@ static struct PyModuleDef definition = {
 PyMODINIT_FUNC PyInit_tn3270(void)
 {
 	// Initialize custom attributes & methods.
-	py3270_session_type_init(&py3270_session_type);
+	py3270_session_type_init();
 	if (PyType_Ready(&py3270_session_type) < 0)
 		return NULL;
 
-	py3270_action_type_init(&py3270_action_type);
+	py3270_action_type_init();
 	if (PyType_Ready(&py3270_action_type) < 0)
 		return NULL;
 

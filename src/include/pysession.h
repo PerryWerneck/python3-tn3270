@@ -19,6 +19,8 @@
 
  #pragma once
  #include <py3270.h>
+ #include <lib3270.h>
+ #include <lib3270/actions.h>
 
  #ifdef __cplusplus
 	extern "C" {
@@ -36,8 +38,11 @@
  DLL_PRIVATE int		  py3270_session_init(PyObject *self, PyObject *args, PyObject *kwds);
  DLL_PRIVATE void		  py3270_session_finalize(PyObject *self);
 
- DLL_PRIVATE PyObject	* py3270_session_getter(PyObject *self, void *name);
- DLL_PRIVATE int		  py3270_session_setter(PyObject *self, PyObject *value, void *name);
+ DLL_PRIVATE PyObject	* py3270_session_get_attribute(PyObject *self, const LIB3270_PROPERTY *property);
+ DLL_PRIVATE int		  py3270_session_set_attribute(PyObject *self, PyObject *value, const LIB3270_PROPERTY *property);
+
+ DLL_PRIVATE PyObject	* py3270_session_get_action(PyObject *self, const LIB3270_ACTION *action);
+ DLL_PRIVATE int		  py3270_session_set_action(PyObject *self, PyObject *value, const LIB3270_ACTION *action);
 
  DLL_PRIVATE PyObject	* py3270_session_get_timeout(PyObject *self, void *dunno);
  DLL_PRIVATE int		  py3270_session_set_timeout(PyObject *self, PyObject *value, void *dunno);
