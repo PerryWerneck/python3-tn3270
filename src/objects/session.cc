@@ -50,10 +50,12 @@
 
 		// Get available actions.
 		vector<const LIB3270_ACTION *> actions;
+		/*
 		TN3270::for_each([&actions](const LIB3270_ACTION &action){
 			actions.push_back(&action);
 			return false;
 		});
+		*/
 
 		// Allocate getset data.
 		size_t szData = sizeof(struct PyGetSetDef) * (properties.size() + actions.size() + 1);
@@ -75,6 +77,7 @@
 		}
 
 		// Load actions.
+		/*
 		for(auto action : actions) {
 
 			py3270_session_type.tp_getset[index].name	 = (char *) action->name;
@@ -85,6 +88,7 @@
 
 			index++;
 		}
+		*/
 
 	}
 

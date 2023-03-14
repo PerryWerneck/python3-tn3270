@@ -79,9 +79,11 @@ PyMODINIT_FUNC PyInit_tn3270(void)
 	if (PyType_Ready(&py3270_session_type) < 0)
 		return NULL;
 
+	/*
 	py3270_action_type_init();
 	if (PyType_Ready(&py3270_action_type) < 0)
 		return NULL;
+	*/
 
     //
     // Initialize module.
@@ -90,8 +92,6 @@ PyMODINIT_FUNC PyInit_tn3270(void)
     Py_Initialize();
 
     PyObject *module = PyModule_Create(&definition);
-
-	debug("Initializing module %p", module);
 
     if(!module)
 		return NULL;
@@ -110,8 +110,6 @@ PyMODINIT_FUNC PyInit_tn3270(void)
 }
 
 static void cleanup(PyObject *module) {
-
-	debug("Cleaning up module %p", module);
 
 	if(py3270_session_type.tp_getset) {
 		free(py3270_session_type.tp_getset);

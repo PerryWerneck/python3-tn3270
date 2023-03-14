@@ -148,6 +148,7 @@
 
  };
 
+ /*
  static PyMethodDef py3270_action_methods[] = {
 
     {
@@ -203,3 +204,4 @@
 	.tp_dealloc = py3270_action_dealloc,
 
  };
+ */

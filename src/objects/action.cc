@@ -28,7 +28,7 @@
  #include <lib3270/ipc/action.h>
  using namespace std;
 
- struct pySessionPrivate {
+ struct pyActionPrivate {
 	shared_ptr<TN3270::Action> action;
  };
 

@@ -174,7 +174,6 @@
 		DLL_PRIVATE PyObject	* py3270_session_get(PyObject *self, PyObject *args);
 		DLL_PRIVATE PyObject	* py3270_session_set(PyObject *self, PyObject *args);
 		DLL_PRIVATE PyObject 	* py3270_session_str(PyObject *self);
-		DLL_PRIVATE PyObject	* py3270_session_wait(PyObject *self, PyObject *args);
 		DLL_PRIVATE PyObject	* py3270_session_find(PyObject *self, PyObject *args);
 		DLL_PRIVATE PyObject	* py3270_session_count(PyObject *self, PyObject *args);
 

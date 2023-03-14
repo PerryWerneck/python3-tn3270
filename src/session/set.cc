@@ -32,14 +32,15 @@
  *
  */
 
- #include <py3270.h>
+ #include <pysession.h>
+ #include <workers.h>
+ #include <lib3270/ipc/session.h>
 
 /*---[ Implement ]----------------------------------------------------------------------------------*/
 
-/*
  PyObject * py3270_session_set(PyObject *self, PyObject *args) {
 
- 	return py3270_session_call(self, [args](TN3270::Host &host){
+ 	return py3270_call(self, [self,args](TN3270::Session &session){
 
 		switch(PyTuple_Size(args)) {
 		case 1:	// Only text.
@@ -49,7 +50,7 @@
 				if(!PyArg_ParseTuple(args, "s", &text))
 					return (PyObject *) NULL;
 
-				host.push(text,-1);
+				session.push(text,-1);
 
 			}
 			break;
@@ -62,7 +63,7 @@
 				if(!PyArg_ParseTuple(args, "is", &baddr, &text))
 					return (PyObject *) NULL;
 
-				host.push(baddr, text);
+				session.push(baddr, text);
 			}
 			break;
 
@@ -74,7 +75,7 @@
 				if (!PyArg_ParseTuple(args, "IIs", &row, &col, &text))
 					return (PyObject *) NULL;
 
-				host.push(row,col,text);
+				session.push(row,col,text);
 
 			}
 			break;
@@ -84,12 +85,14 @@
 
 		}
 
-		return PyLong_FromLong(0);
+		Py_INCREF(self);
+		return self;
 
  	});
 
  }
 
+/*
  int py3270_session_set_timeout(PyObject *self, PyObject *value, void *dunno) {
 
 	try {
