@@ -34,47 +34,32 @@
 
  #include <py3270.h>
  #include <pysession.h>
+ #include <workers.h>
+ #include <lib3270/ipc/session.h>
+ #include <lib3270/ipc/property.h>
+ #include <stdexcept>
 
-/*---[ Implement ]----------------------------------------------------------------------------------*/
+ using namespace std;
 
-/*
-PyObject * py3270_session_get_attribute(PyObject *self, const LIB3270_PROPERTY *property) {
+ PyObject * py3270_session_get_attribute(PyObject *self, const LIB3270_PROPERTY *property) {
 
 	return py3270_call(self, [property](TN3270::Session &session){
 
-		switch(attribute.getType()) {
-		case TN3270::Attribute::String:
-			return PyUnicode_FromString(attribute.toString().c_str());
+		switch(TN3270::Property::find(property->name)->type()) {
+		case TN3270::Property::Integer:
+			return PyLong_FromLong(session.getProperty<int32_t,unsigned long>(property->name));
 
-		case TN3270::Attribute::Boolean:
-			return PyBool_FromLong(attribute.getBoolean());
+		case TN3270::Property::Unsigned:
+			return PyLong_FromLong(session.getProperty<uint32_t,unsigned long>(property->name));
 
-		case TN3270::Attribute::Uchar:
-			throw std::system_error(ENOTSUP, std::system_category());
+		case TN3270::Property::String:
+			return PyUnicode_FromString(session.getProperty<std::string,std::string>(property->name).c_str());
 
-		case TN3270::Attribute::Int16:
-			throw std::system_error(ENOTSUP, std::system_category());
-
-		case TN3270::Attribute::Uint16:
-			throw std::system_error(ENOTSUP, std::system_category());
-
-		case TN3270::Attribute::Int32:
-			return PyLong_FromLong(attribute.getInt32());
-
-		case TN3270::Attribute::Int32x:
-			throw std::system_error(ENOTSUP, std::system_category());
-
-		case TN3270::Attribute::Uint32:
-			return PyLong_FromLong(attribute.getUint32());
-
-		case TN3270::Attribute::Int64:
-			throw std::system_error(ENOTSUP, std::system_category());
-
-		case TN3270::Attribute::Uint64:
-			throw std::system_error(ENOTSUP, std::system_category());
+		case TN3270::Property::Boolean:
+			return PyBool_FromLong(session.getProperty<bool,unsigned long>(property->name));
 
 		default:
-			throw runtime_error("Unexpected atttribute type");
+			throw runtime_error("Invalid attribute");
 		}
 
 		return PyLong_FromLong(0);
@@ -82,6 +67,40 @@ PyObject * py3270_session_get_attribute(PyObject *self, const LIB3270_PROPERTY *
 	});
 
 }
+
+int py3270_session_set_attribute(PyObject *self, PyObject *value, const LIB3270_PROPERTY *property) {
+
+	py3270_call(self, [property,value](TN3270::Session &session){
+
+		switch(TN3270::Property::find(property->name)->type()) {
+		case TN3270::Property::Integer:
+			session.setProperty(property->name,(int) PyLong_AsUnsignedLong(value));
+			break;
+
+		case TN3270::Property::Unsigned:
+			session.setProperty(property->name,(unsigned int) PyLong_AsUnsignedLong(value));
+			break;
+
+		case TN3270::Property::String:
+			session.setProperty(property->name,(const char *) PyUnicode_AsUTF8AndSize(value,NULL));
+			break;
+
+		case TN3270::Property::Boolean:
+			session.setProperty(property->name,(bool) (PyLong_AsUnsignedLong(value) != 0));
+			break;
+
+		default:
+			throw runtime_error("Invalid attribute");
+		}
+
+		return 0;
+	});
+
+	return 0;
+
+}
+
+/*
 
 int py3270_session_set_attribute(PyObject *self, PyObject *value, const LIB3270_PROPERTY *property) {
 
