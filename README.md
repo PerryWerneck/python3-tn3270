@@ -1,14 +1,23 @@
-## Python Extension Module for TN3270 Access
+# Python Extension Module for TN3270 Access
+
+Provide python3 objects to remote control an active pw3270 window or to direct access a TN3270 host using lib3270.
+
+[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+![CodeQL](https://github.com/PerryWerneck/lib3270/workflows/CodeQL/badge.svg)
+[![build result](https://build.opensuse.org/projects/home:PerryWerneck:pw3270/packages/python3-tn3270/badge.svg?type=percent)](https://build.opensuse.org/package/show/home:PerryWerneck:pw3270/python3-tn3270)
 
 ## Installation
 
 ### Linux
 
-For the supported distributions get the install repositories and instructions from https://software.opensuse.org/download.html?project=home%3APerryWerneck%3Apw3270&package=python3-tn3270
+You can download installation package for supported distributions in Open Build Service.
+
+[<img src="https://raw.githubusercontent.com/PerryWerneck/pw3270/master/branding/obs-badge-en.svg" alt="Download from open build service" height="80px">](https://software.opensuse.org/download.html?project=home%3APerryWerneck%3Apw3270&package=python3-tn3270)
+
 
 ### Windows
 
-Installation package for windows is not available yet.
+Not available
 
 ## Building from sources
 
@@ -17,6 +26,8 @@ Installation package for windows is not available yet.
 	TODO
 
 ### Windows (With MSVC & Python SetupTools)
+
+[OUTDATED]
 
 1. Install pw3270 with remote control and sdk modules
 
