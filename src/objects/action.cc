@@ -103,6 +103,10 @@
 
  }
 
+ PyObject * py3270_action_call(PyObject *self, PyObject *args, PyObject *kwargs) {
+	return py3270_action_activate(self,args);
+ }
+
  PyObject * py3270_action_get_activatable(PyObject *self, void *dunno) {
 
 	return py3270_call(self, [](TN3270::Action &action) {

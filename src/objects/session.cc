@@ -102,7 +102,7 @@
 
  }
 
- int py3270_session_init(PyObject *self, PyObject *args, PyObject *kwds) {
+ int py3270_session_init(PyObject *self, PyObject *args, PyObject *) {
 
 	pySessionPrivate * hSession = ((pySession *) self)->pvt;
 	if(!hSession) {
@@ -140,7 +140,7 @@
 	}
  }
 
- PyObject * py3270_session_alloc(PyTypeObject *type, PyObject *args, PyObject *kwds) {
+ PyObject * py3270_session_alloc(PyTypeObject *type, PyObject *, PyObject *) {
 	return type->tp_alloc(type,0);
  }
 
