@@ -97,18 +97,19 @@
  int py3270_session_init(PyObject *self, PyObject *args, PyObject *kwds) {
 
 	pySessionPrivate * hSession = ((pySession *) self)->pvt;
+	if(!hSession) {
+		((pySession *) self)->pvt = hSession = new pySessionPrivate{};
+	}
 
 	try {
-
-		if(hSession->session) {
-			throw runtime_error("Session is already initialized");
-		}
 
 		const char *id = "";
 		if (!PyArg_ParseTuple(args, "s", &id))
 			id = "";
 
 		hSession->session = TN3270::Session::getInstance(id,"UTF-8");
+
+		return 0;
 
 	} catch(const std::exception &e) {
 
@@ -124,8 +125,11 @@
  }
 
  void py3270_session_finalize(PyObject *self) {
+
 	pySessionPrivate * hSession = ((pySession *) self)->pvt;
-	hSession->session.reset();
+	if(hSession) {
+		hSession->session.reset();
+	}
  }
 
  PyObject * py3270_session_alloc(PyTypeObject *type, PyObject *args, PyObject *kwds) {
@@ -134,7 +138,10 @@
 
  void py3270_session_dealloc(PyObject * self) {
 	pySessionPrivate * hSession = ((pySession *) self)->pvt;
-	hSession->session.reset();
+	if(hSession) {
+		delete hSession;
+		((pySession *) self)->pvt = nullptr;
+	}
 	Py_TYPE(self)->tp_free(self);
  }
 
@@ -146,7 +153,7 @@
 
 		pySessionPrivate * hSession = ((pySession *) self)->pvt;
 
-		if(hSession->session) {
+		if(!hSession->session) {
 			throw runtime_error("Session is not initialized");
 		}
 
@@ -176,7 +183,7 @@
 
 		pySessionPrivate * hSession = ((pySession *) self)->pvt;
 
-		if(hSession->session) {
+		if(!hSession->session) {
 			throw runtime_error("Session is not initialized");
 		}
 
@@ -204,7 +211,7 @@
 
 		pySessionPrivate * hSession = ((pySession *) self)->pvt;
 
-		if(hSession->session) {
+		if(!hSession->session) {
 			throw runtime_error("Session is not initialized");
 		}
 

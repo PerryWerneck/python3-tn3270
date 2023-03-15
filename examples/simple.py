@@ -21,17 +21,17 @@ import tn3270
 
 print("Testing python module")
 
-print("Using TN3270 Version " + tn3270.version())
-print(tn3270.revision())
+print("Using TN3270 Version " + tn3270.version() + " revision " + tn3270.revision())
 
 session = tn3270.Session(":a")
-session.timeout = 10
+
+print(session.version)
 
 print("Using tn3270 version " + session.version + " revision " + session.revision)
 
-print(session.cstate)
-print(session.width)
-print(session.connected)
+print("Cstate: " + str(session.cstate))
+print("Width: " + str(session.width))
+print("Connected: " + str(session.connected))
 print(session.cursor)
 exit(0)
 
