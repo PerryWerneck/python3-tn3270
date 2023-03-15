@@ -75,6 +75,8 @@
  DLL_PRIVATE PyObject * py3270_get_module_version(PyObject *self, PyObject *args);
  DLL_PRIVATE PyObject * py3270_get_module_revision(PyObject *self, PyObject *args);
 
+ DLL_PRIVATE PyObject * py3270_new_object(const char *classname);
+
  #ifdef __cplusplus
 	}
  #endif // __cplusplus

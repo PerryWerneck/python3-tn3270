@@ -32,7 +32,17 @@ print("Using tn3270 version " + session.version + " revision " + session.revisio
 print("Cstate: " + str(session.cstate))
 print("Width: " + str(session.width))
 print("Connected: " + str(session.connected))
-print(session.cursor)
+
+#
+# Test 'reconnect' action
+#
+reconnect = session.reconnect
+
+print(reconnect)
+if reconnect.activatable:
+	reconnect()
+
+#print(session.cursor)
 exit(0)
 
 #

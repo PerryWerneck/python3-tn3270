@@ -180,11 +180,17 @@
 
 	PyVarObject_HEAD_INIT(NULL, 0)
 
-	.tp_name = "tn3270.Session.Action",
+	.tp_name = "tn3270.Action",
 	.tp_doc = "TN3270 Action Object",
 	.tp_basicsize = sizeof(pyAction),
 	.tp_itemsize = 0,
-	.tp_flags = Py_TPFLAGS_DEFAULT,
+	.tp_flags = Py_TPFLAGS_HAVE_FINALIZE|Py_TPFLAGS_DEFAULT|Py_TPFLAGS_BASETYPE,
+
+	.tp_new = py3270_action_alloc,
+	.tp_dealloc = py3270_action_dealloc,
+
+	.tp_init = py3270_action_init,
+	.tp_finalize = py3270_action_finalize,
 
 	.tp_call = py3270_action_call,
     .tp_descr_get = py3270_action_describe,
@@ -192,7 +198,5 @@
 	.tp_methods = py3270_action_methods,
 	.tp_getset = py3270_action_attributes,
 	.tp_str = py3270_action_str,
-
-	.tp_dealloc = py3270_action_dealloc,
 
  };

@@ -36,7 +36,8 @@
 
  void py3270_action_type_init() {
 
-		size_t szData = 2;
+		size_t szData = sizeof(struct PyGetSetDef) * 2;
+
 		py3270_action_type.tp_getset = (struct PyGetSetDef *) malloc(szData);
 		memset(py3270_action_type.tp_getset,0,szData);
 
@@ -77,6 +78,17 @@
 	Py_TYPE(self)->tp_free(self);
  }
 
+ PyObject * py3270_action_new(std::shared_ptr<TN3270::Action> action) {
+
+	PyObject * object = py3270_new_object("Action");
+
+	pyActionPrivate * hAction = ((pyAction *) object)->pvt;
+	hAction->action = action;
+
+	return object;
+
+ }
+
  PyObject * py3270_call(PyObject *self, const std::function<PyObject * (TN3270::Action &action)> &worker) noexcept {
 
 	try {
@@ -99,7 +111,7 @@
 
 	}
 
-	return PyLong_FromLong(0);
+	return NULL;
 
  }
 
@@ -150,10 +162,8 @@
 
  PyObject * py3270_action_str(PyObject *self) {
 
-	return py3270_call(self, [](TN3270::Action &action) {
-
+ 	return py3270_call(self, [](TN3270::Action &action) {
 		return PyUnicode_FromString(action.summary());
-
 	});
 
  }

@@ -22,6 +22,11 @@
  #include <py3270.h>
 
  #ifdef __cplusplus
+
+	#include <memory>
+	#include <lib3270/ipc/action.h>
+	DLL_PRIVATE PyObject * py3270_action_new(std::shared_ptr<TN3270::Action> action);
+
 	extern "C" {
  #endif // __cplusplus
 
@@ -32,6 +37,9 @@
 	struct pyActionPrivate *pvt;
  } pyAction;
 
+ DLL_PRIVATE PyObject * py3270_action_alloc(PyTypeObject *type, PyObject *args, PyObject *kwds);
+ DLL_PRIVATE int py3270_action_init(PyObject *self, PyObject *args, PyObject *kwds);
+ DLL_PRIVATE void py3270_action_finalize(PyObject *self);
  DLL_PRIVATE void		py3270_action_dealloc(PyObject * self);
 
  DLL_PRIVATE PyObject * py3270_action_call(PyObject *callable, PyObject *args, PyObject *kwargs);

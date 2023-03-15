@@ -79,11 +79,9 @@ PyMODINIT_FUNC PyInit_tn3270(void)
 	if (PyType_Ready(&py3270_session_type) < 0)
 		return NULL;
 
-	/*
 	py3270_action_type_init();
 	if (PyType_Ready(&py3270_action_type) < 0)
 		return NULL;
-	*/
 
     //
     // Initialize module.
@@ -102,6 +100,14 @@ PyMODINIT_FUNC PyInit_tn3270(void)
 	Py_INCREF(&py3270_session_type);
     if (PyModule_AddObject(module, "Session", (PyObject *) &py3270_session_type) < 0) {
 		Py_DECREF(&py3270_session_type);
+		Py_DECREF(module);
+		return NULL;
+    }
+
+	Py_INCREF(&py3270_action_type);
+    if (PyModule_AddObject(module, "Action", (PyObject *) &py3270_action_type) < 0) {
+		Py_DECREF(&py3270_session_type);
+		Py_DECREF(&py3270_action_type);
 		Py_DECREF(module);
 		return NULL;
     }

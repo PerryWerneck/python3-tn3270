@@ -23,6 +23,7 @@
 
  #include <py3270.h>
  #include <pysession.h>
+ #include <pyaction.h>
  #include <workers.h>
 
  #include <memory>
@@ -50,12 +51,10 @@
 
 		// Get available actions.
 		vector<const LIB3270_ACTION *> actions;
-		/*
 		TN3270::for_each([&actions](const LIB3270_ACTION &action){
 			actions.push_back(&action);
 			return false;
 		});
-		*/
 
 		// Allocate getset data.
 		size_t szData = sizeof(struct PyGetSetDef) * (properties.size() + actions.size() + 2);
@@ -85,18 +84,16 @@
 		}
 
 		// Load actions.
-		/*
 		for(auto action : actions) {
 
 			py3270_session_type.tp_getset[index].name	 = (char *) action->name;
 			py3270_session_type.tp_getset[index].doc     = (char *) (action->summary ? action->summary : "");
 			py3270_session_type.tp_getset[index].closure = (void *) action;
 			py3270_session_type.tp_getset[index].get	 = (getter) py3270_session_get_action;
-			py3270_session_type.tp_getset[index].set	 = (setter) py3270_session_set_action;
+			// py3270_session_type.tp_getset[index].set	 = (setter) py3270_session_set_action;
 
 			index++;
 		}
-		*/
 
 	}
 
@@ -241,3 +238,10 @@
 
  }
 
+ PyObject * py3270_session_get_action(PyObject *self, const LIB3270_ACTION *descriptor) {
+
+	return py3270_call(self,[descriptor](TN3270::Session &session){
+		return py3270_action_new(session.ActionFactory(descriptor));
+	});
+
+ }
