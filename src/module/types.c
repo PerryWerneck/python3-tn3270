@@ -148,20 +148,12 @@
 
  };
 
- /*
  static PyMethodDef py3270_action_methods[] = {
 
     {
 		"activate",
 		(PyCFunction) py3270_action_activate,
 		METH_NOARGS,
-		""
-    },
-
-    {
-		"wait",
-		(PyCFunction) py3270_action_wait,
-		METH_VARARGS,
 		""
     },
 
@@ -204,4 +196,3 @@
 	.tp_dealloc = py3270_action_dealloc,
 
  };
- */

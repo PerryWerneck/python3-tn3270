@@ -27,5 +27,6 @@
  DLL_PRIVATE PyObject * py3270_call(PyObject *self, const std::function<int (TN3270::Session &session)> &worker) noexcept;
  DLL_PRIVATE PyObject * py3270_call(PyObject *self, const std::function<PyObject * (TN3270::Session &session)> &worker) noexcept;
 
+ DLL_PRIVATE PyObject * py3270_call(PyObject *self, const std::function<PyObject * (TN3270::Action &action)> &worker) noexcept;
 
 

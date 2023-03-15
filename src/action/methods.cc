@@ -40,87 +40,10 @@
 #endif  // _WIN32
 
  #include <py3270.h>
+ #include <pyaction.h>
+ #include <workers.h>
  #include <lib3270/ipc.h>
  #include <lib3270/ipc/action.h>
 
 /*---[ Implement ]----------------------------------------------------------------------------------*/
-
-/*
-PyObject * py3270_action_call(PyObject *self, PyObject *args, PyObject *kwargs) {
-
-	return py3270_action_activate(self,args);
-
-}
-
-PyObject * py3270_action_describe(PyObject *self, PyObject *obj, PyObject *type) {
-
-	return py3270_action_call(self, [](TN3270::Action &action) {
-
-		return (PyObject *) PyUnicode_FromString(action.getDescription());
-
-	});
-
-}
-
-PyObject * py3270_action_activate(PyObject *self, PyObject *args) {
-
-	return py3270_action_call(self, [args, self](TN3270::Action &action) {
-
-		if(PyTuple_Size(args) == 1) {
-
-			unsigned int seconds;
-
-			if (!PyArg_ParseTuple(args, "I", &seconds))
-				return (PyObject *) NULL;
-
-			action.activate();
-			action.wait(seconds);
-
-		} else {
-
-			action.activate();
-
-		}
-
-		Py_INCREF(self);
-		return self;
-
-	});
-
-}
-
-PyObject * py3270_action_get_activatable(PyObject *self, void *dunno) {
-
-	return py3270_action_call(self, [](TN3270::Action &action) {
-
-		return PyBool_FromLong(action.activatable());
-
-	});
-
-}
-
-PyObject * py3270_action_wait(PyObject *self, PyObject *args) {
-
-	return py3270_action_call(self, [args, self](TN3270::Action &action) {
-
-		py3270_wait( * ((pyAction *) self)->session->host, args);
-
-		Py_INCREF(self);
-		return self;
-
-	});
-
-}
-
-PyObject * py3270_action_str(PyObject *self) {
-
-	return py3270_action_call(self, [](TN3270::Action &action) {
-
-		return PyUnicode_FromString(action.getSummary());
-
-	});
-
-}
-*/
-
 
