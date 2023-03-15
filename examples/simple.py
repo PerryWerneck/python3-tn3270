@@ -36,26 +36,24 @@ print("Connected: " + str(session.connected))
 #
 # Test 'reconnect' action
 #
-reconnect = session.reconnect
-
-print(reconnect)
-if reconnect.activatable:
-	reconnect()
+if session.reconnect.try_activate():
+	print("Reconnecting to host")
+	session.wait(10)
 
 #print(session.cursor)
-exit(0)
+#exit(0)
 
 #
 # Can reconnect? If yes do it!
 #
-if session.reconnect.activatable:
-    print("Reconnecting...")
-    session.reconnect().wait(10)
-
-print(session.connected)
-if not session.connected:
-    print('Session is offline')
-    exit
+#if session.reconnect.activatable:
+#    print("Reconnecting...")
+#    session.reconnect().wait(10)
+#
+#print(session.connected)
+#if not session.connected:
+#    print('Session is offline')
+#    exit
 
 print(session.find('sistema'))
 print(session.count('sistema'))

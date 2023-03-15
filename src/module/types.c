@@ -153,8 +153,15 @@
     {
 		"activate",
 		(PyCFunction) py3270_action_activate,
-		METH_NOARGS,
-		""
+		METH_VARARGS,
+		"Activate action"
+    },
+
+    {
+		"try_activate",
+		(PyCFunction) py3270_action_try_activate,
+		METH_VARARGS,
+		"Activate action only if available, returns 'true' if activated and 'false' if the action cant be activated"
     },
 
     {

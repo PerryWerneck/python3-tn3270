@@ -45,6 +45,7 @@
  DLL_PRIVATE PyObject * py3270_action_call(PyObject *callable, PyObject *args, PyObject *kwargs);
  DLL_PRIVATE PyObject * py3270_action_describe(PyObject *self, PyObject *obj, PyObject *type);
  DLL_PRIVATE PyObject * py3270_action_activate(PyObject *self, PyObject *args);
+ DLL_PRIVATE PyObject * py3270_action_try_activate(PyObject *self, PyObject *args);
  DLL_PRIVATE PyObject * py3270_action_wait(PyObject *self, PyObject *args);
  DLL_PRIVATE PyObject * py3270_action_get_activatable(PyObject *self, void *dunno);
  DLL_PRIVATE PyObject * py3270_action_str(PyObject *self);

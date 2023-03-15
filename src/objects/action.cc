@@ -124,7 +124,6 @@
 			action.activate();
 			break;
 
-		/*
 		case 1:	// Only one argument, its the time.
 			{
 				unsigned int seconds;
@@ -132,35 +131,10 @@
 				if(!PyArg_ParseTuple(args, "I", &seconds))
 					throw std::system_error(EINVAL, std::system_category());
 
-				session.waitForReady(seconds);
+				action.activate();
+				action.wait(seconds);
 			}
 			break;
-
-		case 2:	// 2 arguments, it's the address and content.
-			{
-				int baddr;
-				const char *text;
-
-				if(!PyArg_ParseTuple(args, "is", &baddr, &text))
-					throw std::system_error(EINVAL, std::system_category());
-
-				session.wait(baddr,text);
-			}
-			break;
-
-		case 3:	// 3 arguments, it's the row, col, and content.
-			{
-				unsigned int row, col;
-				const char *text;
-
-				if (!PyArg_ParseTuple(args, "IIs", &row, &col, &text))
-					throw std::system_error(EINVAL, std::system_category());
-
-				session.wait(row,col,text);
-
-			}
-			break;
-		*/
 
 		default:
 			throw std::system_error(EINVAL, std::system_category());
@@ -188,6 +162,34 @@
 	});
  }
 
+ PyObject * py3270_action_try_activate(PyObject *self, PyObject *args) {
+	return py3270_call(self, [args, self](TN3270::Action &action) {
+
+		if(!action.activatable()) {
+			return PyBool_FromLong(0);
+		}
+
+		if(PyTuple_Size(args) == 1) {
+
+			unsigned int seconds;
+
+			if (!PyArg_ParseTuple(args, "I", &seconds))
+				return (PyObject *) NULL;
+
+			action.activate();
+			action.wait(seconds);
+
+		} else {
+
+			action.activate();
+
+		}
+
+		return PyBool_FromLong(1);
+
+	});
+ }
+
  PyObject * py3270_action_activate(PyObject *self, PyObject *args) {
 
 	return py3270_call(self, [args, self](TN3270::Action &action) {
@@ -200,7 +202,7 @@
 				return (PyObject *) NULL;
 
 			action.activate();
-//			action.wait(seconds);
+			action.wait(seconds);
 
 		} else {
 
