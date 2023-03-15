@@ -58,11 +58,19 @@
 		*/
 
 		// Allocate getset data.
-		size_t szData = sizeof(struct PyGetSetDef) * (properties.size() + actions.size() + 1);
+		size_t szData = sizeof(struct PyGetSetDef) * (properties.size() + actions.size() + 2);
 		py3270_session_type.tp_getset = (struct PyGetSetDef *) malloc(szData);
 		memset(py3270_session_type.tp_getset,0,szData);
 
 		size_t index = 0;
+
+		// Cursor position.
+		{
+			py3270_session_type.tp_getset[index].name	 = (char *) "cursor";
+			py3270_session_type.tp_getset[index].doc     = (char *) "Cursor position (row/col); read-only attribute";
+			py3270_session_type.tp_getset[index].get     = (getter) py3270_session_get_cursor_position;
+			index++;
+		}
 
 		// Load attributes.
 		for(auto property : properties) {
