@@ -1,0 +1,27 @@
+name: MSVC
+on:
+  pull_request:
+    branches:
+      - master
+  push:
+    branches:
+      - msvc      
+jobs:
+  win32-pack:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ilammy/msvc-dev-cmd@v1.4.1
+      - name: Set up Python
+        uses: actions/setup-python@v4
+      - uses: robinraju/release-downloader@v1.7
+        with:
+          repository: "PerryWerneck/libipc3270"
+          latest: true
+          fileName: "msvc-libipc3270.zip"
+      - name: Extract libipc3270 
+        run: 7z x msvc-libipc3270.zip -y -oipc3270
+      - name: Display Python version
+        run: python -c "import sys; print(sys.version)"
+
+  

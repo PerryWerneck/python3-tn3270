@@ -6,15 +6,9 @@ library_dirs = []
 extra_link_args = []
 
 if platform.system() == 'Windows':
-	include_dirs.append(os.getenv('PW3270_SDK_PATH') + '/include')
-	library_dirs.append(os.getenv('PW3270_SDK_PATH') + '/lib')
-
-	with open(os.getenv('PW3270_SDK_PATH') + "\\lib3270.mak") as file:
-		text = file.readlines()
-
-		for line in text:
-			if line.startswith("LIB3270_NAME="):
-				extra_link_args.append("/delayload:" + line.split("=")[1].rstrip("\r").rstrip("\n") + ".dll")
+	include_dirs.append('ipc3270/include')
+	library_dirs.append('ipc3270/lib')
+	extra_link_args.append("/delayload:lib3270.dll")
 
 tn3270 = Extension(
 		'tn3270',
@@ -23,29 +17,28 @@ tn3270 = Extension(
 		library_dirs=library_dirs,
 		extra_link_args=extra_link_args,
 		sources = [
-			'src/action/type.c',
-			'src/module/init.c',
-			'src/session/type.c',
 			'src/action/init.cc',
 			'src/action/methods.cc',
 			'src/action/new.cc',
 			'src/action/tools.cc',
+			'src/module/windows/init.cc',
+			'src/module/windows/tools.cc',
 			'src/module/properties.cc',
-			'src/session/network.cc',
-			'src/session/tools.cc',
+			'src/session/actions.cc',
+			'src/session/attributes.cc',
 			'src/session/get.cc',
 			'src/session/init.cc',
-			'src/session/wait.cc',
 			'src/session/misc.cc',
+			'src/session/network.cc',
 			'src/session/set.cc',
-			'src/session/attributes.cc',
-			'src/session/actions.cc',
-			'src/module/windows/init.cc',
-			'src/module/windows/tools.cc'
+			'src/session/tools.cc',
+			'src/session/wait.cc',
+			'src/objects/action.cc',
+			'src/objects/session.cc'
 		])
 
 setup ( name = 'tn3270',
-	version = '5.3',
+	version = '5.4',
 	description = 'Python bindings for lib3270/pw3270.',
 	author = 'Perry Werneck',
 	author_email = 'perry.werneck@gmail.com',
