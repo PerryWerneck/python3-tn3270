@@ -116,7 +116,62 @@
  }
 
  PyObject * py3270_action_call(PyObject *self, PyObject *args, PyObject *kwargs) {
-	return py3270_action_activate(self,args);
+
+	return py3270_call(self, [self,args](TN3270::Action &action) {
+
+		switch(PyTuple_Size(args)) {
+		case 0:	// No time defined, use the default one.
+			action.activate();
+			break;
+
+		/*
+		case 1:	// Only one argument, its the time.
+			{
+				unsigned int seconds;
+
+				if(!PyArg_ParseTuple(args, "I", &seconds))
+					throw std::system_error(EINVAL, std::system_category());
+
+				session.waitForReady(seconds);
+			}
+			break;
+
+		case 2:	// 2 arguments, it's the address and content.
+			{
+				int baddr;
+				const char *text;
+
+				if(!PyArg_ParseTuple(args, "is", &baddr, &text))
+					throw std::system_error(EINVAL, std::system_category());
+
+				session.wait(baddr,text);
+			}
+			break;
+
+		case 3:	// 3 arguments, it's the row, col, and content.
+			{
+				unsigned int row, col;
+				const char *text;
+
+				if (!PyArg_ParseTuple(args, "IIs", &row, &col, &text))
+					throw std::system_error(EINVAL, std::system_category());
+
+				session.wait(row,col,text);
+
+			}
+			break;
+		*/
+
+		default:
+			throw std::system_error(EINVAL, std::system_category());
+
+		}
+
+		Py_INCREF(self);
+		return self;
+
+	});
+
  }
 
  PyObject * py3270_action_get_activatable(PyObject *self, void *dunno) {
