@@ -1,14 +1,19 @@
 from distutils.core import setup, Extension, os
 import platform
+import os
 
 include_dirs = ['src/include']
 library_dirs = []
 extra_link_args = []
 
 if platform.system() == 'Windows':
-	include_dirs.append('ipc3270/include')
-	library_dirs.append('ipc3270/lib')
 	extra_link_args.append("/delayload:lib3270.dll")
+	if os.path.isdir('ipc3270'):
+		include_dirs.append('ipc3270/include')
+		library_dirs.append('ipc3270/lib')
+	else:
+		include_dirs.append(os.getenv('PW3270_SDK_PATH') + '/include')
+		library_dirs.append(os.getenv('PW3270_SDK_PATH') + '/lib')			
 
 tn3270 = Extension(
 		'tn3270',
