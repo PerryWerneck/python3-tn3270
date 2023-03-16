@@ -27,24 +27,21 @@ Not available
 
 ### Windows (With MSVC & Python SetupTools)
 
-[OUTDATED]
-
 1. Install pw3270 with remote control and sdk modules
 
 2. Download and install Visual Studio Build Tools (https://visualstudio.microsoft.com/pt-br/downloads/)
 
-3. Build and install the "glue" library using the MSVC Native tools command prompt as administrator.
-
-	```shell
-	git clone https://github.com/PerryWerneck/libipc3270.git ./ipc3270
-	cd ipc3270
-	install.bat
-	```
-
-4. Get python-tn3270 sources from git
+3. Get python-tn3270 sources from git
 
 	```shell
 	git clone https://github.com/PerryWerneck/python-tn3270.git ./python-tn3270
+	```
+
+4. Download and unpack libipc3270 pre-compiled image
+
+	```shell
+	wget https://github.com/PerryWerneck/libipc3270/releases/download/5.4/msvc-libipc3270.zip
+	7z x msvc-libipc3270.zip -y -oipc3270
 	```
 
 5. Build the extension using setup.py

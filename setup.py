@@ -6,8 +6,33 @@ include_dirs = ['src/include']
 library_dirs = []
 extra_link_args = []
 
+src_files = [
+	'src/module/init.c',
+	'src/module/types.c',
+	'src/session/type.c',
+	'src/action/methods.cc',
+	'src/action/new.cc',
+	'src/action/tools.cc',
+	'src/module/properties.cc',
+	'src/session/actions.cc',
+	'src/session/attributes.cc',
+	'src/session/get.cc',
+	'src/session/init.cc',
+	'src/session/misc.cc',
+	'src/session/network.cc',
+	'src/session/set.cc',
+	'src/session/tools.cc',
+	'src/session/wait.cc',
+	'src/objects/action.cc',
+	'src/objects/session.cc'
+]
+
 if platform.system() == 'Windows':
 	extra_link_args.append("/delayload:lib3270.dll")
+	
+	src_files.append('src/module/windows/init.cc' )
+	src_files.append('src/module/windows/tools.cc' )
+	
 	if os.path.isdir('ipc3270'):
 		include_dirs.append('ipc3270/include')
 		library_dirs.append('ipc3270/lib')
@@ -21,26 +46,8 @@ tn3270 = Extension(
 		libraries = ['ipc3270'],
 		library_dirs=library_dirs,
 		extra_link_args=extra_link_args,
-		sources = [
-			'src/action/init.cc',
-			'src/action/methods.cc',
-			'src/action/new.cc',
-			'src/action/tools.cc',
-			'src/module/windows/init.cc',
-			'src/module/windows/tools.cc',
-			'src/module/properties.cc',
-			'src/session/actions.cc',
-			'src/session/attributes.cc',
-			'src/session/get.cc',
-			'src/session/init.cc',
-			'src/session/misc.cc',
-			'src/session/network.cc',
-			'src/session/set.cc',
-			'src/session/tools.cc',
-			'src/session/wait.cc',
-			'src/objects/action.cc',
-			'src/objects/session.cc'
-		])
+		sources=src_files
+)
 
 setup ( name = 'tn3270',
 	version = '5.4',
