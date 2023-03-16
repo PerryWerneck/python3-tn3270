@@ -23,5 +23,8 @@ jobs:
         run: 7z x msvc-libipc3270.zip -y -oipc3270
       - name: Display Python version
         run: python -c "import sys; print(sys.version)"
-
+      - name: Build extension
+        run: python setup.py build
+      - name: List contents
+        run: dir /s
   
