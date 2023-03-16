@@ -33,34 +33,36 @@
 	#include <config.h>
  #else
 	#define PACKAGE_DESCRIPTION "Python bindings for lib3270/pw3270"
+	#define PACKAGE_NAME "python3-tn3270"
 	#define HAVE_GNUC_VISIBILITY 1
  #endif // HAVE_CONFIG_H
 
- #define PY_SSIZE_T_CLEAN
- #include <Python.h>
-
  #if defined(_WIN32)
 
-		#include <windows.h>
+	#include <WinSock2.h>
+	#include <windows.h>
 
-		#define DLL_PRIVATE	extern
-		#define DLL_PUBLIC	extern __declspec (dllexport)
+	#define DLL_PRIVATE	extern
+	#define DLL_PUBLIC	extern __declspec (dllexport)
 
  #elif defined(__SUNPRO_C) && (__SUNPRO_C >= 0x550)
 
-		#define DLL_PRIVATE		__hidden extern
-		#define DLL_PUBLIC		extern
+	#define DLL_PRIVATE		__hidden extern
+	#define DLL_PUBLIC		extern
 
  #elif defined (HAVE_GNUC_VISIBILITY)
 
-		#define DLL_PRIVATE		__attribute__((visibility("hidden"))) extern
-		#define DLL_PUBLIC		__attribute__((visibility("default"))) extern
+	#define DLL_PRIVATE		__attribute__((visibility("hidden"))) extern
+	#define DLL_PUBLIC		__attribute__((visibility("default"))) extern
 
  #else
 
 		#error Unable to set visibility attribute
 
  #endif
+
+ #define PY_SSIZE_T_CLEAN
+ #include <Python.h>
 
  #ifdef __cplusplus
 	extern "C" {
