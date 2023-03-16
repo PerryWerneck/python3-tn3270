@@ -1,11 +1,11 @@
-name: MSVC
+name: WinPackage
 on:
   pull_request:
     branches:
       - master
   push:
     branches:
-      - msvc      
+      - develop      
 jobs:
   win32-pack:
     runs-on: windows-latest
