@@ -2,12 +2,12 @@
 
 	<!-- https://github.com/openSUSE/obs-service-tar_scm/blob/master/tar_scm.py -->
 	<service name="tar_scm">
-        <param name="changesgenerate">enable</param>
-        <param name="changesauthor">perry.werneck@gmail.com</param>
-		<param name="sslverify">disable</param>
-		<param name="versionformat">@PARENT_TAG@</param>
+		<param name="changesgenerate">enable</param>
+		<param name="changesauthor">perry.werneck@gmail.com</param>
 		<param name="url">https://github.com/PerryWerneck/python3-tn3270.git</param>
+		<param name="versionformat">@PARENT_TAG@+git%cd</param>
 		<param name="scm">git</param>
+		<param name="revision">develop</param>
 	</service>
 
 	<!-- https://github.com/openSUSE/obs-service-extract_file -->
@@ -16,7 +16,6 @@
 		<param name="files">*/rpm/*.spec</param>
 	</service -->
 
-	<!--
 	<service name="extract_file">
 		<param name="archive">*.tar</param>
 		<param name="files">*/debian/*.dsc</param>
@@ -34,18 +33,17 @@
 		<param name="outfilename">debian.control</param>
 	</service>
 
-	<service name="extract_file">
+	<!-- service name="extract_file">
 		<param name="archive">*.tar</param>
 		<param name="files">*/debian/rules</param>
 		<param name="outfilename">debian.rules</param>
-	</service>
+	</service -->
 
   	<service name="extract_file">
 		<param name="archive">*.tar</param>
 		<param name="files">*/debian/compat</param>
 		<param name="outfilename">debian.compat</param>
 	</service>
-	-->
 
 	<service name="recompress">
 		<param name="file">*.tar</param>
@@ -55,3 +53,4 @@
 	<service name="set_version" />
 
 </services>
+
