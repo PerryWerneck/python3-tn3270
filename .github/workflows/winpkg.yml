@@ -24,7 +24,7 @@ jobs:
       - name: Display Python version
         run: python -c "import sys; print(sys.version)"
       - name: Build extension
-        run: python setup.py build
+        run: python setup.py bdist
       - name: List contents
         run: dir /s
   

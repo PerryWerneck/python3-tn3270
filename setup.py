@@ -1,4 +1,4 @@
-from distutils.core import setup, Extension, os
+from setuptools import setup, Extension
 import platform
 import os
 
