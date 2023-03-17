@@ -121,7 +121,7 @@ print(session)
 7. Build windows installer (optional)
 
 	```shell
-	python setup.py bdist
+	python setup.py bdist_wininst
 	```
 
 
