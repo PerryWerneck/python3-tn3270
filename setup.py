@@ -27,23 +27,31 @@ src_files = [
 	'src/objects/session.cc'
 ]
 
+library_names = [
+]
+
 if platform.system() == 'Windows':
 	extra_link_args.append("/delayload:lib3270.dll")
+	#extra_link_args.append("/NODEFAULTLIB:LIBCMT")
 	
 	src_files.append('src/module/windows/init.cc' )
 	src_files.append('src/module/windows/tools.cc' )
+	library_names.append('ipc3270.static')
 	
 	if os.path.isdir('ipc3270'):
 		include_dirs.append('ipc3270/include')
 		library_dirs.append('ipc3270/lib')
 	else:
 		include_dirs.append(os.getenv('PW3270_SDK_PATH') + '/include')
-		library_dirs.append(os.getenv('PW3270_SDK_PATH') + '/lib')			
+		library_dirs.append(os.getenv('PW3270_SDK_PATH') + '/lib')
+else:
+	library_names.append('ipc3270')
+
 
 tn3270 = Extension(
 		'tn3270',
 		include_dirs = include_dirs,
-		libraries = ['ipc3270'],
+		libraries = library_names,
 		library_dirs=library_dirs,
 		extra_link_args=extra_link_args,
 		sources=src_files
