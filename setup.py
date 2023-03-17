@@ -57,8 +57,16 @@ tn3270 = Extension(
 		sources=src_files
 )
 
+package_version='5.5'
+with open(r'configure.ac', 'r') as fp:
+    lines = fp.readlines()
+    for line in lines:
+        if line.find('AC_INIT') != -1:
+            package_version = line.split('[')[2].split(']')[0].strip()
+            break;
+            
 setup ( name = 'tn3270',
-	version = '5.5',
+	version = package_version,
 	description = 'Python bindings for lib3270/pw3270.',
 	author = 'Perry Werneck',
 	author_email = 'perry.werneck@gmail.com',
