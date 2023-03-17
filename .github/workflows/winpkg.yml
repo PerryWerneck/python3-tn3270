@@ -11,6 +11,11 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: oprypin/find-latest-tag@v1
+        id: gettag
+        with:
+          repository: PerryWerneck/libipc3270  # The repository to scan.
+          releases-only: true  # We know that all relevant tags have a GitHub release for them.
       - uses: ilammy/msvc-dev-cmd@v1.4.1
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -21,8 +26,6 @@ jobs:
           fileName: "msvc-libipc3270.zip"
       - name: Extract libipc3270 
         run: 7z x msvc-libipc3270.zip -y -oipc3270
-      - name: Display Python version
-        run: python -c "import sys; print(sys.version)"
       - name: Build extension
         run: python setup.py bdist
       - name: List contents
