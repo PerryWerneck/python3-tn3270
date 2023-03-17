@@ -58,7 +58,7 @@ tn3270 = Extension(
 )
 
 setup ( name = 'tn3270',
-	version = '5.4',
+	version = '5.5',
 	description = 'Python bindings for lib3270/pw3270.',
 	author = 'Perry Werneck',
 	author_email = 'perry.werneck@gmail.com',
