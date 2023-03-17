@@ -26,8 +26,15 @@ jobs:
           fileName: "msvc-libipc3270.zip"
       - name: Extract libipc3270 
         run: 7z x msvc-libipc3270.zip -y -oipc3270
-      - name: Build extension
-        run: python setup.py bdist
-      - name: List contents
-        run: dir /s
-  
+      - name: Build installer
+        run: python setup.py bdist_wininst
+      - uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.gettag.outputs.tag }}
+          artifacts: "dist/*.exe"
+          allowUpdates: true
+          draft: false
+          makeLatest: true
+          omitBody: true
+          omitPrereleaseDuringUpdate: true
+          replacesArtifacts: true
