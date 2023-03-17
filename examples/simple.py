@@ -27,7 +27,7 @@ session = tn3270.Session(":a")
 
 print(session.version)
 
-print("Using tn3270 version " + session.version + " revision " + session.revision)
+print("Using pw3270 version " + session.version + " revision " + session.revision)
 
 print("Cstate: " + str(session.cstate))
 print("Width: " + str(session.width))

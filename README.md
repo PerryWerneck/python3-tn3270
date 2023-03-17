@@ -14,17 +14,78 @@ You can download installation package for supported distributions in Open Build 
 
 [<img src="https://raw.githubusercontent.com/PerryWerneck/pw3270/master/branding/obs-badge-en.svg" alt="Download from open build service" height="80px">](https://software.opensuse.org/download.html?project=home%3APerryWerneck%3Apw3270&package=python3-tn3270)
 
-
 ### Windows
 
 Not available
+
+## Examples
+
+Getting module version
+
+```python
+#!/usr/bin/python
+#-*- coding: utf-8
+
+import tn3270
+
+print("Using py3270 Version " + tn3270.version() + " revision " + tn3270.revision())
+```
+
+Getting pw3270 version
+
+```python
+#!/usr/bin/python
+#-*- coding: utf-8
+
+import tn3270
+
+session = tn3270.Session(":a")
+
+print("Using PW3270 version " + session.version + " revision " + session.revision)
+```
+
+Connecting first pw3270 window to host (if not connected), getting contents
+
+```python
+#!/usr/bin/python
+#-*- coding: utf-8
+
+import tn3270
+
+session = tn3270.Session(":a")
+
+if session.reconnect.try_activate():
+	print("Reconnecting to host")
+	session.wait(10)
+
+print(session)
+```
 
 ## Building from sources
 
 ### Linux
 
-	TODO
+1. Install libipc3270-devel
 
+2. Get python-tn3270 sources from git
+
+	```shell
+	git clone https://github.com/PerryWerneck/python-tn3270.git ./python-tn3270
+	```
+
+3. Build the extension using setup.py
+
+	```shell
+	cd python-tn3270
+	python setup.py build
+	```
+
+4. Install extension
+
+	```shell
+	python setup.py install
+	```
+	
 ### Windows (With MSVC & Python SetupTools)
 
 1. Install pw3270 with remote control and sdk modules
@@ -60,7 +121,7 @@ Not available
 7. Build windows installer (optional)
 
 	```shell
-	python setup.py bdist_wininst
+	python setup.py bdist
 	```
 
 
