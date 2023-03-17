@@ -40,7 +40,7 @@ Not available
 4. Download and unpack libipc3270 pre-compiled image
 
 	```shell
-	wget https://github.com/PerryWerneck/libipc3270/releases/download/5.4/msvc-libipc3270.zip
+	wget https://github.com/PerryWerneck/libipc3270/releases/download/5.5/msvc-libipc3270.zip
 	7z x msvc-libipc3270.zip -y -oipc3270
 	```
 
