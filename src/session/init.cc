@@ -37,6 +37,7 @@
 
 /*---[ Implement ]----------------------------------------------------------------------------------*/
 
+/*
 static void cleanup(pySession * session) {
 
 	if(session->host) {
@@ -161,3 +162,4 @@ void py3270_session_dealloc(PyObject * self) {
 	Py_TYPE(self)->tp_free(self);
 
 }
+*/

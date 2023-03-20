@@ -75,11 +75,11 @@ static struct PyModuleDef definition = {
 PyMODINIT_FUNC PyInit_tn3270(void)
 {
 	// Initialize custom attributes & methods.
-	py3270_session_type_init(&py3270_session_type);
+	py3270_session_type_init();
 	if (PyType_Ready(&py3270_session_type) < 0)
 		return NULL;
 
-	py3270_action_type_init(&py3270_action_type);
+	py3270_action_type_init();
 	if (PyType_Ready(&py3270_action_type) < 0)
 		return NULL;
 
@@ -90,8 +90,6 @@ PyMODINIT_FUNC PyInit_tn3270(void)
     Py_Initialize();
 
     PyObject *module = PyModule_Create(&definition);
-
-	debug("Initializing module %p", module);
 
     if(!module)
 		return NULL;
@@ -106,12 +104,18 @@ PyMODINIT_FUNC PyInit_tn3270(void)
 		return NULL;
     }
 
+	Py_INCREF(&py3270_action_type);
+    if (PyModule_AddObject(module, "Action", (PyObject *) &py3270_action_type) < 0) {
+		Py_DECREF(&py3270_session_type);
+		Py_DECREF(&py3270_action_type);
+		Py_DECREF(module);
+		return NULL;
+    }
+
     return module;
 }
 
 static void cleanup(PyObject *module) {
-
-	debug("Cleaning up module %p", module);
 
 	if(py3270_session_type.tp_getset) {
 		free(py3270_session_type.tp_getset);

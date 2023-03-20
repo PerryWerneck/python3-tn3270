@@ -33,34 +33,37 @@
  */
 
  #include <py3270.h>
+ #include <workers.h>
+ #include <pysession.h>
+ #include <lib3270/ipc/session.h>
 
 /*---[ Implement ]----------------------------------------------------------------------------------*/
 
  PyObject * py3270_session_find(PyObject *self, PyObject *args) {
 
- 	return py3270_session_call(self, [self, args](TN3270::Host &host){
+ 	return py3270_call(self, [self, args](TN3270::Session &session){
 
 		const char *text;
 
 		if(!PyArg_ParseTuple(args, "s", &text))
 			throw std::system_error(EINVAL, std::system_category());
 
-		return PyLong_FromLong(host.find(text));
+		return session.find(text);
 
  	});
 
  }
 
- PyObject	* py3270_session_count(PyObject *self, PyObject *args) {
+ PyObject * py3270_session_count(PyObject *self, PyObject *args) {
 
- 	return py3270_session_call(self, [self, args](TN3270::Host &host){
+ 	return py3270_call(self, [self, args](TN3270::Session &session){
 
 		const char *text;
 
 		if(!PyArg_ParseTuple(args, "s", &text))
 			throw std::system_error(EINVAL, std::system_category());
 
-		return PyLong_FromLong(host.count(text));
+		return session.count(text);
 
  	});
 

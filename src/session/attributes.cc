@@ -33,50 +33,33 @@
  */
 
  #include <py3270.h>
+ #include <pysession.h>
+ #include <workers.h>
+ #include <lib3270/ipc/session.h>
+ #include <lib3270/ipc/property.h>
+ #include <stdexcept>
 
-/*---[ Implement ]----------------------------------------------------------------------------------*/
+ using namespace std;
 
-PyObject * py3270_session_getter(PyObject *self, void *name) {
+ PyObject * py3270_session_get_attribute(PyObject *self, const LIB3270_PROPERTY *property) {
 
-//	debug("%s(%s)",__FUNCTION__,(const char *) name);
+	return py3270_call(self, [property](TN3270::Session &session){
 
-	return py3270_session_call(self, [name](TN3270::Host &host){
+		switch(TN3270::Property::find(property->name)->type()) {
+		case TN3270::Property::Integer:
+			return PyLong_FromLong(session.getProperty<int32_t,unsigned long>(property->name));
 
-		auto attribute = host[(const char *) name];
+		case TN3270::Property::Unsigned:
+			return PyLong_FromLong(session.getProperty<uint32_t,unsigned long>(property->name));
 
-		switch(attribute.getType()) {
-		case TN3270::Attribute::String:
-			return PyUnicode_FromString(attribute.toString().c_str());
+		case TN3270::Property::String:
+			return PyUnicode_FromString(session.getProperty<std::string,std::string>(property->name).c_str());
 
-		case TN3270::Attribute::Boolean:
-			return PyBool_FromLong(attribute.getBoolean());
-
-		case TN3270::Attribute::Uchar:
-			throw std::system_error(ENOTSUP, std::system_category());
-
-		case TN3270::Attribute::Int16:
-			throw std::system_error(ENOTSUP, std::system_category());
-
-		case TN3270::Attribute::Uint16:
-			throw std::system_error(ENOTSUP, std::system_category());
-
-		case TN3270::Attribute::Int32:
-			return PyLong_FromLong(attribute.getInt32());
-
-		case TN3270::Attribute::Int32x:
-			throw std::system_error(ENOTSUP, std::system_category());
-
-		case TN3270::Attribute::Uint32:
-			return PyLong_FromLong(attribute.getUint32());
-
-		case TN3270::Attribute::Int64:
-			throw std::system_error(ENOTSUP, std::system_category());
-
-		case TN3270::Attribute::Uint64:
-			throw std::system_error(ENOTSUP, std::system_category());
+		case TN3270::Property::Boolean:
+			return PyBool_FromLong(session.getProperty<bool,unsigned long>(property->name));
 
 		default:
-			throw runtime_error("Unexpected atttribute type");
+			throw runtime_error("Invalid attribute");
 		}
 
 		return PyLong_FromLong(0);
@@ -85,41 +68,35 @@ PyObject * py3270_session_getter(PyObject *self, void *name) {
 
 }
 
-int py3270_session_setter(PyObject *self, PyObject *value, void *name) {
+int py3270_session_set_attribute(PyObject *self, PyObject *value, const LIB3270_PROPERTY *property) {
 
-	try {
+	py3270_call(self, [property,value](TN3270::Session &session){
 
-		auto attribute = ((pySession * ) self)->host->getAttribute((const char *) name);
+		switch(TN3270::Property::find(property->name)->type()) {
+		case TN3270::Property::Integer:
+			session.setProperty(property->name,(int) PyLong_AsUnsignedLong(value));
+			break;
 
-		if(PyLong_Check(value)) {
+		case TN3270::Property::Unsigned:
+			session.setProperty(property->name,(unsigned int) PyLong_AsUnsignedLong(value));
+			break;
 
-			// Is a long, use PyLong_AsUnsignedLong
-			attribute = (int) PyLong_AsUnsignedLong(value);
+		case TN3270::Property::String:
+			session.setProperty(property->name,(const char *) PyUnicode_AsUTF8AndSize(value,NULL));
+			break;
 
-		} else if(PyBool_Check(value)) {
+		case TN3270::Property::Boolean:
+			session.setProperty(property->name,(bool) (PyLong_AsUnsignedLong(value) != 0));
+			break;
 
-			// Is a boolean, use PyLong_AsUnsignedLong != 0
-			attribute = (bool) (PyLong_AsUnsignedLong(value) != 0);
-
-		} else if(PyUnicode_Check(value)) {
-
-			// Is a unicode string
-			attribute = (const char *) PyUnicode_AsUTF8AndSize(value,NULL);
-
+		default:
+			throw runtime_error("Invalid attribute");
 		}
 
-	} catch(const exception &e) {
-
-		PyErr_SetString(PyExc_RuntimeError, e.what());
-		return -1;
-
-	} catch( ... ) {
-
-		PyErr_SetString(PyExc_RuntimeError, "Unexpected error setting attribute");
-		return -1;
-
-	}
+		return 0;
+	});
 
 	return 0;
+
 }
 

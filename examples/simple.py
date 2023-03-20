@@ -21,31 +21,39 @@ import tn3270
 
 print("Testing python module")
 
-print("Using TN3270 Version " + tn3270.version())
-print(tn3270.revision())
+print("Using TN3270 Version " + tn3270.version() + " revision " + tn3270.revision())
 
 session = tn3270.Session(":a")
-session.timeout = 10
 
-print("Using tn3270 version " + session.version + " revision " + session.revision)
+print(session.version)
 
-print(session.cstate)
-print(session.width)
-print(session.connected)
-print(session.cursor)
-exit(0)
+print("Using pw3270 version " + session.version + " revision " + session.revision)
+
+print("Cstate: " + str(session.cstate))
+print("Width: " + str(session.width))
+print("Connected: " + str(session.connected))
+
+#
+# Test 'reconnect' action
+#
+if session.reconnect.try_activate():
+	print("Reconnecting to host")
+	session.wait(10)
+
+#print(session.cursor)
+#exit(0)
 
 #
 # Can reconnect? If yes do it!
 #
-if session.reconnect.activatable:
-    print("Reconnecting...")
-    session.reconnect().wait(10)
-
-print(session.connected)
-if not session.connected:
-    print('Session is offline')
-    exit
+#if session.reconnect.activatable:
+#    print("Reconnecting...")
+#    session.reconnect().wait(10)
+#
+#print(session.connected)
+#if not session.connected:
+#    print('Session is offline')
+#    exit
 
 print(session.find('sistema'))
 print(session.count('sistema'))

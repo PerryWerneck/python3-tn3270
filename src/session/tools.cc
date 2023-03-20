@@ -27,49 +27,50 @@
  *
  */
 
+ #ifdef HAVE_CONFIG_H
+	#include <config.h>
+ #endif // HAVE_CONFIG_H
+
  #include <py3270.h>
+ #include <stdexcept>
+ #include <iostream>
+ #include <string>
 
-/*---[ Implement ]----------------------------------------------------------------------------------*/
+ using namespace std;
 
-PyObject * py3270_session_call(PyObject *self, std::function<PyObject * (TN3270::Host &host)> worker) noexcept {
+ PyObject * py3270_new_object(const char *classname) {
 
-	try {
-
-		TN3270::Host *host = ((pySession * ) self)->host;
-		return worker(*host);
-
-	} catch(const exception &e) {
-
-		PyErr_SetString(PyExc_RuntimeError, e.what());
-
-	} catch( ... ) {
-
-		PyErr_SetString(PyExc_RuntimeError, "Unexpected error in tn3270 module");
-
+	PyObject *module_name = PyUnicode_FromString("tn3270");
+	PyObject *module = PyImport_Import(module_name);
+	if(!module) {
+		Py_DECREF(module_name);
+		throw runtime_error("Cant import module");
 	}
+	Py_DECREF(module_name);
 
-	return NULL;
-
-}
-
-PyObject * py3270_session_call(PyObject *self, std::function<int (TN3270::Host &host)> worker) noexcept {
-
-	try {
-
-		TN3270::Host *host = ((pySession * ) self)->host;
-		return PyLong_FromLong(worker(*host));
-
-	} catch(const exception &e) {
-
-		PyErr_SetString(PyExc_RuntimeError, e.what());
-
-	} catch( ... ) {
-
-		PyErr_SetString(PyExc_RuntimeError, "Unexpected error in core module");
-
+	PyObject *dict = PyModule_GetDict(module);
+	if(!dict) {
+		Py_DECREF(module);
+		throw runtime_error("Cant get module dict");
 	}
+	Py_DECREF(module);
 
-	return NULL;
+	PyObject *pyclass = PyDict_GetItemString(dict,classname);
+	if(!pyclass) {
+		Py_DECREF(dict);
+		throw runtime_error(string{"Cant find class '"} + classname + "'");
+	}
+	Py_DECREF(dict);
 
-}
+	// Creates an instance of the class
+	if (PyCallable_Check(pyclass)) {
+		PyObject *object = PyObject_CallObject(pyclass, nullptr);
+		Py_DECREF(pyclass);
+		return object;
+	}
+	Py_DECREF(pyclass);
+
+	throw runtime_error(string{"Cant method '"} + classname + "' is not callable");
+
+ }
 

@@ -34,10 +34,10 @@
  *
  */
 
+/*
  #include <py3270.h>
  #include <lib3270/ipc.h>
-
-/*---[ Implement ]----------------------------------------------------------------------------------*/
+ #include <lib3270/ipc/host.h>
 
 DLL_PRIVATE PyObject * py3270_action_new_from_session(PyObject *session, void *action) {
 
@@ -82,4 +82,5 @@ void py3270_action_dealloc(PyObject * self) {
 	pObj->action = nullptr;
 
 }
+*/
 

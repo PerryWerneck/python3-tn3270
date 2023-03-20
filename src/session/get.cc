@@ -32,21 +32,21 @@
  *
  */
 
- #include <py3270.h>
+ #include <pysession.h>
+ #include <workers.h>
+ #include <string>
 
- using std::string;
-
-/*---[ Implement ]----------------------------------------------------------------------------------*/
+ using namespace std;
 
  PyObject * py3270_session_get(PyObject *self, PyObject *args) {
 
- 	return py3270_session_call(self, [args](TN3270::Host &host){
+ 	return py3270_call(self, [args](TN3270::Session &session){
 
 		string text;
 
 		switch(PyTuple_Size(args)) {
 		case 0: // Get the entire screen
-			text = host.toString();
+			text = session.toString();
 			break;
 
 		case 2:	// Address and length.
@@ -54,9 +54,9 @@
 				int baddr, length;
 
 				if (!PyArg_ParseTuple(args, "ii", &baddr, &length))
-					return (PyObject *) NULL;
+					throw std::system_error(EINVAL, std::system_category());
 
-				text = host.toString(baddr, length);
+				text = session.toString(baddr, length);
 			}
 			break;
 
@@ -66,9 +66,9 @@
 				int length;
 
 				if (!PyArg_ParseTuple(args, "IIi", &row, &col, &length))
-					return (PyObject *) NULL;
+					throw std::system_error(EINVAL, std::system_category());
 
-				text = host.toString(row, col, length);
+				text = session.toString(row, col, length);
 			}
 			break;
 
@@ -77,7 +77,7 @@
 
 		}
 
-		return PyUnicode_FromString(text.c_str());
+		return text;
 
  	});
 
@@ -85,19 +85,9 @@
 
  PyObject * py3270_session_str(PyObject *self) {
 
- 	return py3270_session_call(self, [](TN3270::Host &host){
+ 	return py3270_call(self, [](TN3270::Session &session){
 
-		return PyUnicode_FromString(host.toString().c_str());
-
- 	});
-
- }
-
- PyObject * py3270_session_get_timeout(PyObject *self, void *dunno) {
-
- 	return py3270_session_call(self, [](TN3270::Host &host){
-
-		return PyLong_FromLong(host.getTimeout());
+		return session.toString();
 
  	});
 

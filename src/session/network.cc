@@ -35,25 +35,64 @@
  */
 
  #include <py3270.h>
+ #include <pysession.h>
+ #include <workers.h>
 
 /*---[ Implement ]----------------------------------------------------------------------------------*/
 
  PyObject * py3270_session_connect(PyObject *self, PyObject *args) {
 
- 	return py3270_session_call(self, [args](TN3270::Host &host){
+ 	return py3270_call(self, [args](TN3270::Session &session){
 
- 		const char * url = "";
+ 		// const char * url = "";
+ 		// bool wait = true;
 
-		if(!PyArg_ParseTuple(args, "s", &url)) {
-			throw runtime_error("connect requires a host URL");
-		}
+ 		switch(PyTuple_Size(args)) {
+		case 0: // No argument.
+			session.connect(DEFAULT_TIMEOUT);
+			session.wait(TN3270::CONNECTED_TN3270E);
+			return 0;
 
-		host.connect(url);
-		host.wait(TN3270::CONNECTED_TN3270E);
+		case 1:	// Just URL (or timeout)
+			{
+				const char * url = "";
+				if(!PyArg_ParseTuple(args, "s", &url)) {
+					session.connect(url,DEFAULT_TIMEOUT);
+					session.wait(TN3270::CONNECTED_TN3270E);
+				}
+
+				unsigned int timeout;
+				if(!PyArg_ParseTuple(args, "I", &url,&timeout)) {
+					session.connect(timeout);
+				}
+
+				throw std::system_error(EINVAL, std::system_category());
+
+			}
+			return 0;
+
+		case 2:	// URL and timeout
+			{
+				const char * url = "";
+				unsigned int timeout = 1;
+
+				if(!PyArg_ParseTuple(args, "sI", &url,&timeout))
+					throw std::system_error(EINVAL, std::system_category());
+
+				session.connect(url,timeout);
+				session.waitForConnectionState(TN3270::CONNECTED_TN3270E,timeout);
+				return 0;
+
+			}
+			return 0;
+
+		default:
+			throw std::system_error(EINVAL, std::system_category());
+
+ 		}
 
 		return 0;
 
 	});
 
  }
-

@@ -31,7 +31,7 @@ AC_PREREQ(2.61)
 
 dnl Initialise automake with the package name, version and
 dnl bug-reporting address.
-AC_INIT([python3-tn3270], [5.3], [perry.werneck@gmail.com])
+AC_INIT([python3-tn3270], [5.4], [perry.werneck@gmail.com])
 
 dnl Place auxilliary scripts here.
 AC_CONFIG_AUX_DIR([scripts])
@@ -63,8 +63,8 @@ dnl ---------------------------------------------------------------------------
 app_vrs_major=$(echo $VERSION | cut -d. -f1)
 app_vrs_minor=$(echo $VERSION | cut -d. -f2)
 
-AC_DEFINE_UNQUOTED(PACKAGE_MAJOR_VERSION, $app_vrs_major)
-AC_DEFINE_UNQUOTED(PACKAGE_MINOR_VERSION, $app_vrs_minor)
+AC_DEFINE_UNQUOTED(PACKAGE_MAJOR_VERSION, $app_vrs_major, [ The package major version ])
+AC_DEFINE_UNQUOTED(PACKAGE_MINOR_VERSION, $app_vrs_minor, [ The package minor version] )
 
 AC_SUBST(PACKAGE_MAJOR_VERSION,$app_vrs_major)
 AC_SUBST(PACKAGE_MINOR_VERSION,$app_vrs_minor)
@@ -75,10 +75,10 @@ app_cv_revision=`date +%y%m%d`
 app_rls_major=$(echo $app_cv_release.0.0 | cut -d. -f1)
 app_rls_minor=$(echo $app_cv_release.0.0 | cut -d. -f2)
 
-AC_DEFINE_UNQUOTED(PACKAGE_RELEASE, $app_cv_release)
-AC_DEFINE_UNQUOTED(PACKAGE_REVISION,$app_cv_revision)
-AC_DEFINE_UNQUOTED(PACKAGE_MAJOR_RELEASE, $app_rls_major)
-AC_DEFINE_UNQUOTED(PACKAGE_MINOR_RELEASE, $app_rls_minor)
+AC_DEFINE_UNQUOTED(PACKAGE_RELEASE, $app_cv_release, [ The application release ])
+AC_DEFINE_UNQUOTED(PACKAGE_REVISION,$app_cv_revision, [ The application revision ])
+AC_DEFINE_UNQUOTED(PACKAGE_MAJOR_RELEASE, $app_rls_major,[ The package major release ])
+AC_DEFINE_UNQUOTED(PACKAGE_MINOR_RELEASE, $app_rls_minor,[ The package minor release])
 
 AC_SUBST(PACKAGE_RELEASE,$app_cv_release)
 AC_SUBST(PACKAGE_REVISION,$app_cv_revision)
@@ -145,8 +145,13 @@ AC_PATH_TOOL([ZIP], [zip], [zip])
 PKG_CHECK_EXISTS
 
 AC_ARG_WITH([product-name], [AS_HELP_STRING([--with-product-name], [Set product name])], [ app_cv_product="$withval" ],[ app_cv_product=`$PKG_CONFIG --variable=product_name lib3270` ])
-AC_DEFINE_UNQUOTED(PRODUCT_NAME, $app_cv_product)
+AC_DEFINE_UNQUOTED(PRODUCT_NAME, $app_cv_product,[ The product name])
 AC_SUBST(PRODUCT_NAME,$app_cv_product)
+
+AC_ARG_WITH([product-id], [AS_HELP_STRING([--product-id], [Set the product ID])], [ app_cv_product_id="$withval" ],[ app_cv_product_id=`pkg-config --variable=product_id lib3270` ])
+
+AC_DEFINE_UNQUOTED(PRODUCT_ID, $app_cv_product_id,[The product ID])
+AC_SUBST(PRODUCT_ID,$app_cv_product_id)
 
 dnl ---------------------------------------------------------------------------
 dnl Check for C++ 2011 support
@@ -183,11 +188,11 @@ AC_ARG_WITH([static-ipc3270],
 
 if test "$app_cv_static_ipc3270" == "yes"; then
 
-	PKG_CHECK_MODULES( [IPC3270], [ipc3270-static], AC_DEFINE(USING_STATIC_IPC3270), AC_MSG_ERROR([IPC3270 not present.]))
+	PKG_CHECK_MODULES( [IPC3270], [libipc3270-static], AC_DEFINE(USING_STATIC_IPC3270,1,[ Using static libipc3270]), AC_MSG_ERROR([IPC3270 not present.]))
 
 else
 
-	PKG_CHECK_MODULES( [IPC3270], [ipc3270], AC_DEFINE(USING_SHARED_IPC3270), AC_MSG_ERROR([IPC3270 not present.]))
+	PKG_CHECK_MODULES( [IPC3270], [libipc3270], AC_DEFINE(USING_SHARED_IPC3270,1,[ Using shared libipc3270]), AC_MSG_ERROR([IPC3270 not present.]))
 
 	case "$host" in
 	*-mingw32|*-pc-msys)
@@ -209,17 +214,17 @@ dnl ---------------------------------------------------------------------------
 dnl Check for Python
 dnl ---------------------------------------------------------------------------
 
-PKG_CHECK_MODULES( [PYTHON], [python3], AC_DEFINE(HAVE_PYTHON3), AC_MSG_ERROR([Python devel is unavailable]))
+PKG_CHECK_MODULES( [PYTHON], [python3], AC_DEFINE(HAVE_PYTHON3,1,[ Do we have python3? ]), AC_MSG_ERROR([Python devel is unavailable]))
 
 AC_SUBST(PYTHON_LIBS)
 AC_SUBST(PYTHON_CFLAGS)
 
 AC_ARG_WITH([python-sitelib], [AS_HELP_STRING([--with-python-sitelib], [Set python-sitelib])], [ app_cv_python_sitelib="$withval" ],[ app_cv_python_sitelib=`python3 -c 'import site; print(site.getsitepackages().pop(0))'` ])
-AC_DEFINE_UNQUOTED(PYTHON_SITELIB, $app_cv_python_sitelib)
+AC_DEFINE_UNQUOTED(PYTHON_SITELIB, $app_cv_python_sitelib,[ The python sitelib ])
 AC_SUBST(PYTHON_SITELIB,$app_cv_python_sitelib)
 
 AC_ARG_WITH([python-version], [AS_HELP_STRING([--with-python-version], [Set Python Version])], [ app_cv_python_version="$withval" ],[ app_cv_python_version=`$PKG_CONFIG --modversion python3` ])
-AC_DEFINE_UNQUOTED(PYTHON_VERSION, $app_cv_python_version)
+AC_DEFINE_UNQUOTED(PYTHON_VERSION, $app_cv_python_version,[ The python version])
 AC_SUBST(PYTHON_VERSION,$app_cv_python_version)
 
 dnl ---------------------------------------------------------------------------
@@ -313,7 +318,7 @@ dnl ---------------------------------------------------------------------------
 app_cv_description="Python $app_cv_python_version bindings for lib3270/pw3270"
 
 AC_SUBST(PACKAGE_DESCRIPTION,"$app_cv_description")
-AC_DEFINE_UNQUOTED(PACKAGE_DESCRIPTION,"$app_cv_description")
+AC_DEFINE_UNQUOTED(PACKAGE_DESCRIPTION,"$app_cv_description",[ The package description ])
 
 AC_SUBST(OSNAME,$app_cv_osname)
 AC_SUBST(LIBS)

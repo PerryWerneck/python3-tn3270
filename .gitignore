@@ -29,3 +29,4 @@ scripts
 MANIFEST
 dist
 *.xml
+*.egg*

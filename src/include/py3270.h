@@ -27,164 +27,59 @@
  *
  */
 
-#ifndef PY3270_H_INCLUDED
+ #pragma once
 
-	#define PY3270_H_INCLUDED
+ #ifdef HAVE_CONFIG_H
+	#include <config.h>
+ #else
+	#define PACKAGE_DESCRIPTION "Python bindings for lib3270/pw3270"
+	#define PACKAGE_NAME "python3-tn3270"
+	#define HAVE_GNUC_VISIBILITY 1
+ #endif // HAVE_CONFIG_H
 
-	#ifdef _WIN32
-		#include <winsock2.h>
-		#include <windows.h>
-	#endif  // _WIN32
+ #if defined(_WIN32)
 
-	#ifdef HAVE_CONFIG_H
-		#include <config.h>
-	#else
-		#define PACKAGE_DESCRIPTION "Python bindings for lib3270/pw3270"
-		#define HAVE_GNUC_VISIBILITY 1
-	#endif // HAVE_CONFIG_H
+	#include <WinSock2.h>
+	#include <windows.h>
 
-	#ifndef PACKAGE_NAME
-		#define PACKAGE_NAME "Python-TN3270"
-	#endif // !PACKAGE_NAME
+	#define DLL_PRIVATE	extern
+	#define DLL_PUBLIC	extern __declspec (dllexport)
 
-	#define PY_SSIZE_T_CLEAN
-	#include <Python.h>
+ #elif defined(__SUNPRO_C) && (__SUNPRO_C >= 0x550)
 
-	#if defined(_WIN32)
+	#define DLL_PRIVATE		__hidden extern
+	#define DLL_PUBLIC		extern
 
-			#include <windows.h>
+ #elif defined (HAVE_GNUC_VISIBILITY)
 
-			#define DLL_PRIVATE	extern
-			#define DLL_PUBLIC	extern __declspec (dllexport)
+	#define DLL_PRIVATE		__attribute__((visibility("hidden"))) extern
+	#define DLL_PUBLIC		__attribute__((visibility("default"))) extern
 
-	#elif defined(__SUNPRO_C) && (__SUNPRO_C >= 0x550)
+ #else
 
-			#define DLL_PRIVATE		__hidden extern
-			#define DLL_PUBLIC		extern
+		#error Unable to set visibility attribute
 
-	#elif defined (HAVE_GNUC_VISIBILITY)
+ #endif
 
-			#define DLL_PRIVATE		__attribute__((visibility("hidden"))) extern
-			#define DLL_PUBLIC		__attribute__((visibility("default"))) extern
+ #define PY_SSIZE_T_CLEAN
+ #include <Python.h>
 
-	#else
-
-			#error Unable to set visibility attribute
-
-	#endif
-
-	#ifdef DEBUG
-		#include <stdio.h>
-		#undef trace
-		#define trace( fmt, ... )       fprintf(stderr, "%s(%d) " fmt "\n", __FILE__, __LINE__, __VA_ARGS__ ); fflush(stderr);
-		#define debug( fmt, ... )       fprintf(stderr, "%s(%d) " fmt "\n", __FILE__, __LINE__, __VA_ARGS__ ); fflush(stderr);
-	#else
-		#undef trace
-		#define trace(x, ...)           // __VA_ARGS__
-		#define debug(x, ...)           // __VA_ARGS__
-	#endif
-
-#ifdef __cplusplus
-
-	#include <functional>
-	#include <exception>
-	#include <stdexcept>
-	#include <system_error>
-	#include <vector>
-	#include <string>
-	#include <lib3270/ipc.h>
-	#include <lib3270/ipc/action.h>
-	#include <lib3270/actions.h>
-
-	using std::exception;
-	using std::runtime_error;
-	using std::string;
-	using TN3270::Host;
-	using TN3270::Action;
-
-	DLL_PRIVATE PyObject	* py3270_session_call(PyObject *self, std::function<PyObject * (TN3270::Host &host)> worker) noexcept;
-	DLL_PRIVATE PyObject	* py3270_session_call(PyObject *self, std::function<int (TN3270::Host &host)> worker) noexcept;
-
-	DLL_PRIVATE PyObject	* py3270_action_call(PyObject *self, std::function<PyObject * (TN3270::Action &action)> worker) noexcept;
-
-	DLL_PRIVATE void		  py3270_wait(Host &host, PyObject *args);
-
-	DLL_PRIVATE string		  py3270_get_datadir() noexcept;
-
+ #ifdef __cplusplus
 	extern "C" {
+ #endif // __cplusplus
 
-#else
+ DLL_PRIVATE PyTypeObject py3270_session_type;
+ DLL_PRIVATE PyTypeObject py3270_action_type;
 
-	typedef void Host;
-	typedef void Action;
+ DLL_PRIVATE void py3270_session_type_init();
+ DLL_PRIVATE void py3270_action_type_init();
 
-#endif
+ DLL_PRIVATE PyObject * py3270_get_module_version(PyObject *self, PyObject *args);
+ DLL_PRIVATE PyObject * py3270_get_module_revision(PyObject *self, PyObject *args);
 
-		typedef struct {
-			PyObject_HEAD
-			Host *host;
-		} pySession;
+ DLL_PRIVATE PyObject * py3270_new_object(const char *classname);
 
-		typedef struct {
-			PyObject_HEAD
-			pySession	* session;
-			Action		* action;
-		} pyAction;
-
-		DLL_PRIVATE PyTypeObject py3270_session_type;
-		DLL_PRIVATE PyTypeObject py3270_action_type;
-
-		DLL_PRIVATE const PyGetSetDef	py3270_session_attributes[];
-
-		DLL_PRIVATE PyObject	* py3270_get_module_version(PyObject *self, PyObject *args);
-		DLL_PRIVATE PyObject	* py3270_get_module_revision(PyObject *self, PyObject *args);
-
-		// Types
-		DLL_PRIVATE void 		  py3270_action_type_init(PyTypeObject *type);
-		DLL_PRIVATE void 		  py3270_session_type_init(PyTypeObject *type);
-
-		// Session object
-		DLL_PRIVATE PyObject	* py3270_session_alloc(PyTypeObject *type, PyObject *args, PyObject *kwds);
-		DLL_PRIVATE void		  py3270_session_dealloc(PyObject * self);
-
-		DLL_PRIVATE int			  py3270_session_init(PyObject *self, PyObject *args, PyObject *kwds);
-		DLL_PRIVATE void		  py3270_session_finalize(PyObject *self);
-
-		DLL_PRIVATE PyObject	* py3270_session_getter(PyObject *self, void *name);
-		DLL_PRIVATE int			  py3270_session_setter(PyObject *self, PyObject *value, void *name);
-
-		DLL_PRIVATE PyObject	* py3270_session_get_timeout(PyObject *self, void *dunno);
-		DLL_PRIVATE int			  py3270_session_set_timeout(PyObject *self, PyObject *value, void *dunno);
-
-		DLL_PRIVATE PyObject	* py3270_session_connect(PyObject *self, PyObject *args);
-
-		DLL_PRIVATE PyObject	* py3270_session_get(PyObject *self, PyObject *args);
-		DLL_PRIVATE PyObject	* py3270_session_set(PyObject *self, PyObject *args);
-		DLL_PRIVATE PyObject 	* py3270_session_str(PyObject *self);
-		DLL_PRIVATE PyObject	* py3270_session_wait(PyObject *self, PyObject *args);
-		DLL_PRIVATE PyObject	* py3270_session_find(PyObject *self, PyObject *args);
-		DLL_PRIVATE PyObject	* py3270_session_count(PyObject *self, PyObject *args);
-
-		DLL_PRIVATE PyObject	* py3270_session_pfkey(PyObject *self, PyObject *args);
-		DLL_PRIVATE PyObject	* py3270_session_pakey(PyObject *self, PyObject *args);
-
-		DLL_PRIVATE PyObject	* py3270_session_set_cursor_position(PyObject *self, PyObject *args);
-		DLL_PRIVATE PyObject	* py3270_session_get_cursor_position(PyObject *self, void *dunno);
-
-		// Action object
-		DLL_PRIVATE PyObject	* py3270_action_new_from_session(PyObject *session, void *action);
-		DLL_PRIVATE void		  py3270_action_dealloc(PyObject * self);
-
-		DLL_PRIVATE PyObject	* py3270_action_call(PyObject *callable, PyObject *args, PyObject *kwargs);
-		DLL_PRIVATE PyObject	* py3270_action_describe(PyObject *self, PyObject *obj, PyObject *type);
-		DLL_PRIVATE PyObject	* py3270_action_activate(PyObject *self, PyObject *args);
-		DLL_PRIVATE PyObject	* py3270_action_wait(PyObject *self, PyObject *args);
-
-		DLL_PRIVATE PyObject	* py3270_action_get_activatable(PyObject *self, void *dunno);
-		DLL_PRIVATE PyObject 	* py3270_action_str(PyObject *self);
-
-#ifdef __cplusplus
+ #ifdef __cplusplus
 	}
-#endif
+ #endif // __cplusplus
 
-#endif // PY3270_H_INCLUDED

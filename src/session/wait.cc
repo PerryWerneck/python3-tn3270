@@ -32,57 +32,74 @@
  *
  */
 
- #include <py3270.h>
+ #include <pysession.h>
+ #include <lib3270/ipc/session.h>
+ #include <workers.h>
 
 /*---[ Implement ]----------------------------------------------------------------------------------*/
 
+ PyObject * py3270_session_wait(PyObject *self, PyObject *args) {
+
+ 	return py3270_call(self, [self, args](TN3270::Session &session){
+
+		switch(PyTuple_Size(args)) {
+		case 0:	// No time defined, use the default one.
+			session.waitForReady();
+			break;
+
+		case 1:	// Only one argument, its the time.
+			{
+				unsigned int seconds;
+
+				if(!PyArg_ParseTuple(args, "I", &seconds))
+					throw std::system_error(EINVAL, std::system_category());
+
+				session.waitForReady(seconds);
+			}
+			break;
+
+		case 2:	// 2 arguments, it's the address and content.
+			{
+				int baddr;
+				const char *text;
+
+				if(!PyArg_ParseTuple(args, "is", &baddr, &text))
+					throw std::system_error(EINVAL, std::system_category());
+
+				session.wait(baddr,text);
+			}
+			break;
+
+		case 3:	// 3 arguments, it's the row, col, and content.
+			{
+				unsigned int row, col;
+				const char *text;
+
+				if (!PyArg_ParseTuple(args, "IIs", &row, &col, &text))
+					throw std::system_error(EINVAL, std::system_category());
+
+				session.wait(row,col,text);
+
+			}
+			break;
+
+		default:
+			throw std::system_error(EINVAL, std::system_category());
+
+		}
+
+		Py_INCREF(self);
+		return self;
+
+ 	});
+
+ }
+
+
+/*
  void py3270_wait(TN3270::Host &host, PyObject *args) {
 
-	switch(PyTuple_Size(args)) {
-	case 0:	// No time defined, use the default one.
-		host.waitForReady();
-		break;
 
-	case 1:	// Only one argument, its the time.
-		{
-			unsigned int seconds;
-
-			if(!PyArg_ParseTuple(args, "I", &seconds))
-				throw std::system_error(EINVAL, std::system_category());
-
-			host.waitForReady(seconds);
-		}
-		break;
-
-	case 2:	// 2 arguments, it's the address and content.
-		{
-			int baddr;
-			const char *text;
-
-			if(!PyArg_ParseTuple(args, "is", &baddr, &text))
-				throw std::system_error(EINVAL, std::system_category());
-
-			host.wait(baddr,text);
-		}
-		break;
-
-	case 3:	// 3 arguments, it's the row, col, and content.
-		{
-			unsigned int row, col;
-			const char *text;
-
-			if (!PyArg_ParseTuple(args, "IIs", &row, &col, &text))
-				throw std::system_error(EINVAL, std::system_category());
-
-			host.wait(row,col,text);
-
-		}
-		break;
-
-	default:
-		throw std::system_error(EINVAL, std::system_category());
-
-	}
 
 
  }
@@ -99,3 +116,4 @@
  	});
 
  }
+*/

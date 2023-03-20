@@ -46,6 +46,7 @@
  #include <string>
  #include <stdexcept>
  #include <lib3270.h>
+ #include <lib3270/ipc.h>
 
  #if defined(_MSC_VER)
 	#pragma comment(lib,"DelayImp.lib")
@@ -109,8 +110,6 @@
                 PACKAGE_NAME,
                 msg
         };
-
-        debug("Event: \"%s\"",msg);
 
         ReportEvent(
                 hEventLog,

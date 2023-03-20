@@ -27,13 +27,14 @@
  *
  */
 
+
  #include <py3270.h>
  #include <lib3270/ipc.h>
  #include <lib3270.h>
 
 /*---[ Implement ]----------------------------------------------------------------------------------*/
 
-PyObject * py3270_get_module_version(PyObject *self, PyObject *args) {
+PyObject * py3270_get_module_version(PyObject *, PyObject *) {
 #if defined(PACKAGE_VERSION)
     return PyUnicode_FromString(PACKAGE_VERSION);
 #else
@@ -41,7 +42,7 @@ PyObject * py3270_get_module_version(PyObject *self, PyObject *args) {
 #endif // PACKAGE_VERSION
 }
 
-PyObject * py3270_get_module_revision(PyObject *self, PyObject *args) {
+PyObject * py3270_get_module_revision(PyObject *, PyObject *) {
 #ifdef PACKAGE_REVISION
     return PyUnicode_FromString(LIB3270_STRINGIZE_VALUE_OF(PACKAGE_REVISION));
 #else
