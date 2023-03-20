@@ -16,7 +16,7 @@ You can download installation package for supported distributions in Open Build 
 
 ### Windows
 
-Not available
+The installler for windows can be found on [Releases](../../releases)
 
 ## Examples
 
