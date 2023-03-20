@@ -89,37 +89,35 @@ print(session)
 	
 ### Windows (With MSVC & Python SetupTools)
 
-1. Install pw3270 with remote control and sdk modules
+1. Download and install Visual Studio Build Tools (https://visualstudio.microsoft.com/pt-br/downloads/)
 
-2. Download and install Visual Studio Build Tools (https://visualstudio.microsoft.com/pt-br/downloads/)
-
-3. Get python-tn3270 sources from git
+2. Get python-tn3270 sources from git
 
 	```shell
 	git clone https://github.com/PerryWerneck/python-tn3270.git ./python-tn3270
 	```
 
-4. Download and unpack libipc3270 pre-compiled image
+3. Download and unpack libipc3270 pre-compiled image
 
 	```shell
 	wget https://github.com/PerryWerneck/libipc3270/releases/download/5.5/msvc-libipc3270.zip
 	7z x msvc-libipc3270.zip -y -oipc3270
 	```
 
-5. Build the extension using setup.py
+4. Build the extension using setup.py
 
 	```shell
 	cd python-tn3270
 	python setup.py build
 	```
 
-6. Install extension
+5. Install extension
 
 	```shell
 	python setup.py install
 	```
 	
-7. Build windows installer (optional)
+6. Build windows installer (optional)
 
 	```shell
 	python setup.py bdist_wininst
