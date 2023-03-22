@@ -30,3 +30,8 @@ MANIFEST
 dist
 *.xml
 *.egg*
+ABOUT-NLS
+intl
+m4
+po
+
