@@ -10,18 +10,6 @@
 		<param name="revision">develop</param>
 	</service>
 
-	<service name="extract_file">
-		<param name="archive">*.tar</param>
-		<param name="files">*/debian/changelog</param>
-		<param name="outfilename">debian.changelog</param>
-	</service>
-
-  	<service name="extract_file">
-		<param name="archive">*.tar</param>
-		<param name="files">*/debian/compat</param>
-		<param name="outfilename">debian.compat</param>
-	</service>
-
 	<service name="recompress">
 		<param name="file">*.tar</param>
 		<param name="compression">xz</param>
