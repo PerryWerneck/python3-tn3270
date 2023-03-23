@@ -20,12 +20,12 @@
 %{?!python_module:%define python_module() python-%{**} python3-%{**}}
 
 Summary:		Python bindings for lib3270/pw3270
-Name:			python3-tn3270
-Version:		5.2
+Name:			python-tn3270
+Version:		5.5
 Release:		0
 License:		GPL-2.0
 Source:			%{name}-%{version}.tar.xz
-URL:			https://github.com/PerryWerneck/python3-tn3270
+URL:			https://github.com/PerryWerneck/python-tn3270
 Group:			Development/Libraries/Python
 
 BuildRoot:		/var/tmp/%{name}-%{version}
@@ -38,15 +38,18 @@ BuildRequires:	gcc-c++
 BuildRequires:	m4
 BuildRequires:	pkgconfig
 BuildRequires:	fdupes
-BuildRequires:  python3
+BuildRequires:	%{pythons}
+BuildRequires:	libtool
 
 BuildRequires:  python-rpm-macros
 
-BuildRequires:	pkgconfig(ipc3270)
+BuildRequires:	pkgconfig(libipc3270) >= 5.5
 BuildRequires:	pkgconfig(python3)
 
-BuildRequires:  %{python_module devel}
-BuildRequires:  %{python_module setuptools}
+BuildRequires:	%{python_module devel}
+BuildRequires:	%{python_module setuptools}
+
+Recommends:		pw3270-plugin-ipc
 
 %python_subpackages
 
@@ -68,23 +71,15 @@ NOCONFIGURE=1 ./autogen.sh
 %install
 %python_install
 
-mkdir -p %{buildroot}%{_datadir}/appdata
-install --mode=644 metainfo.xml %{buildroot}%{_datadir}/appdata/%{name}.metainfo.xml
-
 %clean
 
 %files %python_files
 %defattr(-,root,root)
 
 # https://en.opensuse.org/openSUSE:Packaging_for_Leap#RPM_Distro_Version_Macros
-%if 0%{?sle_version} > 120200
 %doc AUTHORS README.md
 %license LICENSE
-%else
-%doc AUTHORS README.md LICENSE
-%endif
 
 %{python_sitearch}/*
-%{_datadir}/appdata/*.metainfo.xml
 
 %changelog

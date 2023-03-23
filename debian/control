@@ -1,10 +1,10 @@
-Source: python3-tn3270
+Source: python-tn3270
 Section: unknown
 Priority: optional
 Maintainer: Perry Werneck <perry.werneck@gmail.com>
-Build-Depends: debhelper (>= 7), autotools-dev, autoconf, gettext, python3-dev, libipc3270-dev
+Build-Depends: debhelper (>= 7), autotools-dev, autoconf, gettext, libipc3270-dev, python3-dev, python3-setuptools
 
-Package: python3-tn3270
+Package: python-tn3270
 Architecture: any
 Recommends: pw3270-plugin-ipc
 Depends: ${misc:Depends}, ${shlibs:Depends}, lib3270 
