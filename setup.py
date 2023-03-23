@@ -1,3 +1,6 @@
+#!/usr/bin/python
+#-*- coding: utf-8
+
 from setuptools import setup, Extension
 import platform
 import os
