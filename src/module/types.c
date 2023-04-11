@@ -41,7 +41,7 @@
 		.ml_name = "connect",
 		.ml_meth = (PyCFunction) py3270_session_connect,
 		.ml_flags = METH_VARARGS,
-		.ml_doc = ""
+		.ml_doc = "Connect to host"
     },
 
     {
@@ -90,7 +90,14 @@
 		.ml_name = "getcursor",
 		.ml_meth = (PyCFunction) py3270_session_get_cursor_position,
 		.ml_flags = METH_NOARGS,
-		.ml_doc = ""
+		.ml_doc = "Get cursor position"
+    },
+
+    {
+		.ml_name = "getgeometry",
+		.ml_meth = (PyCFunction) py3270_session_get_geometry,
+		.ml_flags = METH_NOARGS,
+		.ml_doc = "Get terminal geometry (width, height and length)."
     },
 
     {

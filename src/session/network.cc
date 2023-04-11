@@ -44,9 +44,6 @@
 
  	return py3270_call(self, [args](TN3270::Session &session){
 
- 		// const char * url = "";
- 		// bool wait = true;
-
  		switch(PyTuple_Size(args)) {
 		case 0: // No argument.
 			session.connect(DEFAULT_TIMEOUT);

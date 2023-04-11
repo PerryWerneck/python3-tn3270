@@ -115,3 +115,18 @@ PyObject * py3270_session_get_cursor_position(PyObject *self, void *dunno) {
  	});
 
 }
+
+PyObject * py3270_session_get_geometry(PyObject *self, void *dunno) {
+
+ 	return py3270_call(self, [](TN3270::Session &session){
+
+		return Py_BuildValue(
+					"{s:i,s:i,s:i}",
+						"width", (int) session.getScreenWidth() ,
+						"height", (int) session.getScreenHeight(),
+						"length", (int) session.getScreenLength()
+					);
+
+ 	});
+
+}
