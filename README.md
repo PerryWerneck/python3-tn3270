@@ -5,7 +5,7 @@ Provide python3 objects to remote control an active pw3270 window or to direct a
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 ![CodeQL](https://github.com/PerryWerneck/lib3270/workflows/CodeQL/badge.svg)
 [![WinPackage](https://github.com/PerryWerneck/python3-tn3270/actions/workflows/winpkg.yml/badge.svg)](https://github.com/PerryWerneck/python3-tn3270/actions/workflows/winpkg.yml)
-[![build result](https://build.opensuse.org/projects/home:PerryWerneck:pw3270/packages/python3-tn3270/badge.svg?type=percent)](https://build.opensuse.org/package/show/home:PerryWerneck:pw3270/python3-tn3270)
+[![build result](https://build.opensuse.org/projects/home:PerryWerneck:pw3270/packages/python-tn3270/badge.svg?type=percent)](https://build.opensuse.org/package/show/home:PerryWerneck:pw3270/python-tn3270)
 
 ## Installation
 
