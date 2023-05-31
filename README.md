@@ -9,15 +9,8 @@ Provide python3 objects to remote control an active pw3270 window or to direct a
 
 ## Installation
 
-### Linux
-
-You can download installation package for supported distributions in Open Build Service.
-
 [<img src="https://raw.githubusercontent.com/PerryWerneck/pw3270/master/branding/obs-badge-en.svg" alt="Download from open build service" height="80px">](https://software.opensuse.org/download.html?project=home%3APerryWerneck%3Apw3270&package=python3-tn3270)
-
-### Windows
-
-The installler for windows can be found on [Releases](../../releases)
+[<img src="https://github.com/PerryWerneck/pw3270/blob/develop/branding/release-badge-en.svg" alt="Download from github releases" height="80px">](../../releases)
 
 ## Examples
 
