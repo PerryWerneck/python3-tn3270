@@ -64,7 +64,7 @@ Connecting to host by url, getting some information.
 import tn3270
 
 # Get TN3270 headless object
-session = tn3270.Session(":A")
+session = tn3270.Session("")
 
 # Connect to host with 10 seconds timeout
 session.connect("tn3270://localhost:3270",10)
