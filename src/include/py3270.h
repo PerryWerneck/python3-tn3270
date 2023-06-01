@@ -74,6 +74,8 @@
  DLL_PRIVATE void py3270_session_type_init();
  DLL_PRIVATE void py3270_action_type_init();
 
+ DLL_PRIVATE const char * py3270_check_requires();
+
  DLL_PRIVATE PyObject * py3270_get_module_version(PyObject *self, PyObject *args);
  DLL_PRIVATE PyObject * py3270_get_module_revision(PyObject *self, PyObject *args);
 

@@ -56,6 +56,7 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/module/properties.cc" />
+		<Unit filename="src/module/tools.cc" />
 		<Unit filename="src/module/types.c">
 			<Option compilerVar="CC" />
 		</Unit>

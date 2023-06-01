@@ -27,8 +27,21 @@
  *
  */
 
-#include <py3270.h>
-#include <string>
+ #include <py3270.h>
+ #include <lib3270.h>
+ #include <string>
 
 /*--[ Implement ]------------------------------------------------------------------------------------*/
+
+ const char * py3270_check_requires() {
+
+#ifdef _WIN32
+	if(TN3270::getInstallLocation().empty()) {
+		return "Can't determine location of pw3270 runtime, is it installed?";
+	}
+#endif // _WIN32
+
+	return NULL;
+
+ }
 
