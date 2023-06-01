@@ -41,6 +41,10 @@
 	}
 #endif // _WIN32
 
+	if(strcasecmp(lib3270_get_revision(),"20220101") < 0) {
+		return "lib" LIB3270_STRINGIZE_VALUE_OF(LIB3270_NAME) " is too old";
+	}
+
 	return NULL;
 
  }
