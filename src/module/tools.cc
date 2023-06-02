@@ -29,6 +29,7 @@
 
  #include <py3270.h>
  #include <lib3270.h>
+ #include <lib3270/ipc.h>
  #include <string>
 
 /*--[ Implement ]------------------------------------------------------------------------------------*/
@@ -39,11 +40,18 @@
 	if(TN3270::getInstallLocation().empty()) {
 		return "Can't determine location of pw3270 runtime, is it installed?";
 	}
-#endif // _WIN32
+
+	if(strcmp(lib3270_get_revision(),"20220101") < 0) {
+		return "lib" LIB3270_STRINGIZE_VALUE_OF(LIB3270_NAME) " is too old";
+	}
+
+#else
 
 	if(strcasecmp(lib3270_get_revision(),"20220101") < 0) {
 		return "lib" LIB3270_STRINGIZE_VALUE_OF(LIB3270_NAME) " is too old";
 	}
+
+#endif // _WIN32
 
 	return NULL;
 
