@@ -41,28 +41,44 @@
 		.ml_name = "connect",
 		.ml_meth = (PyCFunction) py3270_session_connect,
 		.ml_flags = METH_VARARGS,
-		.ml_doc = ""
+		.ml_doc =	"Connect to host, wait for session startup\n\n"
+					"connect(): Connect to default host using default timeout\n"
+					"connect(url): Connect to host on url using default timeout\n"
+					"connect(url,timeout): Connect to host on url wait 'timeout' seconds for session startup\n"
     },
 
     {
 		.ml_name = "wait",
 		.ml_meth = (PyCFunction) py3270_session_wait,
 		.ml_flags = METH_VARARGS,
-		.ml_doc = ""
+		.ml_doc = 	"Wait for session to be ready for input or an specified value\n\n"
+					"wait(): Wait for default timeout\n"
+					"wait(seconds): Wait for 'seconds' seconds\n"
+					"wait(address,'string'): Wait for string at address\n"
+					"wait(row,col,'string'): Wait for string at row, col\n"
+
+
     },
 
     {
 		.ml_name = "set",
 		.ml_meth = (PyCFunction) py3270_session_set,
 		.ml_flags = METH_VARARGS,
-		.ml_doc = ""
+		.ml_doc =	"Input string to terminal\n\n"
+					"set('string'): Input string at current cursor position\n"
+					"set(address,'string'): Input string at address\n"
+					"set(row,col,'string'): Input string at row, col\n"
     },
 
     {
 		.ml_name = "get",
 		.ml_meth = (PyCFunction) py3270_session_get,
 		.ml_flags = METH_VARARGS,
-		.ml_doc = ""
+		.ml_doc =	"Get terminal contents\n\n"
+					"get(): Get the entire terminal contents\n"
+					"get(address,length): Get length characters starting at address\n"
+					"get(row,col,length): Get length characters starting at row, col"
+
     },
 
     {
@@ -83,42 +99,51 @@
 		.ml_name = "setcursor",
 		.ml_meth = (PyCFunction) py3270_session_set_cursor_position,
 		.ml_flags = METH_VARARGS,
-		.ml_doc = ""
+		.ml_doc =	"Set cursor position for the next input\n\n"
+					"setcursor(address): Next input will take place at address\n"
+					"setcursor(row,col): Next input will take place at row, col"
     },
 
     {
 		.ml_name = "getcursor",
 		.ml_meth = (PyCFunction) py3270_session_get_cursor_position,
 		.ml_flags = METH_NOARGS,
-		.ml_doc = ""
+		.ml_doc = "Get cursor position"
+    },
+
+    {
+		.ml_name = "getgeometry",
+		.ml_meth = (PyCFunction) py3270_session_get_geometry,
+		.ml_flags = METH_NOARGS,
+		.ml_doc = "Get terminal geometry (width, height and length)."
     },
 
     {
 		.ml_name = "pf",
 		.ml_meth = (PyCFunction) py3270_session_pfkey,
 		.ml_flags = METH_VARARGS,
-		.ml_doc = ""
+		.ml_doc = "Send PF-Key action to host\n\npf(key-number)"
     },
 
     {
 		.ml_name = "pa",
 		.ml_meth = (PyCFunction) py3270_session_pakey,
 		.ml_flags = METH_VARARGS,
-		.ml_doc = ""
+		.ml_doc = "Send PA-Key action to host\n\npf(key-number)"
     },
 
     {
 		.ml_name = "pfkey",
 		.ml_meth = (PyCFunction) py3270_session_pfkey,
 		.ml_flags = METH_VARARGS,
-		.ml_doc = ""
+		.ml_doc = "Send PF-Key action to host\n\npf(key-number)"
     },
 
     {
 		.ml_name = "pakey",
 		.ml_meth = (PyCFunction) py3270_session_pakey,
 		.ml_flags = METH_VARARGS,
-		.ml_doc = ""
+		.ml_doc = "Send PA-Key action to host\n\npf(key-number)"
     },
 
     {

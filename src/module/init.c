@@ -74,6 +74,13 @@ static struct PyModuleDef definition = {
 
 PyMODINIT_FUNC PyInit_tn3270(void)
 {
+	const char *reqmessage = py3270_check_requires();
+
+	if(reqmessage && *reqmessage) {
+		PyErr_SetString(PyExc_RuntimeError, reqmessage);
+		return NULL;
+	}
+
 	// Initialize custom attributes & methods.
 	py3270_session_type_init();
 	if (PyType_Ready(&py3270_session_type) < 0)

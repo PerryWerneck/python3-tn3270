@@ -30,6 +30,7 @@ print(session.version)
 print("Using pw3270 version " + session.version + " revision " + session.revision)
 
 print("Cstate: " + str(session.cstate))
+print("Geometry: " + str(session.geometry))
 print("Width: " + str(session.width))
 print("Connected: " + str(session.connected))
 

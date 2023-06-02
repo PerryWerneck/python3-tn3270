@@ -35,32 +35,3 @@
  #include <py3270.h>
 
 /*---[ Globals ]------------------------------------------------------------------------------------*/
-
-/*
-
-
-const struct PyGetSetDef py3270_session_attributes[] = {
-
-	{
-		.name = "timeout",
-		.doc = "Timeout (in seconds) for host access",
-		.get = py3270_session_get_timeout,
-		.set = py3270_session_set_timeout
-	},
-
-	{
-		.name = "cursor",
-		.doc = "Cursor position (row/col); read-only attribute",
-		.get = py3270_session_get_cursor_position,
-		.set = NULL
-	},
-
-	{
-		.name = NULL
-	}
-};
-
-// https://docs.python.org/3/c-api/typeobj.html
-*/
-
-

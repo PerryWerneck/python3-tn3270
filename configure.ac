@@ -1,27 +1,20 @@
+dnl SPDX-License-Identifier: LGPL-3.0-or-later */
 dnl
-dnl Software pw3270, desenvolvido com base nos códigos fontes do  C3270  e  X3270
-dnl (Paul Mattes Paul.Mattes@usa.net), de emulação de terminal 3270 para acesso a
-dnl aplicativos mainframe. Registro no INPI sob o nome G3270.
 dnl
-dnl Copyright (C) <2008> <Banco do Brasil S.A.>
+dnl Copyright (C) 2021 Perry Werneck <perry.werneck@gmail.com>
 dnl
-dnl Este programa é software livre. Você pode redistribuí-lo e/ou modificá-lo sob
-dnl os termos da GPL v.2 - Licença Pública Geral  GNU,  conforme  publicado  pela
-dnl Free Software Foundation.
+dnl This program is free software: you can redistribute it and/or modify
+dnl it under the terms of the GNU Lesser General Public License as published
+dnl by the Free Software Foundation, either version 3 of the License, or
+dnl (at your option) any later version.
 dnl
-dnl Este programa é distribuído na expectativa de  ser  útil,  mas  SEM  QUALQUER
-dnl GARANTIA; sem mesmo a garantia implícita de COMERCIALIZAÇÃO ou  de  ADEQUAÇÃO
-dnl A QUALQUER PROPÓSITO EM PARTICULAR. Consulte a Licença Pública Geral GNU para
-dnl obter mais detalhes.
+dnl This program is distributed in the hope that it will be useful,
+dnl but WITHOUT ANY WARRANTY; without even the implied warranty of
+dnl MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+dnl GNU General Public License for more details.
 dnl
-dnl Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este
-dnl programa;  se  não, escreva para a Free Software Foundation, Inc., 59 Temple
-dnl Place, Suite 330, Boston, MA, 02111-1307, USA
-dnl
-dnl Contatos:
-dnl
-dnl perry.werneck@gmail.com	(Alexandre Perry de Souza Werneck)
-dnl erico.mendonca@gmail.com	(Erico Mascarenhas de Mendonça)
+dnl You should have received a copy of the GNU Lesser General Public License
+dnl along with this program.  If not, see <https://www.gnu.org/licenses/>.
 dnl
 
 dnl Process this file with autoconf to produce a configure script.
@@ -47,6 +40,9 @@ AM_INIT_AUTOMAKE
 
 dnl Check for iconv
 AM_ICONV
+
+dnl Set gettext version
+AM_GNU_GETTEXT_VERSION([0.14])
 
 dnl Checks for programs.
 AC_PROG_CC

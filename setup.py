@@ -1,3 +1,6 @@
+#!/usr/bin/python
+#-*- coding: utf-8
+
 from setuptools import setup, Extension
 import platform
 import os
@@ -24,7 +27,8 @@ src_files = [
 	'src/session/tools.cc',
 	'src/session/wait.cc',
 	'src/objects/action.cc',
-	'src/objects/session.cc'
+	'src/objects/session.cc',
+	'src/module/tools.cc'
 ]
 
 library_names = [
@@ -35,7 +39,6 @@ if platform.system() == 'Windows':
 	#extra_link_args.append("/NODEFAULTLIB:LIBCMT")
 	
 	src_files.append('src/module/windows/init.cc' )
-	src_files.append('src/module/windows/tools.cc' )
 	library_names.append('ipc3270.static')
 	
 	if os.path.isdir('ipc3270'):

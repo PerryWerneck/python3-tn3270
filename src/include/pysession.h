@@ -61,6 +61,7 @@
 
  DLL_PRIVATE PyObject	* py3270_session_set_cursor_position(PyObject *self, PyObject *args);
  DLL_PRIVATE PyObject	* py3270_session_get_cursor_position(PyObject *self, void *dunno);
+ DLL_PRIVATE PyObject	* py3270_session_get_geometry(PyObject *self, void *dunno);
 
  #ifdef __cplusplus
 	}

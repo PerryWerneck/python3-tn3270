@@ -9,15 +9,8 @@ Provide python3 objects to remote control an active pw3270 window or to direct a
 
 ## Installation
 
-### Linux
-
-You can download installation package for supported distributions in Open Build Service.
-
-[<img src="https://raw.githubusercontent.com/PerryWerneck/pw3270/master/branding/obs-badge-en.svg" alt="Download from open build service" height="80px">](https://software.opensuse.org/download.html?project=home%3APerryWerneck%3Apw3270&package=python-tn3270)
-
-### Windows
-
-The installler for windows can be found on [Releases](../../releases)
+[<img src="https://raw.githubusercontent.com/PerryWerneck/pw3270/master/branding/obs-badge-en.svg" alt="Download from open build service" height="80px">](https://software.opensuse.org/download.html?project=home%3APerryWerneck%3Apw3270&package=python3-tn3270)
+[<img src="https://github.com/PerryWerneck/pw3270/blob/develop/branding/release-badge-en.svg" alt="Download from github releases" height="80px">](../../releases)
 
 ## Examples
 
@@ -60,6 +53,42 @@ if session.reconnect.try_activate():
 	session.wait(10)
 
 print(session)
+```
+
+Connecting to host by url, getting some information.
+
+```python
+#!/usr/bin/python
+#-*- coding: utf-8
+
+import tn3270
+
+# Get TN3270 headless object
+session = tn3270.Session("")
+
+# Connect to host with 10 seconds timeout
+session.connect("tn3270://localhost:3270",10)
+
+# Show connection state.
+print("Cstate: " + str(session.cstate))
+print("Width: " + str(session.width))
+print("Connected: " + str(session.connected))
+
+# Show cursor position
+print(session.cursor)
+
+# Search for string on terminal
+print(session.find("Host"))
+
+# Count string
+print(session.count("Host"))
+
+# Get 38 characters at position 14,22
+print(session.get(14,22,38))
+
+session.disconnect()
+
+input("Press enter to exit")
 ```
 
 ## Building from sources

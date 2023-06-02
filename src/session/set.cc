@@ -91,37 +91,3 @@
  	});
 
  }
-
-/*
- int py3270_session_set_timeout(PyObject *self, PyObject *value, void *dunno) {
-
-	try {
-
-		auto host = ((pySession * ) self)->host;
-
-		if(PyLong_Check(value)) {
-
-			host->setTimeout( (time_t) PyLong_AsUnsignedLong(value));
-
-		} else {
-
-			throw std::system_error(EINVAL, std::system_category());
-
-		}
-
-	} catch(const exception &e) {
-
-		PyErr_SetString(PyExc_RuntimeError, e.what());
-		return -1;
-
-	} catch( ... ) {
-
-		PyErr_SetString(PyExc_RuntimeError, "Unexpected error setting timeout");
-		return -1;
-
-	}
-
-	return 0;
-
- }
-*/

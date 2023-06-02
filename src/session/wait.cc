@@ -94,26 +94,3 @@
  	});
 
  }
-
-
-/*
- void py3270_wait(TN3270::Host &host, PyObject *args) {
-
-
-
-
- }
-
- PyObject * py3270_session_wait(PyObject *self, PyObject *args) {
-
- 	return py3270_session_call(self, [self, args](TN3270::Host &host){
-
-		py3270_wait(host, args);
-
-		Py_INCREF(self);
-		return self;
-
- 	});
-
- }
-*/

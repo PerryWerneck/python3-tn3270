@@ -57,7 +57,7 @@
 		});
 
 		// Allocate getset data.
-		size_t szData = sizeof(struct PyGetSetDef) * (properties.size() + actions.size() + 2);
+		size_t szData = sizeof(struct PyGetSetDef) * (properties.size() + actions.size() + 3);
 		py3270_session_type.tp_getset = (struct PyGetSetDef *) malloc(szData);
 		memset(py3270_session_type.tp_getset,0,szData);
 
@@ -68,6 +68,14 @@
 			py3270_session_type.tp_getset[index].name	 = (char *) "cursor";
 			py3270_session_type.tp_getset[index].doc     = (char *) "Cursor position (row/col); read-only attribute";
 			py3270_session_type.tp_getset[index].get     = (getter) py3270_session_get_cursor_position;
+			index++;
+		}
+
+		// Terminal geometry.
+		{
+			py3270_session_type.tp_getset[index].name	 = (char *) "geometry";
+			py3270_session_type.tp_getset[index].doc     = (char *) "Terminal geometry, width, height and length; read-only attribute";
+			py3270_session_type.tp_getset[index].get     = (getter) py3270_session_get_geometry;
 			index++;
 		}
 
