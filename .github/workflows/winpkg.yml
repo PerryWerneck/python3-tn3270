@@ -20,9 +20,9 @@ jobs:
         with:
           repository: "PerryWerneck/libipc3270"
           latest: true
-          fileName: "msvc-libipc3270.zip"
+          fileName: "msvc-libipc3270-x86_64.zip"
       - name: Extract libipc3270 
-        run: 7z x msvc-libipc3270.zip -y -oipc3270
+        run: 7z x msvc-libipc3270-x86_64.zip -y -oipc3270
       - name: Build installer
         run: python setup.py bdist_wininst
       - uses: ncipollo/release-action@v1
