@@ -46,6 +46,14 @@
     },
 
     {
+		.ml_name = "action",
+		.ml_meth = (PyCFunction) py3270_session_action_factory,
+		.ml_flags = METH_VARARGS,
+		.ml_doc =	"Get action by name\n\n"
+					"action('enter'): Return the 'enter' action\n"
+    },
+
+    {
 		.ml_name = "wait",
 		.ml_meth = (PyCFunction) py3270_session_wait,
 		.ml_flags = METH_VARARGS,

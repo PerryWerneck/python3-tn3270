@@ -98,7 +98,6 @@
 			py3270_session_type.tp_getset[index].doc     = (char *) (action->summary ? action->summary : "");
 			py3270_session_type.tp_getset[index].closure = (void *) action;
 			py3270_session_type.tp_getset[index].get	 = (getter) py3270_session_get_action;
-			// py3270_session_type.tp_getset[index].set	 = (setter) py3270_session_set_action;
 
 			index++;
 		}
@@ -243,6 +242,40 @@
 	}
 
 	return NULL;
+
+ }
+
+ PyObject * py3270_session_action_factory(PyObject *self, PyObject *args) {
+
+	const char *name;
+
+	if(!PyArg_ParseTuple(args, "s", &name))
+		return (PyObject *) NULL;
+
+	return py3270_call(self,[name](TN3270::Session &session){
+
+		PyObject *object = NULL;
+
+		TN3270::for_each([&object,name,&session](const LIB3270_ACTION &action){
+
+#ifdef _WIN32
+			if(!strcmp(action.name,name)) {
+				object = py3270_action_new(session.ActionFactory(&action));
+				return true;
+			}
+#else
+			if(!strcasecmp(action.name,name)) {
+				object = py3270_action_new(session.ActionFactory(&action));
+				return true;
+			}
+#endif // _WIN32
+
+			return false;
+		});
+
+		return object;
+
+	});
 
  }
 

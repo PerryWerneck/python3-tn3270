@@ -12,9 +12,6 @@ extra_link_args = []
 src_files = [
 	'src/module/init.c',
 	'src/module/types.c',
-	'src/action/methods.cc',
-	'src/action/new.cc',
-	'src/action/tools.cc',
 	'src/module/properties.cc',
 	'src/session/actions.cc',
 	'src/session/attributes.cc',
