@@ -12,7 +12,6 @@ extra_link_args = []
 src_files = [
 	'src/module/init.c',
 	'src/module/types.c',
-	'src/session/type.c',
 	'src/action/methods.cc',
 	'src/action/new.cc',
 	'src/action/tools.cc',
@@ -20,7 +19,6 @@ src_files = [
 	'src/session/actions.cc',
 	'src/session/attributes.cc',
 	'src/session/get.cc',
-	'src/session/init.cc',
 	'src/session/misc.cc',
 	'src/session/network.cc',
 	'src/session/set.cc',

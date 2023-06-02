@@ -37,6 +37,7 @@
  const char * py3270_check_requires() {
 
 #ifdef _WIN32
+
 	if(TN3270::getInstallLocation().empty()) {
 		return "Can't determine location of pw3270 runtime, is it installed?";
 	}
