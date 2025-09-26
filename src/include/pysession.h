@@ -42,7 +42,7 @@
  DLL_PRIVATE int		  py3270_session_set_attribute(PyObject *self, PyObject *value, const LIB3270_PROPERTY *property);
 
  DLL_PRIVATE PyObject	* py3270_session_get_action(PyObject *self, const LIB3270_ACTION *action);
-// DLL_PRIVATE int		  py3270_session_set_action(PyObject *self, PyObject *value, const LIB3270_ACTION *action);
+ DLL_PRIVATE PyObject	* py3270_session_action_factory(PyObject *self, PyObject *args);
 
  DLL_PRIVATE PyObject	* py3270_session_get_timeout(PyObject *self, void *dunno);
  DLL_PRIVATE int		  py3270_session_set_timeout(PyObject *self, PyObject *value, void *dunno);
