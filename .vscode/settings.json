@@ -1,3 +1,5 @@
 {
-    "python.pythonPath": "C:\\Program Files\\Python37\\python.exe"
+    "python.pythonPath": "C:\\Program Files\\Python37\\python.exe",
+    "C_Cpp.default.configurationProvider": "mesonbuild.mesonbuild",
+    "C_Cpp.default.compileCommands": "/home/perry/project/pw3270/python/.build/compile_commands.json"
 }
