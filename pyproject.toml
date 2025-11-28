@@ -1,0 +1,19 @@
+[build-system]
+build-backend = 'mesonpy'
+requires = ['meson-python']
+
+[tool.meson-python.args]
+setup = ['--vsenv']
+install = ['--tags=python']
+
+[project]
+name = 'pytn3270'
+version = '1.2.8'
+description = 'Python bindings for lib3270/pw3270'
+readme = 'README.md'
+requires-python = '>=3.8'
+license = { file = 'LICENSE' }
+authors = [
+  { name = 'Perry Werneck', email = 'perry.werneck@gmail.com' },
+]
+

@@ -141,17 +141,13 @@ if host_machine.system() == 'windows'
  
 endif
 
-
-shared_library(
-  'meson.project_name()', 
+import('python').find_installation().extension_module(
+  meson.project_name(),
   sources,
   install: true,
   dependencies: [
     ipc3270,
-    dependency(
-      'python3', 
-      required: true,
-    ),
+    dependency('python3', required:true, method : 'pkg-config'),
   ],
   include_directories: includes_dir
 )

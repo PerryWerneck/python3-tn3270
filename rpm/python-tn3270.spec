@@ -21,7 +21,7 @@
 
 Summary:		Python bindings for lib3270/pw3270
 Name:			python-tn3270
-Version: 5.5
+Version: 5.5.0
 Release:		0
 License:		GPL-2.0
 Source:			%{name}-%{version}.tar.xz
