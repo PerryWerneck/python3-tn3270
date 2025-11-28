@@ -21,7 +21,7 @@ project(
 	'pytn3270', 
 	['c', 'cpp'],
 	version: '5.5.0',
-	default_options : ['cpp_std=c++17'],
+	default_options : ['cpp_std=c++17', 'buildtype=release' ],
 	license: 'GPL-3.0-or-later',
 )
 
@@ -87,7 +87,8 @@ app_conf.set('PACKAGE_VERSION_MAJOR', pkg_major_version)
 app_conf.set('PACKAGE_VERSION_MINOR', pkg_minor_version)
 app_conf.set('PACKAGE_VERSION_MICRO', pkg_micro_version)
 
-app_conf.set('PRODUCT_NAME', meson.project_name())
+app_conf.set('PRODUCT_ID',ipc3270.get_variable('product_id'))
+app_conf.set('PRODUCT_NAME', ipc3270.get_variable('product_name'))
 app_conf.set('PRODUCT_VERSION', meson.project_version())
 
 if cxx.compiles('#include <unistd.h>', name : 'unistd.h')
@@ -155,4 +156,10 @@ shared_library(
   include_directories: includes_dir
 )
 
+configure_file(
+  input : 'branding/metainfo.xml.in',
+  output : ipc3270.get_variable('product_id') + '.python.metainfo.xml',
+  install_dir: get_option('datadir') / 'metainfo',
+  configuration : app_conf
+)
 
