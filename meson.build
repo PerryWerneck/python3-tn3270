@@ -145,6 +145,7 @@ import('python').find_installation().extension_module(
   meson.project_name(),
   sources,
   install: true,
+  install_tag: 'python', 
   dependencies: [
     ipc3270,
     dependency('python3', required:true, method : 'pkg-config'),
