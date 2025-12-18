@@ -17,11 +17,9 @@
 
 %define skip_python2 1
 
-%{?!python_module:%define python_module() python-%{**} python3-%{**}}
-
 Summary:		Python bindings for lib3270/pw3270
 Name:			python-tn3270
-Version: 5.5.0
+Version:		5.5
 Release:		0
 License:		GPL-2.0
 Source:			%{name}-%{version}.tar.xz
@@ -30,56 +28,42 @@ Group:			Development/Libraries/Python
 
 BuildRoot:		/var/tmp/%{name}-%{version}
 
-BuildRequires:	autoconf >= 2.61
-BuildRequires:	automake
-BuildRequires:	binutils
-BuildRequires:	coreutils
+BuildRequires:	meson
 BuildRequires:	gcc-c++
-BuildRequires:	m4
-BuildRequires:	pkgconfig
-BuildRequires:	fdupes
-BuildRequires:	%{pythons}
-BuildRequires:	libtool
-
-BuildRequires:  python-rpm-macros
-
-BuildRequires:	pkgconfig(libipc3270) >= 5.5
-BuildRequires:	pkgconfig(python3)
-
+BuildRequires:	pkgconfig(dbus-1)
 BuildRequires:	%{python_module devel}
-BuildRequires:	%{python_module setuptools}
+
+# https://en.opensuse.org/openSUSE:Packaging_Python
+BuildRequires:	python-rpm-macros
+BuildRequires:	%{python_module packaging}
+BuildRequires:	%{python_module pip}
+BuildRequires:	%{python_module wheel}
+BuildRequires:	%{python_module meson-python}
+BuildRequires:	fdupes
+
+BuildRequires:	pkgconfig(libipc3270) >= 5.5.0
 
 Recommends:		pw3270-plugin-ipc
-
-%python_subpackages
 
 %description
 This is an extension allowing tn3270 access for python applications
 using lib3270 directly or ipc calls to an enabled pw3270 window.
 
+%python_subpackages
+
 %prep
-
-%setup
-
-NOCONFIGURE=1 ./autogen.sh
-
-%configure --with-python-sitelib=%{python_sitelib}
+%autosetup
 
 %build
-%python_build
+%pyproject_wheel
 
 %install
-%python_install
+%pyproject_install
+%python_expand %fdupes %{buildroot}%{python_sitearch}
 
 %clean
 
 %files %python_files
-%defattr(-,root,root)
-
-# https://en.opensuse.org/openSUSE:Packaging_for_Leap#RPM_Distro_Version_Macros
-%doc AUTHORS README.md
-%license LICENSE
-
-%{python_sitearch}/*
+%{python_sitearch}/pytn3270*
 
 %changelog
