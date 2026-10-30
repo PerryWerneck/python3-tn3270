@@ -20,7 +20,7 @@
 project(
 	'pytn3270', 
 	['c', 'cpp'],
-	version: '5.5.0',
+	version: '5.5.1',
 	default_options : ['cpp_std=c++17', 'buildtype=release' ],
 	license: 'GPL-3.0-or-later',
 )
@@ -141,14 +141,18 @@ if host_machine.system() == 'windows'
  
 endif
 
-import('python').find_installation().extension_module(
+py_mod = import('python')
+py = py_mod.find_installation('python3', required: true)
+py_version = py.language_version()
+
+py.extension_module(
   meson.project_name(),
   sources,
   install: true,
   install_tag: 'python', 
   dependencies: [
     ipc3270,
-    dependency('python3', required:true, method : 'pkg-config'),
+    dependency('python-@0@'.format(py_version), required:true),
   ],
   include_directories: includes_dir
 )
